@@ -1,0 +1,88 @@
+// https://vuejs.org/guide/introduction.html
+
+//Root-Component:
+const app = Vue.createApp({
+  // Optionen
+  data: function () {
+    return {
+    };
+  },
+
+  // - wird ausgeführt  wenn sich abhängige Daten ändern
+  // - verwendet man wenn Daten von anderen abhängen (z.B totalVotes)
+  computed: {
+      functionName() {
+      },
+  },
+
+  // - wird ausgeführt wenn sich "sichtabre" Daten ändern (wenn das Template neu gerendert werden muss)
+  // - verwendet man für Daten die sich permanent ändern (z.B Event-Listener (click))
+  methods: {
+      functionName() {
+      },
+  },
+
+  // wird ausgeführt wenn sich die beobatchteten Daten ändern
+  // verwendet man für z.B localStorage, HTTP-Requests etc (was sich nicht direkt auf das Template auswirkt)
+  watch: {
+      functionName: {
+          handler(newValue, oldValue) {
+          },
+          deep: true,       // benötigt man für komplexere Datentypen wie z.B Array
+          immediate: true   // der Watcher wird initial (nach Erstellung der Componet) ausgeführt
+      },
+  },
+});
+
+// Components:
+// Globale Component
+app.component("NameDerComponent", {
+  // Optionen
+  props: [""], // props die vom Eltern-Component geerbt werden sollen
+  methods: {
+  },
+  template: '<html></html>'
+});
+// wird dann im HTML-Template so angegeben
+<name-der-component></name-der-component>
+
+// Liefert die Instanz zur Root-Component zurück
+const vm = app.mount("#app");
+
+//-------------------------------------------------------------------------------------
+
+// Man kann Vue-Code an ein Template binden. Es wirkt dann die Interpolation auf alle untergeordneten Elemente. 
+// Das <template> wird nach dem Laden des eigentlichen DOM gelöscht!
+<template></template>
+//-------------------------------------------------------------------------------------
+
+{{ data }}// Interpolation mit Mustache-Syntax
+
+v-for="(element, index) in myArray"     // Iteration über ein Array
+v-for="(value, key, index) in myObject" // Iteration über ein Object
+
+v-if="expression"   // zeigt das Element nur an wenn Expression wahr ist
+v-show="expression" // togglet zwischen show und hide wenn die Expression wahr ist. Das Element wird allerdings immer gerendert
+
+v-cloak     // versteckt noch nicht fertig kompilierte Elemente bis sie geladen sind
+/* CCS-Code dazu:
+[v-cloak] {
+    display: none;
+  }
+*/
+
+v-bind:key="uniqueID"       // eindeutige ID für ein Element.  https://v3-migration.vuejs.org/breaking-changes/key-attribute.html
+v-bind:htmlAttribut="data"  // ein HTML-Attribut (z.B scr beim <img> an Vue binden
+:attribut                   // Abkürzung
+
+v-once  // das DOM wird hier nur einmal gerndert, auch wenn sich die Daten im Hinetrgrund noch ändern können.
+
+v-on:click="handler(parameter1 ..., $event")    // Event-Listener (click-Event). $event speichert das Event-Object
+@click // Abkürzung
+
+v-html="data"   // gibt Daten als HTML-Text aus. HTML-Tags werden interpretiert
+v-pre   // Text wird ohne Interpretation ausgegeben <p v-pre>{{ myData }}</p> => {{ myData }}
+
+
+
+

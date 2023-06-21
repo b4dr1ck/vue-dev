@@ -1,0 +1,42 @@
+const submissions = [
+  {
+    id: 1,
+    title: "Spaghetti Bolognese",
+    desc: "Ein Nudelgericht <strong>mit</strong> Hackfleischsoße.",
+    votes: 16,
+    author: "Italien",
+    img: "img/spaghetti.png",
+  },
+  {
+    id: 2,
+    title: "Wiener Schnitzel",
+    desc: "Ein dünnes Schnitzel aus Kalbfleisch.",
+    votes: 5,
+    author: "Österreich",
+    img: "img/schnitzel.jpg",
+  },
+  {
+    id: 3,
+    title: "Peking-Ente",
+    desc: "Das kaiserliche Gericht.",
+    votes: 20,
+    author: "China",
+    img: "img/peking-ente.jpg",
+  },
+  {
+    id: 4,
+    title: "Gulasch",
+    desc: "Ein traditionelles Ragout.",
+    votes: 24,
+    author: "Ungarn",
+    img: "img/gulasch.jpg",
+  },
+  {
+    id: 5,
+    title: "Gyros",
+    desc: "Ein klassisches Fleischgericht.",
+    votes: 3,
+    author: "Griechenland",
+    img: "img/gyros.jpg",
+  },
+];

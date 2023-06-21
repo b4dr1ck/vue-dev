@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voter</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="app">
+      <div class="container-fluid">
+
+        <div id="newSubmissionInput" style="margin-top:5px;display:flex;">
+          <input class="form-control" placeholder="Titel" id="titleInput" type="text"/>
+          <input class="form-control" placeholder="Beschreibung" id="descInput" type="text"/>
+          <input class="form-control" placeholder="Author" id="authorInput" type="text"/>
+          <button class="btn btn-primary" v-on:click="addNewSubmission">Hinzufügen</button>
+        </div>
+        
+        <div class="row">
+          <div class="col-xl-4 offset-xl-4">
+            <div class="card mt-5">
+              <div class="card-header" v-bind:class="cardHeaderBackgroundColor">
+                <h2 class="card-title" v-bind:style="cardTitleFontSize">Stimme jetzt ab!</h2>
+                <!--span class="float-end">{{ totalVotes() }} Stimmen</span-->
+                <span class="float-end">{{ totalVotes }} Stimmen</span>
+                <!--computed-methods nicht als Methodenaufruf-->
+              </div>
+              <div class="card-body">
+                <template
+                  v-for="(submission,index) in sortedSubmissions"
+                  v-bind:key="submission.id"
+                >
+                  <submission-list-item v-bind:submission="submission"></submission-list-item>
+
+                  <hr />
+                </template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--immer die aktuelle Vue-Version-->
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="seed.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
