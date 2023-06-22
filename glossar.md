@@ -47,6 +47,8 @@ app.component("NameDerComponent", {
 });
 // wird dann im HTML-Template so angegeben
 <name-der-component></name-der-component>
+// oder einfach so
+<NameDerComponent/>
 
 // Liefert die Instanz zur Root-Component zurück
 const vm = app.mount("#app");
@@ -54,9 +56,11 @@ const vm = app.mount("#app");
 
 Man kann Vue-Code an ein Template binden. Es wirkt dann die Interpolation auf alle untergeordneten Elemente. 
 Das ```<template>``` wird nach dem Laden des eigentlichen DOM gelöscht!
+
 ```<template></template>```
 
  Interpolation mit Mustache-Syntax
+
 ```{{ data }}```
 
 ## Directives
@@ -94,7 +98,8 @@ Ein HTML-Attribut (z.B scr-Attribut beim ```<img>```) an Vue binden
 v-bind:htmlAttribut="data"  
 :attribut   // Abkürzung
 ```
-das DOM wird hier nur einmal gerndert, auch wenn sich die Daten im Hintergrund noch ändern können.
+Das DOM wird hier nur einmal gerndert, auch wenn sich die Daten im Hintergrund noch ändern können.
+
 ```v-once```
 
 Event-Listener (click-Event). $event speichert das Event-Object
@@ -103,6 +108,7 @@ v-on:click="handler(parameter1 ..., $event")
 @click // Abkürzung
 ```
 Gibt Daten als HTML-Text aus. HTML-Tags werden interpretiert
+
 ```v-html=data```
 
 Text wird ohne Interpretation ausgegeben: ```<p v-pre>{{ myData }}</p> => {{ myData }}```
@@ -110,13 +116,19 @@ Text wird ohne Interpretation ausgegeben: ```<p v-pre>{{ myData }}</p> => {{ myD
 
 ## Entwicklungsumgebung einrichten mittels VUE-CLI
 Installieren von VUE-CLI 
-```npm install -g @vue/cli // -g für globale Installation```
+```
+npm install -g @vue/cli // -g für globale Installation
+```
 
 Erstellen der Entwicklungsumgebung
-```vue create <appname>```
+```
+vue create <appname>
+```
 
 Kompilieren der Vue-Anwndung und starten eines Webservers
-```npm run serve```
+```
+npm run serve
+```
 
 ## Aufbau einer Vue-App
 * App.vue (root component)

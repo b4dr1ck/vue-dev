@@ -31,7 +31,7 @@
                   v-for="(submission,index) in sortedSubmissions"
                   v-bind:key="submission.id"
                 >
-                  <submission-list-item v-bind:submission="submission"></submission-list-item>
+                  <SubmissionListItem v-bind:submission="submission"/>
 
                   <hr />
                 </template>
