@@ -13,7 +13,8 @@ const getters = {
 const mutations = {};
 
 export default {
-  state: readonly(state), // mache state nur lesend mit der Funktion readonly()
+    // mache state nur lesend mit der Funktion readonly()
+  state: readonly(state), 
   getters,
   mutations,
 };
