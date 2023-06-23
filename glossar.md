@@ -142,4 +142,33 @@ npm run serve
 * babel.config.js (Config für Babel <https://babeljs.io/>)
 * node_modules/ (weitere installierte Module - z.B bootstrap)
 
+## Store einbinden
+Wird als eigene store.js angelegt
+```js
+import { daten } from "./seed.js";
+import { reactive, readonly } from "vue";
 
+// binde state in das reactivity-system von Vue ein mittels der importierten Funktion reactive()
+const state = reactive({
+  daten,
+});
+
+const getters = {
+  functionName: function() {},
+};
+
+const mutations = {
+  functionName: function() {},
+};
+
+export default {
+  // mache state nur lesend mit der Funktion readonly()
+  state: readonly(state), 
+  getters,
+  mutations,
+};
+```
+und kann dann in die Component importiert werden
+```js 
+import Store from "../store";
+```
