@@ -111,8 +111,33 @@ Gibt Daten als HTML-Text aus. HTML-Tags werden interpretiert
 
 ```v-html=data```
 
-Text wird ohne Interpretation ausgegeben: ```<p v-pre>{{ myData }}</p> => {{ myData }}```
+Text wird ohne Interpretation ausgegeben
+
 ```v-pre```
+
+## Slots 
+Slot-Directive:
+```js
+// named slot
+v-slot:slotname="slotProps"
+// kurze Schreibweise
+#slotname="slotProps"
+// default-slot (wird für nicht benannte Slots verwendet)
+v-slot
+```
+In einer Component einen Slot verwenden.
+Innerhalb des ```<slot>``` Tag's steht der Fallback-Content.
+```html
+<slot name="mySlotName" v-bind:data="myData">
+  Unbekannt
+</slot>
+```
+Im Elternobjekt den Slot und die daran gebundenen Properties verwenden
+```html
+<template v-slot:mySlotName="slotProps">
+  {{ slotProps.data }}
+</template>
+```
 
 ## Entwicklungsumgebung einrichten mittels VUE-CLI
 Installieren von VUE-CLI 

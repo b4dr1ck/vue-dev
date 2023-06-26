@@ -1,10 +1,7 @@
 <template>
   <div id="calender-week">
     <div class="card-group">
-      <CalendarDay 
-        v-for="day in calenderWeekData" 
-        :key="day.id" 
-        :day="day" />
+      <CalendarDay v-for="day in calenderWeekData" :key="day.id" :day="day" />
     </div>
   </div>
 </template>

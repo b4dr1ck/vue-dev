@@ -1,6 +1,10 @@
 <template>
   <div class="card border-start" :class="cardClasses">
-    <div class="card-header text-center" role="button" :class="cardHeaderClasses">
+    <div
+      class="card-header text-center"
+      role="button"
+      :class="cardHeaderClasses"
+    >
       <strong>{{ day.fullName }}</strong>
     </div>
     <div class="card-body">
@@ -8,7 +12,15 @@
         v-for="event in day.events"
         :key="event.title"
         :event="event"
-      />
+        :day="day"
+      >
+        <!--template v-slot:priorityDisplayName="slotProps"-->
+        <template #eventPriority="slotProps">
+          <strong>{{ slotProps.priorityDisplayName }}</strong>
+        </template>
+        <!-- "v-slot" ist die Kurzform von "v-slot:default"-->
+        <template v-slot="{ event }">{{ event.title }}</template>
+      </CalendarEvent>
     </div>
   </div>
 </template>
@@ -58,11 +70,15 @@ export default {
   },
   computed: {
     cardClasses() {
-      return this.day.id == Store.getters.activeDay().id ? ["border-primary"]: null;
+      return this.day.id == Store.getters.activeDay().id
+        ? ["border-primary"]
+        : null;
     },
     cardHeaderClasses() {
-      return this.day.id == Store.getters.activeDay().id ? ["bg-primary","text-white"]: null;
-    }
+      return this.day.id == Store.getters.activeDay().id
+        ? ["bg-primary", "text-white"]
+        : null;
+    },
   },
 };
 </script>
