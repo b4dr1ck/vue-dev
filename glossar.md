@@ -64,59 +64,67 @@ Das ```<template>``` wird nach dem Laden des eigentlichen DOM gelöscht!
 ```{{ data }}```
 
 ## Directives
-Iteration über ein Array/Object
+```v-for``` iteriert über ein Array/Object
 ```js
 v-for="(element, index) in myArray"
 v-for="(value, key, index) in myObject"
 ```
 
-zeigt das Element nur an wenn Expression wahr ist.
+```v-if="expression"```zeigt das Element nur an wenn die Expression wahr ist.
 Die Else-Bedingung muss immer direkt im nächsten HTML-Element definiert werden.
 ```js
 v-if="expression"  
 v-else
 v-else-if="expression"
 ```
-togglet zwischen show und hide wenn die Expression wahr ist. 
-Das Element wird allerdings immer gerendert. (mit ```display:none``` versteckt)
-```js
-v-show="expression" 
-```
-versteckt noch nicht fertig kompilierte Elemente bis sie fretig geladen sind
-```js
-v-cloak    
-```
+```v-show="expression"``` togglet zwischen show und hide, wenn die Expression wahr ist. Das Element wird allerdings immer gerendert.
+
+```v-cloak``` versteckt noch nicht fertig kompilierte Elemente bis sie fretig geladen sind
 ```css
 /*CCS-Code dazu*/
 [v-cloak] {
     display: none;
   }
 ```
+```v-bind:attribute``` bindet ein Attribut (z.B scr-Attribut beim ```<img>```) an die Daten.
+```js
+v-bind:attribute="data"  
+:attribut   // Abkürzung
+```
 Eindeutige ID für ein Element.  <https://v3-migration.vuejs.org/breaking-changes/key-attribute.html>
 ```js
 v-bind:key="uniqueID"       
 ```
-Ein HTML-Attribut (z.B scr-Attribut beim ```<img>```) an Vue binden
-```js
-v-bind:htmlAttribut="data"  
-:attribut   // Abkürzung
-```
-Das DOM wird hier nur einmal gerndert, auch wenn sich die Daten im Hintergrund noch ändern können.
+Mit ```v-once``` wird das DOM-Element nur einmal gerendert, auch wenn sich die Daten im Hintergrund noch ändern können.
 
-```v-once```
-
-Event-Listener (click-Event). $event speichert das Event-Object
+```v-on:event``` wird verwendet um einen Event-Listener zu erstellen. $event speichert das Event-Object.
 ```js
 v-on:click="handler(parameter1 ..., $event")  
 @click // Abkürzung
 ```
-Gibt Daten als HTML-Text aus. HTML-Tags werden interpretiert
+```v-html=data``` gibt Daten als HTML-Text aus. HTML-Tags werden interpretiert.
 
-```v-html=data```
+```v-pre``` wird verwendet um Text  ohne Interpretation ausgegeben
 
-Text wird ohne Interpretation ausgegeben
+## Spezielle Variablen
 
-```v-pre```
+```$refs``` kann verwendet werden wenn bei einem HTML-Element ein ref-Attribut gesetzt ist um einen direkt Zugriff auf das DOM-Element zu erlauben.
+```html
+<p ref=myParagraph>Text</p>
+```
+```js
+console.log(this.$refs.myParagraph);
+```
+```$event``` wird verwendet wenn man einen Event-Listener aufruft und explizit auf das Event-Objekt zugreifen möchte. (Wenn man z.B auch noch andere Argumente mitgibt)
+```html
+  <button @click="incrementCounter(amount,$event)">Add Counter</button>
+```
+```js
+  incrementCounter(amount,event) {
+    const buttonObject = event.target;
+    /*...*/
+  }
+```
 
 ## v-model
 Mit dieser Directive kann ein Two-Way-Bindung zu einem Formular-Input-Element hergestellt werden.
