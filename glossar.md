@@ -97,9 +97,10 @@ v-bind:key="uniqueID"
 ```
 Mit ```v-once``` wird das DOM-Element nur einmal gerendert, auch wenn sich die Daten im Hintergrund noch ändern können.
 
-```v-on:event``` wird verwendet um einen Event-Listener zu erstellen. $event speichert das Event-Object.
+```v-on:event.modifier``` wird verwendet um einen Event-Listener zu erstellen. $event speichert das Event-Object.
 ```js
-v-on:click="handler(parameter1 ..., $event")  
+v-on:click="handler(parameter1 ..., $event)"
+v-on:keyup.enter="handler()" // mit Event-Modifier
 @click // Abkürzung
 ```
 ```v-html=data``` gibt Daten als HTML-Text aus. HTML-Tags werden interpretiert.
