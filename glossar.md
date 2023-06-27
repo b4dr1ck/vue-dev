@@ -70,16 +70,19 @@ v-for="(element, index) in myArray"
 v-for="(value, key, index) in myObject"
 ```
 
-zeigt das Element nur an wenn Expression wahr ist
+zeigt das Element nur an wenn Expression wahr ist.
+Die Else-Bedingung muss immer direkt im nächsten HTML-Element definiert werden.
 ```js
 v-if="expression"  
+v-else
+v-else-if="expression"
 ```
 togglet zwischen show und hide wenn die Expression wahr ist. 
-Das Element wird allerdings immer gerendert
+Das Element wird allerdings immer gerendert. (mit ```display:none``` versteckt)
 ```js
 v-show="expression" 
 ```
-versteckt noch nicht fertig kompilierte Elemente bis sie geladen sind
+versteckt noch nicht fertig kompilierte Elemente bis sie fretig geladen sind
 ```js
 v-cloak    
 ```
@@ -114,6 +117,35 @@ Gibt Daten als HTML-Text aus. HTML-Tags werden interpretiert
 Text wird ohne Interpretation ausgegeben
 
 ```v-pre```
+
+## v-model
+Mit dieser Directive kann ein Two-Way-Bindung zu einem Formular-Input-Element hergestellt werden.
+
+Der Syntax sieht wie folgt aus:
+```js
+v-model="propName"
+```
+Das v-model kann dann z.B in einem Input-Element verwendet werden.
+```message``` wird dann automatisch für den value im Input eingetragen.
+Wenn dieser Input verändert wird, wird auch automatisch das ```<p>``` Tag verändert.
+```js
+// Vue-App mit Daten erstellen
+Vue.createApp({
+  // Optionen
+  data: function () {
+    return {
+      message: "Test-Message",
+    };
+  },
+}).mount("#app");
+
+```
+
+```html
+  <!--Daten mittels v-model im HTML Template verwenden-->
+  <p>{{message}}</p>
+  <input type="text" v-model="message"/>
+```
 
 ## Slots 
 Slot-Directive:
