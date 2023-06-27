@@ -11,6 +11,25 @@ const getters = {
 };
 
 const mutations = {
+  addNewEntry(eventObj) {
+    const activeDay = getters.activeDay();
+    activeDay.events.push({
+      title: eventObj.title,
+      edit: false,
+      color: eventObj.color,
+      priority: Number(eventObj.priority),
+    });
+  },
+  setActiveDay(dayId) {
+    // setze alle auf day.active auf False
+    state.calendarWeekData.forEach((day) => {
+      day.active = false;
+    });
+
+    // setze das Richtige auf true
+    const dayObj = state.calendarWeekData.find((day) => day.id === dayId);
+    dayObj.active = true;
+  },
   // setze alle event.edit auf false
   editEvent(dayId, eventTitle) {
     state.calendarWeekData.map((dayObj) => {
