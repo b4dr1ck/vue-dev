@@ -4,6 +4,7 @@ import { reactive, readonly } from "vue";
 // binde state in das reactivity-system von vue ein mittels der importierten Funktion reactive()
 const state = reactive({
   calendarWeekData,
+  activeView: "CalendarWeek",
 });
 
 const getters = {
@@ -19,6 +20,9 @@ const mutations = {
       color: eventObj.color,
       priority: Number(eventObj.priority),
     });
+  },
+  setActiveView(view) {
+    state.activeView = view;
   },
   setActiveDay(dayId) {
     // setze alle auf day.active auf False

@@ -11,6 +11,7 @@
           type="text"
           class="form-control"
           placeholder="Neuer Eintrag"
+          ref="eventTitleInput"
           v-model="event.title"
           @keyup.enter.exact="addNewEntry"
           @keyup.ctrl.enter.exact="resetEventTitle"
@@ -70,6 +71,9 @@ export default {
     activeDayName() {
       return Store.getters.activeDay().fullName;
     },
+  },
+  mounted() {
+    this.$refs.eventTitleInput.focus();
   },
   methods: {
     eventColorClasses(eventColor) {
