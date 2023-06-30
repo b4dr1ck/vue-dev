@@ -63,6 +63,17 @@ Das ```<template>``` wird nach dem Laden des eigentlichen DOM gelöscht!
 
 ```{{ data }}```
 
+## Life Cycle einer Component
+<https://vuejs.org/guide/essentials/lifecycle.html#lifecycle-diagram>
+
+Ein Hook kann in der Component wie folgt defniert werden
+
+```js
+mounted() {
+  console.log(`Component wurde erstellt`);
+}
+```
+
 ## Directives
 ```v-for``` iteriert über ein Array/Object
 ```js
@@ -107,26 +118,6 @@ v-on:keyup.enter="handler()" // mit Event-Modifier
 
 ```v-pre``` wird verwendet um Text  ohne Interpretation ausgegeben
 
-## Spezielle Variablen
-
-```$refs``` kann verwendet werden wenn bei einem HTML-Element ein ref-Attribut gesetzt ist um einen direkt Zugriff auf das DOM-Element zu erlauben.
-```html
-<p ref=myParagraph>Text</p>
-```
-```js
-console.log(this.$refs.myParagraph);
-```
-```$event``` wird verwendet wenn man einen Event-Listener aufruft und explizit auf das Event-Objekt zugreifen möchte. (Wenn man z.B auch noch andere Argumente mitgibt)
-```html
-  <button @click="incrementCounter(amount,$event)">Add Counter</button>
-```
-```js
-  incrementCounter(amount,event) {
-    const buttonObject = event.target;
-    /*...*/
-  }
-```
-
 ## v-model
 Mit dieser Directive kann ein Two-Way-Bindung zu einem Formular-Input-Element hergestellt werden.
 
@@ -156,6 +147,26 @@ Vue.createApp({
   <input type="text" v-model="message"/>
 ```
 
+## Spezielle Variablen
+
+```$refs``` kann verwendet werden wenn bei einem HTML-Element ein ref-Attribut gesetzt ist um einen direkt Zugriff auf das DOM-Element zu erlauben.
+```html
+<p ref=myParagraph>Text</p>
+```
+```js
+console.log(this.$refs.myParagraph);
+```
+```$event``` wird verwendet wenn man einen Event-Listener aufruft und explizit auf das Event-Objekt zugreifen möchte. (Wenn man z.B auch noch andere Argumente mitgibt)
+```html
+  <button @click="incrementCounter(amount,$event)">Add Counter</button>
+```
+```js
+  incrementCounter(amount,event) {
+    const buttonObject = event.target;
+    /*...*/
+  }
+```
+
 ## Slots 
 Slot-Directive:
 ```js
@@ -179,6 +190,30 @@ Im Elternobjekt den Slot und die daran gebundenen Properties verwenden
   {{ slotProps.data }}
 </template>
 ```
+
+## Dynamische Components
+
+Components können mit ```<component>``` auch dynamisch erstellt werden. Man muss dazu da ```is``` Attribut binden und den Component-Name als Wert angeben.
+
+```<keep-alive>``` sorgt dafür das die Component nicht gelöscht wird wenn sie nicht mehr angezeigt wird. Somit können z.B in Inputfeldern bereits eingetragener Text erhalten bleiben.
+
+```html
+  <keep-alive>
+    <component :is="componentName" /> 
+  </keep-alive>
+```
+
+```defineAsyncComponent``` kann dazu verwendet werden um Components asynchronen zu erstellen. Die Component wird erst dann erstellt wenn sie tatsächlich benötigt wird. 
+
+```js
+import { defineAsyncComponent } from "vue";
+
+  ComponentName: defineAsyncComponent(() => {
+    // muss ein Promise zurückliefern
+    return import("./components/ComponentName.vue");
+  }),
+
+``` 
 
 ## Entwicklungsumgebung einrichten mittels VUE-CLI
 Installieren von VUE-CLI 
