@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-2 offset-3">
-      <ul class="list-group">
+      <ul class="list-group" role="button">
         <li
           v-for="day in calendarWeekData"
           :key="day.id"

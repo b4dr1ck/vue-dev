@@ -7,7 +7,9 @@
         <CalendarWeek /> -->
         <!--keep-alive: damit die component nicht gelöscht wird beim Wechslen der View-->
         <keep-alive>
-          <component :is="activeView" /> 
+          <transition name="fade" mode="out-in" appear="">
+            <component :is="activeView" /> 
+          </transition>
         </keep-alive>
         <!-- Ende: Template für die Calendar-Week-Component -->
       </div>
@@ -29,7 +31,9 @@
           </button>
         </div>
         <!-- Anfang: Template für die Calendar-Settings-Component -->
-        <CalendarSettings v-if="displaySetting" />
+        <transition name="fade">
+          <CalendarSettings v-if="displaySetting" />
+        </transition>
         <!-- Ende: Template für die Calendar-Day-Component -->
       </div>
     </div>
@@ -63,7 +67,7 @@ export default {
   },
   data() {
     return {
-      displaySetting: false,
+      displaySetting: true,
     };
   },
   computed: {
@@ -89,4 +93,23 @@ export default {
   width: 40px;
   height: 40px;
 }
+
+/* Transititon: Fade */
+
+/*wenn kein name-attribute gesetzt ist kann die klasse .v-[enter|leave]-[from|to] verwendet werden*/
+.fade-enter-from, 
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-to, 
+.fade-leave-from  {
+  opacity: 1;
+}
+
+.fade-enter-active, 
+.fade-leave-active {
+  transition: all 0.25s ease-out;
+}
+
 </style>

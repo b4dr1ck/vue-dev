@@ -1,27 +1,30 @@
 <template>
   <div class="card border-start" :class="cardClasses">
-    <div
-      class="card-header text-center"
-      role="button"
-      :class="cardHeaderClasses"
-      @click="setActiveDay"
-    >
+    <div class="card-header text-center" role="button" :class="cardHeaderClasses" @click="setActiveDay">
       <strong>{{ day.fullName }}</strong>
     </div>
     <div class="card-body">
-      <CalendarEvent
-        v-for="event in day.events"
-        :key="event.title"
-        :event="event"
-        :day="day"
-      >
-        <!--template v-slot:priorityDisplayName="slotProps"-->
-        <template #eventPriority="slotProps">
-          <strong>{{ slotProps.priorityDisplayName }}</strong>
-        </template>
-        <!-- "v-slot" ist die Kurzform von "v-slot:default"-->
-        <template v-slot="{ event }">{{ event.title }}</template>
-      </CalendarEvent>
+      <transition name="fade" mode="out-in">
+        <div v-if="day.events.length">
+          <!-- verwende transition-group damit die transition nicht direkt auf der Component angewendent wird,
+          sondern auf allen Elementen darunter => in diesem Fall die Events-->
+          <transition-group name="list">
+            <CalendarEvent v-for="event in events" :key="event.title" :event="event" :day="day">
+              <!--template v-slot:priorityDisplayName="slotProps"-->
+              <template #eventPriority="slotProps">
+                <strong>{{ slotProps.priorityDisplayName }}</strong>
+              </template>
+              <!-- "v-slot" ist die Kurzform von "v-slot:default"-->
+              <template v-slot="{ event }">{{ event.title }}</template>
+            </CalendarEvent>
+          </transition-group>
+        </div>
+        <div v-else>
+          <div class="alert alert-light text-center">
+            <i>Keine Termine</i>
+          </div>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -71,22 +74,43 @@ export default {
   },
   computed: {
     cardClasses() {
-      return this.day.id == Store.getters.activeDay().id
-        ? ["border-primary"]
-        : null;
+      return this.day.id == Store.getters.activeDay().id ? ["border-primary"] : null;
     },
     cardHeaderClasses() {
-      return this.day.id == Store.getters.activeDay().id
-        ? ["bg-primary", "text-white"]
-        : null;
+      return this.day.id == Store.getters.activeDay().id ? ["bg-primary", "text-white"] : null;
     },
+    events() {
+      return Store.getters.events(this.day.id);
+    }
   },
   methods: {
     setActiveDay() {
       Store.mutations.setActiveDay(this.day.id);
     },
-  }
+  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+  .list-enter-from,
+  .list-leave-to {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  /*.list-enter-to,
+  .list-leave-from {
+    opacity: 1;
+    transform: translateY(0px);
+  }*/
+
+  .list-enter-active,
+  .list-leave-active {
+    transition: all 0.25s ease;
+  }
+
+  .list-move {
+    transition: transform 0.8s ease;
+  }
+
+</style>

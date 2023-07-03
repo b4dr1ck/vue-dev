@@ -24,16 +24,16 @@
         <hr />
         <ul class="nav nav-pills nav-fill">
           <li class="nav-item" role="button">
-            <a class="nav-link"
+            <a class="nav-link" :class="isActiveOrdering('priority')" @click="changeOrdering('priority')"
               ><strong class="fas fa-sort-numeric-down-alt text-success"
-                >🔽</strong
+                >prior<br>SORT</strong
               ></a
             >
           </li>
           <li class="nav-item" role="button">
-            <a class="nav-link"
+            <a class="nav-link" :class="isActiveOrdering('title')" @click="changeOrdering('title')"
               ><strong class="fas fa-sort-alpha-down text-success"
-                >🔽</strong
+                >title<br>SORT</strong
               ></a
             >
           </li>
@@ -50,8 +50,8 @@ export default {
   data() {
     return {
       views: {
-        CalendarWeek: "T",
-        CalendarWeekAsList: "L",
+        CalendarWeek: "TAB",
+        CalendarWeekAsList: "LIST",
       },
     };
   },
@@ -63,6 +63,14 @@ export default {
         if (componentName === Store.state.activeView) {
             return ["border border-success"];
         }
+    },
+    changeOrdering(ordering) {
+      Store.mutations.setActiveOrdering(ordering);
+    },
+    isActiveOrdering(ordering) {
+      if (ordering === Store.getters.activeOrdering()) {
+        return ["border border-success"]
+      }
     }
   },
 };
