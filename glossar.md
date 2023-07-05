@@ -74,6 +74,53 @@ mounted() {
 }
 ```
 
+## Component Aufbau
+
+Eine Component erstellen ...
+```js
+export default {
+  name: "ComponentName",
+};
+```
+... und in einer andere Component importieren 
+(in diesem Fall in die App-Component)
+```js
+import ComponentName from "./components/ComponentName.vue";
+
+export default {
+  name: "App",
+  components: {
+    ComponentName,
+  },
+};
+
+```
+## Daten an Component übergeben (props)
+
+im Elten-Object können die Daten der Child-Component übergeben werden.
+```html
+  <!-- statischer Inhalt-->
+  <ComponentName title="Hello World" />
+  <!-- oder dynamischer Inhalt per v-bind-->
+  <ComponentName :title="title" />
+```
+Welche dann im Child mittels ```props``` entgegen genommen werden können
+```js
+export default {
+  name: "ComponentName",
+  props: ["title"],
+};
+```
+und dann wie folgt verwendet werden können
+```html
+<template>
+  <div>
+    <h1>{{ title }}</h1>
+  </div>
+</template>
+
+```
+
 ## Directives
 ```v-for``` iteriert über ein Array/Object
 ```js
