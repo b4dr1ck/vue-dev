@@ -41,6 +41,7 @@ const app = Vue.createApp({
 app.component("NameDerComponent", {
   // Optionen
   props: [""], // props die vom Eltern-Component geerbt werden sollen
+  emits: [""] // Daten die vom Kind-Component an das Eltern-Component übergeben werden sollen
   methods: {
   },
   template: '<html></html>'
@@ -64,6 +65,7 @@ Das ```<template>``` wird nach dem Laden des eigentlichen DOM gelöscht!
 ```{{ data }}```
 
 ## Life Cycle einer Component
+
 <https://vuejs.org/guide/essentials/lifecycle.html#lifecycle-diagram>
 
 Ein Hook kann in der Component wie folgt defniert werden
@@ -95,7 +97,7 @@ export default {
 };
 
 ```
-## Daten an Component übergeben (props)
+## Daten an Child-Component übergeben (props)
 
 im Elten-Object können die Daten der Child-Component übergeben werden.
 ```html
@@ -120,6 +122,53 @@ und dann wie folgt verwendet werden können
 </template>
 
 ```
+
+## Daten an Eltern-Component übergeben (emits)
+Wenn Daten an eine Eltern-Componten übergeben werden müssen, muss dies mit Hilfe eines Events geschehen.
+
+Zunächst wird ein Event ausgelöst (z.B ein Click-Event)
+```html
+ <button @click="submitAnything()">Click Me!</button>
+```
+Danach muss in den ```methods``` die entsprechende Methode definiert und mittels der Funktion ```$emit(event-name,datenObjekt)``` übergeben werden. 
+```js
+  submitAnything() {
+    // Custom-Event. Empfohlen wird kebab-case Schreibweise
+    this.$emit("new-event", {
+      data: this.data,
+    });
+  },
+```
+Unter dem ```emits```-Key muss dann in den Optionen das Cutom Event definiert werden.
+```js
+// kurze Schreibweise
+emits: ["new-event"]
+
+// lange Schreibweise
+emits: {
+  "new-event":(data) => {
+    // Validierung
+    if (data.length === 0) {
+      console.warn("Daten dürfen nicht leer sein")
+      return false;
+    }
+    return true;
+  };
+}
+```
+
+Im Eltern-Objekt kann dann auf die Daten bzw. das Custom-Event mittels Event-Listener zugegriffen werden.
+```html
+ <ComponentName @new-event="myFunction" />
+```
+```js
+methods: {
+  myFunction(event) {
+    // in "event" befinden sich nun die Daten die vom Child übergeben wurden.
+    console.log(event)
+  }
+},
+``` 
 
 ## Directives
 ```v-for``` iteriert über ein Array/Object
