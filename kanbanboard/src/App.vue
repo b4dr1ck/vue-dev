@@ -6,6 +6,7 @@
           :statusCard="statusCard"
           :tasks="fiteredTasks(statusCard.status)"
           @new-task="addTask"
+          @status-updated="updateStatus"
         />
       </div>
     </div>
@@ -14,11 +15,19 @@
 
 <script>
 import StatusCard from "./components/StatusCard.vue";
+//import logger from "./mixins/logger";
 
 export default {
   name: "App",
+ // mixins: [logger],
   components: {
     StatusCard,
+  },
+
+  provide() {
+    return {
+      maxNumberOfChars: 255,
+    };
   },
 
   data() {
@@ -27,12 +36,12 @@ export default {
         {
           id: 1,
           content: "Dashboard überarbeiten.",
-          status: 0,
+          status: 1,
         },
         {
           id: 2,
           content: "Anwendung auf Vue.js umstellen.",
-          status: 0,
+          status: 2,
         },
       ],
       statusCards: [
@@ -57,6 +66,9 @@ export default {
       ],
     };
   },
+  // mounted() {
+  //   console.log("App-Component ist bereit!");
+  // },
   methods: {
     fiteredTasks(status) {
       return this.tasks.filter((task) => task.status === status);
@@ -64,7 +76,14 @@ export default {
     addTask(task) {
       task.id = Math.random();
       this.tasks.push(task);
-    }
+      // kommt aus den mixins
+      this.writeLogEntry("Neue Aufgabe hinzugefügt");
+    },
+    updateStatus(statusDO) {
+      console.log(statusDO)
+      const task = this.tasks.find((task) => task.id === statusDO.taskId);
+      task.status = statusDO.newStatus;
+    },
   },
 };
 </script>
