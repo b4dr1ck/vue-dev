@@ -41,7 +41,8 @@ const app = Vue.createApp({
 app.component("NameDerComponent", {
   // Optionen
   props: [""], // props die vom Eltern-Component geerbt werden sollen
-  emits: [""] // Daten die vom Kind-Component an das Eltern-Component übergeben werden sollen
+  emits: [""] // Daten die vom Kind-Component an das Eltern-Component übergeben 
+  werden sollen
   methods: {
   },
   template: '<html></html>'
@@ -214,6 +215,8 @@ v-on:keyup.enter="handler()" // mit Event-Modifier
 
 ```v-pre``` wird verwendet um Text  ohne Interpretation ausgegeben
 
+```@[eventname]="submitData"``` -  Argument eines Attribut dynamisch binden
+
 ## v-model
 Mit dieser Directive kann ein Two-Way-Bindung zu einem Formular-Input-Element hergestellt werden.
 
@@ -243,6 +246,98 @@ Vue.createApp({
   <input type="text" v-model="message"/>
 ```
 
+## Custom Directives
+Man kann auch eigenen Directives erstellen, welche dann im Template ebenfalls wie folgt verwendet werden können:
+
+```html
+v-[directive-name]="parameter"
+``` 
+
+die Funktionalität des Directives lagert man am Besten in ein eigenes JS-Script in einem Unterverzeichnis ```directives/``` aus.
+
+**Beispiel: Focus auf Input-Element setzen**
+```js
+/* ./src/directives/focus.js */
+export default {
+  // arg 1: das aktuelle Element auf den die Directive verwendet wird
+  // arg 2: zusätzliche Parameter die der Directive übergeben wurden
+  mounted(el, binding) {
+    // console.log(binding);
+    if ("color" in binding.value) {
+      el.addEventListener("focus", function () {
+        this.style.borderColor = binding.value.color;
+        this.style.borderWidth = "2px";
+      });
+      el.addEventListener("focusout", function () {
+        this.style.borderColor = "";
+        this.style.borderWidth = "1px";
+      });
+    }
+    el.focus();
+  },
+};
+```
+Dieses Script wird dann in der main.js importiert und dem App in der Config übergeben.
+```js
+import focus from "./directives/focus";
+
+const app = createApp(App);
+app.directive("focus", focus);
+app.mount("#app");
+```
+
+## Mixins
+
+Um Code wiederverwenden zu können, kann man entsprechende Funktionen in sogenannte Mixnis auslagern.
+Man erstellt dazu am Besten ein eigens Verzeichnis ```mixins/``` und erstellt dort das gewünschte Script.
+
+Wenn in einer Component z.B bereits ein Mounted-Hook existiert, wird die Funktionalität vom Mixin gemerged und nicht überschrieben.
+
+```js
+/* ./src/mixins/logger.js */
+export default {
+  mounted() {
+    this.writeLogEntry(`${this.$options.name}-Component vollständig geladen.`);
+  },
+  methods: {
+    writeLogEntry(text) {
+      console.log(text);
+    },
+  },
+};
+```
+
+Eingebunden wird es, ähnlich wie die Custom Directives, global über die main.js
+
+```js
+import logger from "./mixins/logger";
+
+const app = createApp(App);
+app.mixin(logger);
+
+```
+Und kann dann im gesamten Projekt verwendet werden
+```js
+methods: {
+  addTask(task) {
+    task.id = Math.random();
+    this.tasks.push(task);
+    // kommt aus den mixins
+    this.writeLogEntry("Neue Aufgabe hinzugefügt");
+  },
+}
+```
+
+Kann natürlich auch lokal für z.B nur eine Component verwendet werden: 
+```js
+import logger from "./mixins/logger";
+
+export default {
+  name: "App",
+  mixins: [logger],
+}
+```
+
 ## Spezielle Variablen
 
 ```$refs``` kann verwendet werden wenn bei einem HTML-Element ein ref-Attribut gesetzt ist um einen direkt Zugriff auf das DOM-Element zu erlauben.
@@ -262,6 +357,27 @@ console.log(this.$refs.myParagraph);
     /*...*/
   }
 ```
+
+## Provide & Inject
+
+Um Properties an ein Kind direkt zu übergeben (z.B ein "Ur-Enkel") kann man dies mit Provide & Inject machen. So kann man "Prop Drilling" vermeiden.
+<https://vuejs.org/guide/components/provide-inject.html#prop-drilling>
+
+Ein Property "providen":
+```js
+provide() {
+  return {
+    maxNumberOfChars: 255,
+  };
+},
+```
+Das enstprechende Property "injecten":
+```js
+inject: ["maxNumberOfChars"],
+```
+**Nachteile**
+- das Property ist nicht reaktiv
+- man kann nicht auf einem Blick die Quelle des Properties erkennen
 
 ## Slots 
 Slot-Directive:
@@ -285,6 +401,20 @@ Im Elternobjekt den Slot und die daran gebundenen Properties verwenden
 <template v-slot:mySlotName="slotProps">
   {{ slotProps.data }}
 </template>
+```
+
+## Teleport
+Man kann gewisse Teile aus dem Template eine Component in eine andere "teleportieren", und zwar wie folgt.
+
+Mit ```to="destination"``` wird angegeben wohin der Teil teleportiert werden soll.
+Dazu muss es natürlich ein entsprechendes Element geben.
+```html
+<teleport to="#settings">
+  <select v-model="mode" class="form-select">
+    <option value="click">Einfacher Klick</option>
+    <option value="dblclick">Doppelklick</option>
+  </select>
+</teleport>
 ```
 
 ## Dynamische Components
