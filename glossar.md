@@ -441,49 +441,31 @@ import { defineAsyncComponent } from "vue";
 
 ``` 
 
-## Entwicklungsumgebung einrichten mittels VUE-CLI
-Installieren von VUE-CLI 
-```
-npm install -g @vue/cli // -g für globale Installation
-```
-
-Erstellen der Entwicklungsumgebung
-```
-vue create <appname>
-```
-
-Kompilieren der Vue-Anwndung und starten eines Webservers
-```
-npm run serve
-```
-
-## Aufbau einer Vue-App
-* App.vue (root component)
-* package.json (config der installierten Packages)
-* src/
-  * components/
-    * Component.vue (weitere components)
-    * Component2.vue (usw.)
-  * assets/
-    * img.png (weitere Ressourcen, wie z.B Bilder)
-* babel.config.js (Config für Babel <https://babeljs.io/>)
-* node_modules/ (weitere installierte Module - z.B bootstrap)
-
 ## Store einbinden
-Wird als eigene store.js angelegt
+
+Ein Store dient zur zentralen Verwaltung der Daten und kann eigens in die App eingebunden werden. Er besteht in der Regel aus:
+* state
+* getters
+* mutations
+und wird in einem eigenen JS-File (```store.js```) direkt im src-Verzeichnis erstellt: 
+
 ```js
-import { daten } from "./seed.js";
+// src/store.js
+
+import { daten } from "./seed.js"; /* Datenquelle */
 import { reactive, readonly } from "vue";
 
-// binde state in das reactivity-system von Vue ein mittels der importierten Funktion reactive()
+// binde state in das Reactivity-System von Vue ein mittels der importierten Funktion reactive()
 const state = reactive({
   daten,
 });
 
+// Getter-Methoden
 const getters = {
   functionName: function() {},
 };
 
+// Setter-Mehoden
 const mutations = {
   functionName: function() {},
 };
@@ -495,7 +477,61 @@ export default {
   mutations,
 };
 ```
-und kann dann in die Component importiert werden
+
+Anschließend kann der Store in die Component, wo er benötigt wird, importiert werden.
+
 ```js 
-import Store from "../store";
+import Store from "@/store";
 ```
+
+Verwende den Store.
+
+```js
+methods: {
+  getName() {
+    return Store.getters.getName();
+  },
+}
+```
+
+## Vue-App erstellen mittels VUE-CLI
+Installieren von VUE-CLI 
+```
+npm install -g @vue/cli // -g für globale Installation
+```
+Erstellen einer App
+```
+vue create <appname>
+```
+Kompilieren der Vue-Anwndung und starten eines Webservers
+```
+cd <appnam>
+
+npm run serve
+-- oder --
+vue serve
+```
+Die App builden
+```
+npm run build
+-- oder --
+vue build
+```
+
+## Aufbau einer Vue-App
+
+* node_modules/ (installierte Module - z.B bootstrap)
+* package.json (config der installierten Packages)
+* dist/ (vorhanden sobald die App mittels *build* gebaut wurde)
+* public/
+  * index.html
+  * favicon.ico
+* src/
+  * App.vue (root component)
+  * components/
+    * Component.vue (weitere components)
+    * Component2.vue (usw.)
+  * assets/
+    * img.png (weitere Ressourcen, wie z.B Bilder)
+* babel.config.js (Config für Babel <https://babeljs.io/>)
+
