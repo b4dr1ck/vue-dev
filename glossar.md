@@ -100,21 +100,21 @@ export default {
 ```
 ## Daten an Child-Component übergeben (props)
 
-im Elten-Object können die Daten der Child-Component übergeben werden.
+In der Elten-Component können die Daten der Child-Component, wie folgt, übergeben werden.
 ```html
   <!-- statischer Inhalt-->
   <ComponentName title="Hello World" />
   <!-- oder dynamischer Inhalt per v-bind-->
   <ComponentName :title="title" />
 ```
-Welche dann im Child mittels ```props``` entgegen genommen werden können
+Welche dann im Child mittels ```props``` entgegen genommen werden...
 ```js
 export default {
   name: "ComponentName",
   props: ["title"],
 };
 ```
-und dann wie folgt verwendet werden können
+...und dann verwendet werden können.
 ```html
 <template>
   <div>
@@ -123,24 +123,27 @@ und dann wie folgt verwendet werden können
 </template>
 
 ```
+**ACHTUNG: ```props``` sind read-only!**
 
 ## Daten an Eltern-Component übergeben (emits)
 Wenn Daten an eine Eltern-Componten übergeben werden müssen, muss dies mit Hilfe eines Events geschehen.
+Die Kind-Component löst ein Event aus, auf welches das Eltern-Component horcht und dann dessen Daten (Payload) auslesen kann.
 
 Zunächst wird ein Event ausgelöst (z.B ein Click-Event)
 ```html
  <button @click="submitAnything()">Click Me!</button>
 ```
-Danach muss in den ```methods``` die entsprechende Methode definiert und mittels der Funktion ```$emit(event-name,datenObjekt)``` übergeben werden. 
+Danach muss in den ```methods``` die entsprechende Methode definiert und mittels der Funktion ```$emit(event-name,datenObjekt)``` an die Eltern-Component übergeben (emittet) werden.
 ```js
   submitAnything() {
     // Custom-Event. Empfohlen wird kebab-case Schreibweise
-    this.$emit("new-event", {
-      data: this.data,
-    });
+
+    // arg1: Event-Name
+    // arg2: Payload (beliebig viele Argumente möglich)
+    this.$emit("new-event", 1);
   },
 ```
-Unter dem ```emits```-Key muss dann in den Optionen das Cutom Event definiert werden.
+In den ```emits```-Optionen muss nun das Event, auf welches gelauscht werden soll, angegeben werden.
 ```js
 // kurze Schreibweise
 emits: ["new-event"]
@@ -157,16 +160,16 @@ emits: {
   };
 }
 ```
-
-Im Eltern-Objekt kann dann auf die Daten bzw. das Custom-Event mittels Event-Listener zugegriffen werden.
+Die Eltern-Component kann mittels Auslösen des Events dann auf den Payload zugreifen, welcher sich im Event-Objekt befindet.
 ```html
- <ComponentName @new-event="myFunction" />
+ <ComponentName @new-event="myFunction($event)" />
 ```
 ```js
 methods: {
-  myFunction(event) {
-    // in "event" befinden sich nun die Daten die vom Child übergeben wurden.
-    console.log(event)
+  myFunction(data) {
+    // in "data" befinden sich nun die Daten die vom Child übergeben wurden.
+    // (in diesem Beispiel müsste die dann 1 sein)
+    console.log(data)
   }
 },
 ``` 
@@ -194,7 +197,7 @@ v-else-if="expression"
     display: none;
   }
 ```
-```v-bind:attribute``` bindet ein Attribut (z.B scr-Attribut beim ```<img>```) an die Daten.
+```v-bind:attribute``` bindet ein Attribut (z.B scr-Attribut beim ```<img>```) an die Daten.telefonbuch
 ```js
 v-bind:attribute="data"  
 :attribut   // Abkürzung
