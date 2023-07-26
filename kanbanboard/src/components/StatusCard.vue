@@ -2,6 +2,7 @@
   <div class="card" @drop="onDrop($event)" @dragover.prevent @dragenter.prevent>
     <div class="card-header text-center" :class="statusCard.titleClasses">
       <h4>{{ statusCard.title }}</h4>
+      <small>{{ tasksAmount }} Task(s)</small>
     </div>
     <div class="card-body">
       <TaskEntry
@@ -58,6 +59,10 @@ export default {
       }
       return "danger";
     },
+    tasksAmount() {
+      console.log(this.tasks)
+      return this.tasks.filter(task => task.status === this.statusCard.status).length;
+    }
   },
   methods: {
     newTask(task) {
