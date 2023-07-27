@@ -2,45 +2,27 @@
   <div class="container-fluid">
     <h1 class="text-center"><span>🕮</span> Telefonbuch</h1>
     <div class="container-fluid">
-      <div class="row bg-gray">
-        <div
-          class="col-md px-1"
-          v-bind:key="'input_' + header"
-          v-for="header in entriesHeader"
-        >
-          <label class="sr-only" v-bind:for="header"></label>
-          <input
-            tpye="text"
-            class="form-control d-inline my-1"
-            v-bind:id="header"
-            v-bind:placeholder="header"
-            v-model="newEntries[header]"
-          />
-        </div>
-        <div class="col-md px-1">
-          <button
-            role="button"
-            @click="addNewEntry"
-            class="btn btn-primary d-inline btn-add w-100 my-1"
-            :class="buttonIsActive"
-          >
-            Hinzufügen
-          </button>
-        </div>
-      </div>
+      <NewEntry
+        @new-entry="addNewEntry($event)"
+        :entriesHeader="entriesHeader"
+      />
     </div>
     <hr />
     <table class="table table-hover table-striped">
       <thead>
         <tr>
-          <th v-bind:key="header" v-for="header in entriesHeader">
-            {{ header }}
-          </th>
+          <EntryHeader
+            role="button"
+            v-bind:key="header"
+            v-for="header in entriesHeader"
+            :header="header"
+            @sort-by-field="sortByHeaderField($event)"
+          />
           <th style="width: 50px"></th>
         </tr>
       </thead>
       <tbody>
-        <EntryComponent
+        <BookEntry
           v-bind:key="entry.id"
           v-for="entry in entries"
           :entry="entry"
@@ -54,36 +36,25 @@
 <script>
 import { entries } from "./seed";
 
-import EntryComponent from "./components/EntryComponent.vue";
+import BookEntry from "./components/BookEntry.vue";
+import NewEntry from "./components/NewEntry.vue";
+import EntryHeader from "./components/EntryHeader.vue";
 
 export default {
   name: "App",
   components: {
-    EntryComponent,
+    BookEntry,
+    NewEntry,
+    EntryHeader,
   },
   data() {
     return {
       entries: entries,
-      entriesHeader: ["Name", "Adresse", "Telefon", "Mail"],
-      newEntries: {
-        Name: "",
-        Adresse: "",
-        Telefon: "",
-        Mail: "",
-      },
+      entriesHeader: [ "Name", "Adresse", "Telefon", "E-Mail"],
     };
   },
-  emits: ["delete-entry"],
-  computed: {
-    buttonIsActive() {
-      for (const key in this.newEntries) {
-        if (this.newEntries[key] === "") {
-          return ["disabled"];
-        }
-      }
-      return [""];
-    }
-  },
+  emits: ["delete-entry", "new-entry", "sort-by-field"],
+  computed: {},
   methods: {
     deleteEntry(entryId) {
       const entryIndex = this.entries.findIndex(
@@ -92,24 +63,49 @@ export default {
       this.entries.splice(entryIndex, 1);
 
       // setze die id's neu
-      let counter=1;
-      this.entries.forEach( (entry) => {
+      let counter = 1;
+      this.entries.forEach((entry) => {
         entry.id = counter;
         counter++;
       });
     },
-    addNewEntry() {
+    addNewEntry(newEntry) {
+      const newEntryObject = newEntry;
       this.entries.push({
         id: this.entries.length + 1,
-        name: this.newEntries.Name,
-        address: this.newEntries.Adresse,
-        phone: this.newEntries.Telefon,
-        email: this.newEntries.Mail,
+        name: newEntryObject.Name,
+        address: newEntryObject.Adresse,
+        phone: newEntryObject.Telefon,
+        email: newEntryObject["E-Mail"],
       });
+    },
+    sortByHeaderField(headerField) {
+      let sortByKey;
 
-      for (const key in this.newEntries) {
-        this.newEntries[key] = "";
+      switch (headerField) {
+        case "Name":
+          sortByKey = "name";
+          break;
+        case "Adresse":
+          sortByKey = "address";
+          break;
+        case "Telefon":
+          sortByKey = "phone";
+          break;
+        case "E-Mail":
+          sortByKey = "email";
+          break;
       }
+
+      this.entries = this.entries.sort((a, b) => {
+        if (a[sortByKey].toLowerCase() < b[sortByKey].toLowerCase()) {
+          return -1;
+        }
+        if (a[sortByKey].toLowerCase() > b[sortByKey].toLowerCase()) {
+          return 1;
+        }
+        return 0;
+      });
     },
   },
 };

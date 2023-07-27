@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  name: "EntryComponent",
+  name: "BookEntry",
   props: ["entry"],
   methods: {
     emitEntryId() {
