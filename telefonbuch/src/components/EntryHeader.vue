@@ -11,7 +11,7 @@ export default {
   methods: {
     emitHeaderFiled() {
       const sortASC = !this.sortASC;
-
+      
       this.$emit("sort-by-field", {
         header: this.header,
         sortASC: sortASC,
@@ -29,7 +29,6 @@ export default {
       if (this.sortBy === this.header) {
         classes.push("sort-active");
       }
-      console.log(classes)
       return classes;
     },
   },

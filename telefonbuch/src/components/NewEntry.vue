@@ -1,5 +1,6 @@
 <template>
   <div class="row bg-gray">
+    <h3>Neuer Eintrag?</h3>
     <div
       class="col-md px-1"
       v-bind:key="'input_' + header"
@@ -7,7 +8,7 @@
     >
       <label class="sr-only" v-bind:for="header"></label>
       <input
-        tpye="text"
+        type="text"
         class="form-control d-inline my-1"
         v-bind:id="header"
         v-bind:placeholder="header"

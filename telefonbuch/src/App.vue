@@ -10,7 +10,7 @@
     <hr />
     <table class="table table-hover table-striped">
       <thead>
-        <tr>
+        <tr class="border">
           <EntryHeader
             role="button"
             v-bind:key="header"
@@ -24,6 +24,10 @@
         </tr>
       </thead>
       <tbody>
+        <BookFilter
+          :entriesHeader="entriesHeader"
+          @set-filter="setFilter($event)"
+        />
         <BookEntry
           v-bind:key="entry.id"
           v-for="entry in sortedEntries"
@@ -41,6 +45,7 @@ import { entries } from "./seed";
 import BookEntry from "./components/BookEntry.vue";
 import NewEntry from "./components/NewEntry.vue";
 import EntryHeader from "./components/EntryHeader.vue";
+import BookFilter from "./components/BookFilter.vue";
 
 export default {
   name: "App",
@@ -48,35 +53,44 @@ export default {
     BookEntry,
     NewEntry,
     EntryHeader,
+    BookFilter,
   },
   data() {
     return {
       entries: entries,
       entriesHeader: ["Name", "Adresse", "Telefon", "E-Mail"],
+      keyHeaderMap: {
+        Name: "name",
+        Adresse: "address",
+        Telefon: "phone",
+        "E-mail": "email",
+      },
       sortBy: "Name",
       sortASC: true,
+      filterActive: false,
+      filterEntry: [],
     };
   },
   emits: ["delete-entry", "new-entry", "sort-by-field"],
   computed: {
     sortedEntries() {
       let sortByKey;
-      const entries = this.entries;
+      let entries = this.entries;
 
-      switch (this.sortBy) {
-        case "Name":
-          sortByKey = "name";
-          break;
-        case "Adresse":
-          sortByKey = "address";
-          break;
-        case "Telefon":
-          sortByKey = "phone";
-          break;
-        case "E-Mail":
-          sortByKey = "email";
-          break;
+      if (this.filterActive) {
+        entries = entries.filter((entry) => {
+          if (
+            entry.name.indexOf(this.filterEntry.Name) >= 0 &&
+            entry.address.indexOf(this.filterEntry.Adresse) >= 0 &&
+            entry.phone.indexOf(this.filterEntry.Telefon) >= 0 &&
+            entry.email.indexOf(this.filterEntry["E-Mail"]) >= 0
+          ) {
+            return true;
+          }
+        });
       }
+
+      sortByKey = this.keyHeaderMap[this.sortBy]
 
       if (this.sortASC) {
         return entries.sort((a, b) => {
@@ -130,6 +144,15 @@ export default {
         this.sortASC = headerField.sortASC;
       }
       this.sortBy = headerField.header;
+    },
+    setFilter(filterObj) {
+      this.filterEntry = filterObj;
+      this.filterActive = false;
+      for (const key in filterObj) {
+        if (filterObj[key] !== "") {
+          this.filterActive = true;
+        }
+      }
     },
   },
 };
