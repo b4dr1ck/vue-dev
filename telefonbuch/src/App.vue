@@ -16,6 +16,8 @@
             v-bind:key="header"
             v-for="header in entriesHeader"
             :header="header"
+            :sortBy="sortBy"
+            :sortASC="sortASC"
             @sort-by-field="sortByHeaderField($event)"
           />
           <th style="width: 50px"></th>
@@ -24,7 +26,7 @@
       <tbody>
         <BookEntry
           v-bind:key="entry.id"
-          v-for="entry in entries"
+          v-for="entry in sortedEntries"
           :entry="entry"
           @delete-entry="deleteEntry($event)"
         />
@@ -50,11 +52,55 @@ export default {
   data() {
     return {
       entries: entries,
-      entriesHeader: [ "Name", "Adresse", "Telefon", "E-Mail"],
+      entriesHeader: ["Name", "Adresse", "Telefon", "E-Mail"],
+      sortBy: "Name",
+      sortASC: true,
     };
   },
   emits: ["delete-entry", "new-entry", "sort-by-field"],
-  computed: {},
+  computed: {
+    sortedEntries() {
+      let sortByKey;
+      const entries = this.entries;
+
+      switch (this.sortBy) {
+        case "Name":
+          sortByKey = "name";
+          break;
+        case "Adresse":
+          sortByKey = "address";
+          break;
+        case "Telefon":
+          sortByKey = "phone";
+          break;
+        case "E-Mail":
+          sortByKey = "email";
+          break;
+      }
+
+      if (this.sortASC) {
+        return entries.sort((a, b) => {
+          if (a[sortByKey].toLowerCase() < b[sortByKey].toLowerCase()) {
+            return -1;
+          }
+          if (a[sortByKey].toLowerCase() > b[sortByKey].toLowerCase()) {
+            return 1;
+          }
+          return 0;
+        });
+      }
+
+      return entries.sort((a, b) => {
+        if (a[sortByKey].toLowerCase() > b[sortByKey].toLowerCase()) {
+          return -1;
+        }
+        if (a[sortByKey].toLowerCase() < b[sortByKey].toLowerCase()) {
+          return 1;
+        }
+        return 0;
+      });
+    },
+  },
   methods: {
     deleteEntry(entryId) {
       const entryIndex = this.entries.findIndex(
@@ -80,38 +126,16 @@ export default {
       });
     },
     sortByHeaderField(headerField) {
-      let sortByKey;
-
-      switch (headerField) {
-        case "Name":
-          sortByKey = "name";
-          break;
-        case "Adresse":
-          sortByKey = "address";
-          break;
-        case "Telefon":
-          sortByKey = "phone";
-          break;
-        case "E-Mail":
-          sortByKey = "email";
-          break;
+      if (this.sortBy === headerField.header) {
+        this.sortASC = headerField.sortASC;
       }
-
-      this.entries = this.entries.sort((a, b) => {
-        if (a[sortByKey].toLowerCase() < b[sortByKey].toLowerCase()) {
-          return -1;
-        }
-        if (a[sortByKey].toLowerCase() > b[sortByKey].toLowerCase()) {
-          return 1;
-        }
-        return 0;
-      });
+      this.sortBy = headerField.header;
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
 .bg-gray {
