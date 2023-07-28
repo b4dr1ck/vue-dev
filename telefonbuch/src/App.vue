@@ -63,7 +63,7 @@ export default {
         Name: "name",
         Adresse: "address",
         Telefon: "phone",
-        "E-mail": "email",
+        "E-Mail": "email",
       },
       sortBy: "Name",
       sortASC: true,
