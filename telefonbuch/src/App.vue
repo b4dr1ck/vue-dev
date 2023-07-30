@@ -8,6 +8,7 @@
       />
     </div>
     <hr />
+    <small>{{ sortedEntries.length }} Einträge</small>
     <table class="table table-hover table-striped">
       <thead>
         <tr class="border">
@@ -25,6 +26,7 @@
       </thead>
       <tbody>
         <BookFilter
+          v-if="showFilter"
           :entriesHeader="entriesHeader"
           @set-filter="setFilter($event)"
         />
@@ -67,6 +69,8 @@ export default {
       },
       sortBy: "Name",
       sortASC: true,
+      showFilter: true,
+      showFilterBtnText: "Filter ausblenden",
       filterActive: false,
       filterEntry: [],
     };
@@ -80,24 +84,32 @@ export default {
       if (this.filterActive) {
         entries = entries.filter((entry) => {
           if (
-            entry.name.indexOf(this.filterEntry.Name) >= 0 &&
-            entry.address.indexOf(this.filterEntry.Adresse) >= 0 &&
-            entry.phone.indexOf(this.filterEntry.Telefon) >= 0 &&
-            entry.email.indexOf(this.filterEntry["E-Mail"]) >= 0
+            entry.name
+              .toLowerCase()
+              .indexOf(this.filterEntry.Name.toLowerCase()) >= 0 &&
+            entry.address
+              .toLowerCase()
+              .indexOf(this.filterEntry.Adresse.toLowerCase()) >= 0 &&
+            entry.phone
+              .toLowerCase()
+              .indexOf(this.filterEntry.Telefon.toLowerCase()) >= 0 &&
+            entry.email
+              .toLowerCase()
+              .indexOf(this.filterEntry["E-Mail"].toLowerCase()) >= 0
           ) {
             return true;
           }
         });
       }
 
-      sortByKey = this.keyHeaderMap[this.sortBy]
+      sortByKey = this.keyHeaderMap[this.sortBy];
 
       if (this.sortASC) {
         return entries.sort((a, b) => {
-          if (a[sortByKey].toLowerCase() < b[sortByKey].toLowerCase()) {
+          if (a[sortByKey] < b[sortByKey]) {
             return -1;
           }
-          if (a[sortByKey].toLowerCase() > b[sortByKey].toLowerCase()) {
+          if (a[sortByKey] > b[sortByKey]) {
             return 1;
           }
           return 0;
@@ -105,10 +117,10 @@ export default {
       }
 
       return entries.sort((a, b) => {
-        if (a[sortByKey].toLowerCase() > b[sortByKey].toLowerCase()) {
+        if (a[sortByKey] > b[sortByKey]) {
           return -1;
         }
-        if (a[sortByKey].toLowerCase() < b[sortByKey].toLowerCase()) {
+        if (a[sortByKey] < b[sortByKey]) {
           return 1;
         }
         return 0;
@@ -116,6 +128,15 @@ export default {
     },
   },
   methods: {
+    triggerFilter() {
+      this.showFilter = !this.showFilter;
+      this.showFilterBtnText = this.showFilter
+        ? "Filter ausblenden"
+        : "Filter einblenden";
+    },
+    clearFilter() {
+      
+    },
     deleteEntry(entryId) {
       const entryIndex = this.entries.findIndex(
         (entry) => entry.id === entryId
