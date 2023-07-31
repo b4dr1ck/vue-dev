@@ -13,7 +13,7 @@
     <small
       ><i>{{ sortedEntries.length }} Einträge</i></small
     >
-    <table class="table table-hover table-striped">
+    <table class="table table-hover table-striped table-sm">
       <thead>
         <tr class="border">
           <EntryHeader

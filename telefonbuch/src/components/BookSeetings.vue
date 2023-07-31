@@ -1,18 +1,19 @@
 <template>
   <div>
-    <div class="p-2 mb-3 bg-gray">
-      <small><b>Einstellungen</b></small
-      ><br />
-      <button @click="emitNewEntryVisibility" class="d-inline col-md-3 btn btn-secondary">
-        {{ newEntryVisibilityText }}
-      </button>
-      <button @click="emitFilterVisibility" class="d-inline col-md-2 ms-2 btn btn-secondary">
-        {{ filterVisibilityText }}
-      </button>
-      <label class="m-2" for="checkbox_casesens">
-        <input @click="emitFilterCaseSens" v-model="filterCaseSens" type="checkbox" id="checkbox_casesens" />
-        Case-Sensitive
-      </label>
+    <div class="p-2 mb-3 bg-gray rounded">
+      <small><button @click="toggleSettings" class="btn btn-secondary me-2">👁</button><b>Einstellungen</b></small>
+      <div v-if="showSettings">
+        <button @click="emitNewEntryVisibility" class="d-inline col-md-3 me-2 btn btn-secondary">
+          {{ newEntryVisibilityText }}
+        </button>
+        <button @click="emitFilterVisibility" class="d-inline col-md-2 btn btn-secondary">
+          {{ filterVisibilityText }}
+        </button>
+        <label class="m-2" for="checkbox_casesens">
+          <input @click="emitFilterCaseSens" v-model="filterCaseSens" type="checkbox" id="checkbox_casesens" />
+          Case-Sensitive
+        </label>
+      </div>
     </div>
   </div>
 </template>
@@ -27,9 +28,13 @@ export default {
       newEntryVisibility: true,
       newEntryVisibilityText: '"Neuer Eintrag" ausblenden',
       filterCaseSens: true,
+      showSettings: true,
     };
   },
   methods: {
+    toggleSettings() {
+      this.showSettings = !this.showSettings;
+    },
     emitNewEntryVisibility() {
       if (this.newEntryVisibility) {
         this.newEntryVisibilityText = '"Neuer Eintrag" einblenden';
@@ -49,7 +54,7 @@ export default {
       }
 
       this.filterVisibility = !this.filterVisibility;
-      
+
       this.$emit("toggle-filter", this.filterVisibility);
     },
     emitFilterCaseSens() {

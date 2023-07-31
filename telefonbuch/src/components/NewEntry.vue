@@ -1,5 +1,5 @@
 <template>
-  <div class="row bg-gray">
+  <div class="row bg-gray rounded">
     <h3>Neuer Eintrag?</h3>
     <div
       class="col-md px-1"
