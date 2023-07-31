@@ -13,7 +13,7 @@
       {{ entry.email }}
     </td>
     <td class="text-right">
-      <button @click="emitEntryId()" class="btn btn-danger d-block m-auto">
+      <button title="Eintrag löschen" @click="emitEntryId()" class="btn btn-danger d-block m-auto">
         X
       </button>
     </td>

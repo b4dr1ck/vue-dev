@@ -1,11 +1,15 @@
 <template>
   <div class="container-fluid">
     <h1 class="text-center"><span>🕮</span> Telefonbuch</h1>
+    <BookSeetings
+      @hide-new-entry="toggleNewEntry($event)"
+      @filter-casesense="toggleCaseSens($event)"
+      @toggle-filter="toggleFilter($event)"
+    />
     <div class="container-fluid">
-      <NewEntry @new-entry="addNewEntry($event)" :entriesHeader="entriesHeader" />
+      <NewEntry v-if="showNewEntry" @new-entry="addNewEntry($event)" :entriesHeader="entriesHeader" />
     </div>
     <hr />
-    <BookSeetings @filter-casesense="toggleCaseSens($event)" @toggle-filter="toggleFilter($event)" />
     <small
       ><i>{{ sortedEntries.length }} Einträge</i></small
     >
@@ -68,12 +72,13 @@ export default {
       sortBy: "Name",
       sortASC: true,
       showFilter: true,
+      showNewEntry: true,
       filterActive: false,
       filterEntry: [],
       filterCaseSens: true,
     };
   },
-  emits: ["delete-entry", "new-entry", "sort-by-field", "toggle-filter", "filter-casesens"],
+  emits: ["delete-entry", "new-entry", "sort-by-field", "toggle-filter", "filter-casesens", "hide-new-entry"],
   computed: {
     sortedEntries() {
       let sortByKey;
@@ -131,6 +136,9 @@ export default {
   methods: {
     toggleCaseSens(casesens) {
       this.filterCaseSens = casesens;
+    },
+    toggleNewEntry(newEntry) {
+      this.showNewEntry = newEntry;
     },
     toggleFilter(filter) {
       this.showFilter = filter;

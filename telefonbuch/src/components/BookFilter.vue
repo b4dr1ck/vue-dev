@@ -10,7 +10,7 @@
         placeholder="..."
       />
     </td>
-    <td></td>
+    <td><button @click="clearFilter" title="Filter löschen" class="btn btn-secondary d-block m-auto">C</button></td>
   </tr>
 </template>
 
@@ -29,6 +29,11 @@ export default {
     };
   },
   methods: {
+    clearFilter() {
+      for (const key in this.filterEntry) {
+        this.filterEntry[key] = "";
+      }
+    },
     emitFilterText() {
       this.$emit("set-filter", this.filterEntry);
     },
