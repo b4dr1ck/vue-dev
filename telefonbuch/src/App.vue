@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <h1 class="text-center"><span>🕮</span> Telefonbuch</h1>
-    <BookSeetings
+    <BookSettings
       @hide-new-entry="toggleNewEntry($event)"
       @filter-casesense="toggleCaseSens($event)"
       @toggle-filter="toggleFilter($event)"
@@ -48,7 +48,7 @@ import BookEntry from "./components/BookEntry.vue";
 import NewEntry from "./components/NewEntry.vue";
 import EntryHeader from "./components/EntryHeader.vue";
 import BookFilter from "./components/BookFilter.vue";
-import BookSeetings from "./components/BookSeetings.vue";
+import BookSettings from "./components/BookSettings.vue";
 
 export default {
   name: "App",
@@ -57,7 +57,7 @@ export default {
     NewEntry,
     EntryHeader,
     BookFilter,
-    BookSeetings,
+    BookSettings,
   },
   data() {
     return {

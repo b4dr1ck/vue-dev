@@ -3,7 +3,7 @@
     <div class="p-2 mb-3 bg-gray rounded">
       <small><button @click="toggleSettings" class="btn btn-secondary me-2">👁</button><b>Einstellungen</b></small>
       <div v-if="showSettings">
-        <button @click="emitNewEntryVisibility" class="d-inline col-md-3 me-2 btn btn-secondary">
+        <button @click="emitNewEntryVisibility" class="d-inline col-md-2 me-2 btn btn-secondary">
           {{ newEntryVisibilityText }}
         </button>
         <button @click="emitFilterVisibility" class="d-inline col-md-2 btn btn-secondary">
