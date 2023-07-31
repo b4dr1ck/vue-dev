@@ -2,13 +2,13 @@
   <div class="container-fluid">
     <h1 class="text-center"><span>🕮</span> Telefonbuch</h1>
     <div class="container-fluid">
-      <NewEntry
-        @new-entry="addNewEntry($event)"
-        :entriesHeader="entriesHeader"
-      />
+      <NewEntry @new-entry="addNewEntry($event)" :entriesHeader="entriesHeader" />
     </div>
     <hr />
-    <small>{{ sortedEntries.length }} Einträge</small>
+    <BookSeetings @filter-casesense="toggleCaseSens($event)" @toggle-filter="toggleFilter($event)" />
+    <small
+      ><i>{{ sortedEntries.length }} Einträge</i></small
+    >
     <table class="table table-hover table-striped">
       <thead>
         <tr class="border">
@@ -25,11 +25,7 @@
         </tr>
       </thead>
       <tbody>
-        <BookFilter
-          v-if="showFilter"
-          :entriesHeader="entriesHeader"
-          @set-filter="setFilter($event)"
-        />
+        <BookFilter v-if="showFilter" :entriesHeader="entriesHeader" @set-filter="setFilter($event)" />
         <BookEntry
           v-bind:key="entry.id"
           v-for="entry in sortedEntries"
@@ -48,6 +44,7 @@ import BookEntry from "./components/BookEntry.vue";
 import NewEntry from "./components/NewEntry.vue";
 import EntryHeader from "./components/EntryHeader.vue";
 import BookFilter from "./components/BookFilter.vue";
+import BookSeetings from "./components/BookSeetings.vue";
 
 export default {
   name: "App",
@@ -56,6 +53,7 @@ export default {
     NewEntry,
     EntryHeader,
     BookFilter,
+    BookSeetings,
   },
   data() {
     return {
@@ -70,12 +68,12 @@ export default {
       sortBy: "Name",
       sortASC: true,
       showFilter: true,
-      showFilterBtnText: "Filter ausblenden",
       filterActive: false,
       filterEntry: [],
+      filterCaseSens: true,
     };
   },
-  emits: ["delete-entry", "new-entry", "sort-by-field"],
+  emits: ["delete-entry", "new-entry", "sort-by-field", "toggle-filter", "filter-casesens"],
   computed: {
     sortedEntries() {
       let sortByKey;
@@ -83,21 +81,24 @@ export default {
 
       if (this.filterActive) {
         entries = entries.filter((entry) => {
-          if (
-            entry.name
-              .toLowerCase()
-              .indexOf(this.filterEntry.Name.toLowerCase()) >= 0 &&
-            entry.address
-              .toLowerCase()
-              .indexOf(this.filterEntry.Adresse.toLowerCase()) >= 0 &&
-            entry.phone
-              .toLowerCase()
-              .indexOf(this.filterEntry.Telefon.toLowerCase()) >= 0 &&
-            entry.email
-              .toLowerCase()
-              .indexOf(this.filterEntry["E-Mail"].toLowerCase()) >= 0
-          ) {
-            return true;
+          if (!this.filterCaseSens) {
+            if (
+              entry.name.toLowerCase().indexOf(this.filterEntry.Name.toLowerCase()) >= 0 &&
+              entry.address.toLowerCase().indexOf(this.filterEntry.Adresse.toLowerCase()) >= 0 &&
+              entry.phone.toLowerCase().indexOf(this.filterEntry.Telefon.toLowerCase()) >= 0 &&
+              entry.email.toLowerCase().indexOf(this.filterEntry["E-Mail"].toLowerCase()) >= 0
+            ) {
+              return true;
+            }
+          } else {
+            if (
+              entry.name.indexOf(this.filterEntry.Name) >= 0 &&
+              entry.address.indexOf(this.filterEntry.Adresse) >= 0 &&
+              entry.phone.indexOf(this.filterEntry.Telefon) >= 0 &&
+              entry.email.indexOf(this.filterEntry["E-Mail"]) >= 0
+            ) {
+              return true;
+            }
           }
         });
       }
@@ -128,19 +129,14 @@ export default {
     },
   },
   methods: {
-    triggerFilter() {
-      this.showFilter = !this.showFilter;
-      this.showFilterBtnText = this.showFilter
-        ? "Filter ausblenden"
-        : "Filter einblenden";
+    toggleCaseSens(casesens) {
+      this.filterCaseSens = casesens;
     },
-    clearFilter() {
-      
+    toggleFilter(filter) {
+      this.showFilter = filter;
     },
     deleteEntry(entryId) {
-      const entryIndex = this.entries.findIndex(
-        (entry) => entry.id === entryId
-      );
+      const entryIndex = this.entries.findIndex((entry) => entry.id === entryId);
       this.entries.splice(entryIndex, 1);
 
       // setze die id's neu
@@ -179,7 +175,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
 .bg-gray {

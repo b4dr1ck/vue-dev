@@ -1,5 +1,5 @@
 <template>
-  <tr>
+  <tr id="filter">
     <td v-bind:key="'filter_' + header" v-for="header in entriesHeader">
       <input
         :id="header"
@@ -10,6 +10,7 @@
         placeholder="..."
       />
     </td>
+    <td></td>
   </tr>
 </template>
 
