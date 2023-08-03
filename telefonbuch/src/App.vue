@@ -2,7 +2,6 @@
   <div class="container-fluid">
     <h1 class="text-center"><span>🕮</span> Telefonbuch</h1>
     <BookSettings
-      @hide-new-entry="toggleNewEntry($event)"
       @filter-casesense="toggleCaseSens($event)"
       @toggle-filter="toggleFilter($event)"
     />
@@ -110,35 +109,26 @@ export default {
 
       sortByKey = this.keyHeaderMap[this.sortBy];
 
-      if (this.sortASC) {
-        return entries.sort((a, b) => {
-          if (a[sortByKey] < b[sortByKey]) {
-            return -1;
-          }
-          if (a[sortByKey] > b[sortByKey]) {
-            return 1;
-          }
-          return 0;
-        });
-      }
-
-      return entries.sort((a, b) => {
-        if (a[sortByKey] > b[sortByKey]) {
+      entries = entries.sort((a, b) => {
+        if (a[sortByKey] < b[sortByKey]) {
           return -1;
         }
-        if (a[sortByKey] < b[sortByKey]) {
+        if (a[sortByKey] > b[sortByKey]) {
           return 1;
         }
         return 0;
       });
+
+      if (!this.sortASC) {
+        return entries.reverse()
+      }
+      return entries
+
     },
   },
   methods: {
     toggleCaseSens(casesens) {
       this.filterCaseSens = casesens;
-    },
-    toggleNewEntry(newEntry) {
-      this.showNewEntry = newEntry;
     },
     toggleFilter(filter) {
       this.showFilter = filter;

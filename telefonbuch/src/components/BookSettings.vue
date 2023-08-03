@@ -1,11 +1,8 @@
 <template>
   <div>
     <div class="p-2 mb-3 bg-gray rounded">
-      <small><button @click="toggleSettings" class="btn btn-secondary me-2">👁</button><b>Einstellungen</b></small>
+      <p role="button" @click="toggleSettings" class="fs-5 mb-0">Einstellungen</p>
       <div v-if="showSettings">
-        <button @click="emitNewEntryVisibility" class="d-inline col-md-2 me-2 btn btn-secondary">
-          {{ newEntryVisibilityText }}
-        </button>
         <button @click="emitFilterVisibility" class="d-inline col-md-2 btn btn-secondary">
           {{ filterVisibilityText }}
         </button>
@@ -25,8 +22,6 @@ export default {
     return {
       filterVisibility: true,
       filterVisibilityText: "Filter ausblenden",
-      newEntryVisibility: true,
-      newEntryVisibilityText: '"Neuer Eintrag" ausblenden',
       filterCaseSens: true,
       showSettings: true,
     };
@@ -34,17 +29,6 @@ export default {
   methods: {
     toggleSettings() {
       this.showSettings = !this.showSettings;
-    },
-    emitNewEntryVisibility() {
-      if (this.newEntryVisibility) {
-        this.newEntryVisibilityText = '"Neuer Eintrag" einblenden';
-      } else {
-        this.newEntryVisibilityText = '"Neuer Eintrag" ausblenden';
-      }
-
-      this.newEntryVisibility = !this.newEntryVisibility;
-
-      this.$emit("hide-new-entry", this.newEntryVisibility);
     },
     emitFilterVisibility() {
       if (this.filterVisibility) {
