@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="p-2 mb-3 bg-gray rounded">
+    <div class="p-2 mb-2 bg-secondary-subtle rounded">
       <p role="button" @click="toggleSettings" class="fs-5 mb-0">Einstellungen</p>
       <div v-if="showSettings">
         <button @click="emitFilterVisibility" class="d-inline col-md-2 btn btn-secondary">

@@ -1,13 +1,9 @@
 <template>
   <div class="container-fluid">
     <h1 class="text-center"><span>🕮</span> Telefonbuch</h1>
-    <BookSettings
-      @filter-casesense="toggleCaseSens($event)"
-      @toggle-filter="toggleFilter($event)"
-    />
-    <div class="container-fluid">
-      <NewEntry v-if="showNewEntry" @new-entry="addNewEntry($event)" :entriesHeader="entriesHeader" />
-    </div>
+    <BookSettings @filter-casesense="toggleCaseSens($event)" @toggle-filter="toggleFilter($event)" />
+
+    <NewEntry v-if="showNewEntry" @new-entry="addNewEntry($event)" :entriesHeader="entriesHeader" />
     <hr />
     <small
       ><i>{{ sortedEntries.length }} Einträge</i></small
@@ -120,10 +116,9 @@ export default {
       });
 
       if (!this.sortASC) {
-        return entries.reverse()
+        return entries.reverse();
       }
-      return entries
-
+      return entries;
     },
   },
   methods: {
@@ -175,10 +170,6 @@ export default {
 
 <style>
 @import "~bootstrap/dist/css/bootstrap.min.css";
-
-.bg-gray {
-  background-color: lightgray;
-}
 
 table {
   table-layout: fixed;
