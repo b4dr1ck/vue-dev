@@ -131,18 +131,11 @@ export default {
     deleteEntry(entryId) {
       const entryIndex = this.entries.findIndex((entry) => entry.id === entryId);
       this.entries.splice(entryIndex, 1);
-
-      // setze die id's neu
-      let counter = 1;
-      this.entries.forEach((entry) => {
-        entry.id = counter;
-        counter++;
-      });
     },
     addNewEntry(newEntry) {
       const newEntryObject = newEntry;
       this.entries.push({
-        id: this.entries.length + 1,
+        id: Date.now(),
         name: newEntryObject.Name,
         address: newEntryObject.Adresse,
         phone: newEntryObject.Telefon,
