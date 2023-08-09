@@ -3,6 +3,7 @@
     <TodoOptions @delete-todo="deleteTodo" @edit-todo="editTodo" />
     <template v-if="!edit">
       <div class="card-body">
+        <!--p>{{ id }}</p-->
         <h5 class="card-title">{{ header }}</h5>
         <p class="card-text">{{ text }}</p>
       </div>

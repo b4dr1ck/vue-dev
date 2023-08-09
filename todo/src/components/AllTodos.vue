@@ -40,7 +40,7 @@ export default {
   methods: {
     newTodo() {
       this.todos.unshift({
-        id: this.todos.length,
+        id: Math.random(),
         header: "",
         text: "",
         deadline: "",
@@ -58,12 +58,6 @@ export default {
       const todoId = id;
       const todoIndex = this.todos.findIndex((todo) => todo.id === todoId);
       this.todos.splice(todoIndex, 1);
-
-      let counter = 0;
-      this.todos.map((todo) => {
-        todo.id = counter;
-        counter++;
-      });
     },
     cancelEdit(id) {
       const todoId = id;
