@@ -3,10 +3,9 @@ export const todos = [
     id: 0,
     header: "Header",
     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    deadline: "02.01.2023 00:00",
+    deadline: "2023-01-01 00:00",
     color: 0,
     edit: false,
-    ctime: "01.01.2023 00:00",
   },
   {
     id: 1,
@@ -15,7 +14,6 @@ export const todos = [
     deadline: "",
     color: 1,
     edit: false,
-    ctime: "01.01.2023 00:00",
   },
   {
     id: 2,
@@ -24,6 +22,5 @@ export const todos = [
     deadline: "",
     color: 4,
     edit: false,
-    ctime: "01.01.2023 00:00",
   },
 ];

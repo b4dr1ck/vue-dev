@@ -13,7 +13,6 @@
       :deadline="todo.deadline"
       :color="todo.color"
       :edit="todo.edit"
-      :ctime="todo.ctime"
       :key="todo.id"
       v-for="todo in todos"
     />
@@ -40,13 +39,12 @@ export default {
   methods: {
     newTodo() {
       this.todos.unshift({
-        id: Math.random(),
+        id: Date.now(),
         header: "",
         text: "",
         deadline: "",
         color: 0,
         edit: true,
-        ctime: "",
       });
     },
     editTodo(id) {

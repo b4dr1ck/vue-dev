@@ -18,4 +18,8 @@ export default {
 <style>
 @import "~bootstrap/dist/css/bootstrap.min.css";
 @import "~bootstrap-icons/font/bootstrap-icons.css";
+
+body {
+  background-color: rgb(50,50,50);
+}
 </style>
