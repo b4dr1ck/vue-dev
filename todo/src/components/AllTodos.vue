@@ -14,7 +14,7 @@
       :color="todo.color"
       :edit="todo.edit"
       :key="todo.id"
-      v-for="todo in todos"
+      v-for="todo in filteredTodos"
     />
   </div>
 </template>
@@ -31,10 +31,24 @@ export default {
     NewTodo,
     TodoEntry,
   },
+  props: {
+    searchText: String,
+  },
   data() {
     return {
       todos: todos,
     };
+  },
+  computed: {
+    filteredTodos() {
+      if (this.searchText === "") {
+        return this.todos;
+      }
+
+      return this.todos.filter((todo) => {
+        return todo.header.indexOf(this.searchText) >= 0 || todo.text.indexOf(this.searchText) >= 0;
+      });
+    },
   },
   methods: {
     newTodo() {

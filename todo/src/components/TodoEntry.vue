@@ -5,7 +5,7 @@
       <div class="card-body">
         <!--p>{{ id }}</p-->
         <h5 class="card-title">{{ header }}</h5>
-        <p class="card-text">{{ text }}</p>
+        <p v-html="text" class="card-text"></p>
       </div>
       <div v-if="deadline" class="row">
         <i title="Deadline" :class="deadLineOverdue" class="mb-1 bi bi-alarm col"> &nbsp; {{ deadline }}</i>
@@ -70,7 +70,7 @@ export default {
       const currentDate = Date.now();
       const deadLineDate = new Date(this.deadline);
       if (currentDate > deadLineDate) {
-        return ["text-danger","bg-danger-subtle"];
+        return ["text-danger", "bg-danger-subtle"];
       }
       return [];
     },
