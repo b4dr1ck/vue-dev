@@ -39,6 +39,12 @@ export default {
       todos: todos,
     };
   },
+  mounted() {
+    const storage = localStorage.getItem("todos");
+    if (storage) {
+      this.todos = JSON.parse(storage);
+    }
+  },
   computed: {
     filteredTodos() {
       if (this.searchText === "") {
@@ -60,6 +66,8 @@ export default {
         color: 0,
         edit: true,
       });
+
+      localStorage.setItem("todos", JSON.stringify(this.todos));
     },
     editTodo(id) {
       const todoId = id;
@@ -70,6 +78,8 @@ export default {
       const todoId = id;
       const todoIndex = this.todos.findIndex((todo) => todo.id === todoId);
       this.todos.splice(todoIndex, 1);
+
+      localStorage.setItem("todos", JSON.stringify(this.todos));
     },
     cancelEdit(id) {
       const todoId = id;
@@ -82,6 +92,8 @@ export default {
       todoObj.text = commitData.text;
       todoObj.deadline = commitData.deadline;
       todoObj.edit = false;
+
+      localStorage.setItem("todos", JSON.stringify(this.todos));
     },
     changeColor(colorData) {
       const todoObj = this.todos.find((todo) => todo.id === colorData.id);

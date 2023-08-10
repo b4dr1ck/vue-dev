@@ -10,7 +10,7 @@ export const todos = [
   {
     id: 1,
     header: "Foo",
-    text: "Foo sagt 'Hallo'",
+    text: "Foo sagt Hallo",
     deadline: "",
     color: 1,
     edit: false,
