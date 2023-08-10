@@ -1,11 +1,11 @@
 <template>
   <div style="width: 19rem; min-height: 19rem" class="card m-1 border-2" :class="todoColor">
-    <TodoOptions @delete-todo="deleteTodo" @edit-todo="editTodo" />
+    <TodoOptions @delete-todo="deleteTodo" @edit-todo="editTodo" @done-todo="doneTodo" />
     <template v-if="!edit">
       <div class="card-body">
         <!--p>{{ id }}</p-->
-        <h5 class="card-title">{{ header }}</h5>
-        <p v-html="text" class="card-text"></p>
+        <h5 :class="doneTextStyle" class="card-title">{{ header }}</h5>
+        <p :class="doneTextStyle" class="card-text">{{ text }}</p>
       </div>
       <div v-if="deadline" class="row">
         <i title="Deadline" :class="deadLineOverdue" class="mb-1 bi bi-alarm col"> &nbsp; {{ deadline }}</i>
@@ -51,9 +51,9 @@ export default {
     deadline: String,
     color: Number,
     edit: Boolean,
-    ctime: String,
+    done: Boolean,
   },
-  emits: ["edit-todo", "delete-todo", "cancel-edit", "commit-edit", "change-color"],
+  emits: ["edit-todo", "delete-todo", "cancel-edit", "commit-edit", "change-color", "done-todo"],
   data() {
     return {
       colors: ["light", "primary", "secondary", "success", "danger", "warning", "info"],
@@ -63,6 +63,13 @@ export default {
     };
   },
   computed: {
+    doneTextStyle() {
+      if (this.done) {
+        return ["text-decoration-line-through"];
+      }
+      return [];
+    },
+
     todoColor() {
       return ["text-bg-" + this.colors[this.color]];
     },
@@ -81,6 +88,9 @@ export default {
     },
     deleteTodo() {
       this.$emit("delete-todo", this.id);
+    },
+    doneTodo() {
+      this.$emit("done-todo", this.id);
     },
     cancelEdit() {
       if (!this.textInput || !this.headerInput) {

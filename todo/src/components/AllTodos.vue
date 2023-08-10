@@ -7,12 +7,14 @@
       @cancel-edit="cancelEdit($event)"
       @commit-edit="commitEdit($event)"
       @change-color="changeColor($event)"
+      @done-todo="doneTodo($event)"
       :id="todo.id"
       :header="todo.header"
       :text="todo.text"
       :deadline="todo.deadline"
       :color="todo.color"
       :edit="todo.edit"
+      :done="todo.done"
       :key="todo.id"
       v-for="todo in filteredTodos"
     />
@@ -57,6 +59,11 @@ export default {
     },
   },
   methods: {
+    doneTodo(id) {
+      const todoId = id;
+      const todoObj = this.todos.find((todo) => todo.id === todoId);
+      todoObj.done = !todoObj.done;
+    },
     newTodo() {
       this.todos.unshift({
         id: Date.now(),

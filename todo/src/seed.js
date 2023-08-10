@@ -6,6 +6,7 @@ export const todos = [
     deadline: "2023-01-01 00:00",
     color: 0,
     edit: false,
+    done: true,
   },
   {
     id: 1,
@@ -14,6 +15,7 @@ export const todos = [
     deadline: "",
     color: 1,
     edit: false,
+    done: false,
   },
   {
     id: 2,
@@ -22,5 +24,6 @@ export const todos = [
     deadline: "",
     color: 4,
     edit: false,
+    done: false,
   },
 ];
