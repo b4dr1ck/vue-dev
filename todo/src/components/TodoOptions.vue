@@ -1,8 +1,8 @@
 <template>
   <div class="row justify-content-end me-1">
-    <i title="Done" @click="doneTodo" role="button" class="bi bi-check2-all col col-lg-1"></i>
-    <i title="Edit" @click="editTodo" role="button" class="bi bi-pencil-square col col-lg-1"></i>
-    <i title="Delete" @click="deleteTodo" role="button" class="bi bi-trash col col-lg-1"></i>
+    <i title="Done" @click="doneTodo" role="button" class="bi bi-check2-all col-1"></i>
+    <i title="Edit" @click="editTodo" role="button" class="bi bi-pencil-square col-1"></i>
+    <i title="Delete" @click="deleteTodo" role="button" class="bi bi-trash col-1"></i>
   </div>
 </template>
 
