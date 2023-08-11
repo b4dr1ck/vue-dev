@@ -15,19 +15,41 @@
         </div>
       </div>
     </template>
-    <template #rightCol><RegisterAuth /></template>
+    <template #rightCol
+      ><transition
+        enter-active-class="animate__animated animate__bounceInRight"
+        leave-active-class="animate__animated animate__bounceOutRight"
+        mode="out-in"
+      >
+        <component
+          :is="componentName"
+          @change-component="changeComponent"
+        ></component></transition
+    ></template>
   </TheTwoColumnsLayout>
 </template>
 
 <script>
 import TheTwoColumnsLayout from "@/components/layouts/TheTwoColumnsLayout";
 import RegisterAuth from "@/components/auth/RegisterAuth";
+import LogIn from "@/components/auth/LogIn.vue";
 
 export default {
   name: "HomePage",
   components: {
     TheTwoColumnsLayout,
     RegisterAuth,
+    LogIn,
+  },
+  data() {
+    return {
+      componentName: "register-auth",
+    };
+  },
+  methods: {
+    changeComponent(payload) {
+      this.componentName = payload.componentName;
+    },
   },
 };
 </script>
