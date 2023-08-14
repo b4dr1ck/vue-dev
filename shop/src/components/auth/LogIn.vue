@@ -7,49 +7,34 @@
       <h2>Jetzt anmelden</h2>
       <p>
         oder
-        <a
-          class="text-vue2"
-          role="button"
-          @click="changeComponent('register-auth')"
+        <a class="text-vue2" role="button" @click="changeComponent('register-auth')"
           >erstellen Sie ein Konto</a
         >
       </p>
     </div>
+    <div class="alert alert-danger col-md-8 offset-2" v-if="error">{{ errorDisplayText }}</div>
     <Form @submit="submitData" :validation-schema="schema" v-slot="{ errors }">
       <div class="form-row">
         <div class="form-group col-md-8 offset-2">
           <label for="email"><strong>E-Mail-Adresse</strong></label>
-          <Field
-            as="input"
-            name="email"
-            type="email"
-            class="form-control"
-            id="email"
-          />
-          <small class="text-danger" v.if="errors.email">{{
-            errors.email
-          }}</small>
+          <Field as="input" name="email" type="email" class="form-control" id="email" />
+          <small class="text-danger" v.if="errors.email">{{ errors.email }}</small>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-8 offset-2">
           <label for="password"><strong>Passwort</strong></label>
-          <Field
-            as="input"
-            name="password"
-            type="password"
-            class="form-control"
-            id="password"
-          />
-          <small class="text-danger" v.if="errors.password">{{
-            errors.password
-          }}</small>
+          <Field as="input" name="password" type="password" class="form-control" id="password" />
+          <small class="text-danger" v.if="errors.password">{{ errors.password }}</small>
         </div>
       </div>
       <div class="form-row mt-3">
         <div class="form-group col-md-8 offset-2">
           <div class="d-grid">
-            <button class="btn bg-vue">Einloggen</button>
+            <button class="btn bg-vue">
+              <span v-if="!isLoading">Einloggen</span>
+              <span v-else class="spinner-border spinner-border-sm"></span>
+            </button>
           </div>
         </div>
       </div>
@@ -60,6 +45,8 @@
 <script>
 import { Form, Field } from "vee-validate";
 import * as yup from "yup";
+import axios from "axios";
+import { FIREBASE_API_KEY } from "../../config/firebase";
 
 export default {
   name: "LogIn",
@@ -87,14 +74,48 @@ export default {
         .required("Ein Passwort wird benötigt")
         .min(6, "Das Passwort muss mindestens sechs Zeichen lang sein"),
     });
-    return { schema };
+    return { schema, error: "", isLoading: false };
   },
   methods: {
-    submitData(values) {
-      console.log(values);
-    },
     changeComponent(componentName) {
       this.$emit("change-component", { componentName });
+    },
+    submitData(values) {
+      this.isLoading = true;
+      this.error = "";
+      const signinDO = {
+        email: values.email,
+        password: values.password,
+        returnSecureToken: true,
+      };
+
+      axios
+        .post(
+          `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`,
+          signinDO
+        )
+        .then((response) => {
+          console.log(response);
+          this.isLoading = false;
+        })
+        .catch((error) => {
+          //console.log({ error });
+          this.error = error.response.data.error.message;
+          this.isLoading = false;
+        });
+    },
+  },
+  computed: {
+    errorDisplayText() {
+      if (this.error) {
+        if (this.error.includes("INVALID_PASSWORD")) {
+          return "Das Passwort ist falsch.";
+        } else if (this.error.includes("EMAIL_NOT_FOUND")) {
+          return "E-Mail Adresse konnte nicht gefunden werden";
+        }
+        return "Unbekannter Fehler.";
+      }
+      return "";
     },
   },
 };

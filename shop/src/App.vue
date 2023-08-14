@@ -1,9 +1,5 @@
 <template>
-  <HomePage
-    :leftColumnClass="'col-md-8 bg-vue'"
-    :rightColumnClass="'col-md-4'"
-    :fullSize="true"
-  />
+  <HomePage/>
 </template>
 
 <script>
