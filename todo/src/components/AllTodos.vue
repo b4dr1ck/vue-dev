@@ -2,12 +2,15 @@
   <div class="row">
     <NewTodo @click="newTodo" />
     <TodoEntry
+      draggable="true"
+      @dragstart="startDrag($event, todo)"
       @edit-todo="editTodo($event)"
       @delete-todo="deleteTodo($event)"
       @cancel-edit="cancelEdit($event)"
       @commit-edit="commitEdit($event)"
       @change-color="changeColor($event)"
       @done-todo="doneTodo($event)"
+      @on-drop-id="onDrop($event)"
       :id="todo.id"
       :header="todo.header"
       :text="todo.text"
@@ -59,6 +62,21 @@ export default {
     },
   },
   methods: {
+    onDrop(payload) {
+      const array_move = (arr, init, target) => {
+        [arr[init], arr[target]] = [arr[target], arr[init]];
+      };
+
+      const dragTodo = this.todos.findIndex((todo) => todo.id === payload.drag);
+      const dropTodo = this.todos.findIndex((todo) => todo.id === payload.drop);
+
+      array_move(this.todos, dragTodo, dropTodo);
+    },
+    startDrag(event, todo) {
+      event.dataTransfer.dropEffect = "move";
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.setData("todoId", todo.id);
+    },
     doneTodo(id) {
       const todoId = id;
       const todoObj = this.todos.find((todo) => todo.id === todoId);
