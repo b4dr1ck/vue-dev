@@ -71,6 +71,8 @@ export default {
       const dropTodo = this.todos.findIndex((todo) => todo.id === payload.drop);
 
       array_move(this.todos, dragTodo, dropTodo);
+
+      localStorage.setItem("todos", JSON.stringify(this.todos));
     },
     startDrag(event, todo) {
       event.dataTransfer.dropEffect = "move";
