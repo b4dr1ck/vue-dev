@@ -7,7 +7,9 @@
       <h2>Jetzt Registrieren</h2>
       <p>
         oder
-        <a class="text-vue2" role="button" @click="changeComponent('log-in')">melden Sie sich mit Ihrem Konto an</a>
+        <a class="text-vue2" role="button" @click="changeComponent('log-in')"
+          >melden Sie sich mit Ihrem Konto an</a
+        >
       </p>
     </div>
     <div class="alert alert-danger col-md-8 offset-2" v-if="error">{{ errorDisplayText }}</div>
@@ -29,8 +31,16 @@
       <div class="form-row">
         <div class="form-group col-md-8 offset-2">
           <label for="confirmPassword"><strong>Passwort wiederholen</strong></label>
-          <Field as="input" name="confirmPassword" type="password" class="form-control" id="confirmPassword" />
-          <small class="text-danger" v.if="errors.confirmPassword">{{ errors.confirmPassword }}</small>
+          <Field
+            as="input"
+            name="confirmPassword"
+            type="password"
+            class="form-control"
+            id="confirmPassword"
+          />
+          <small class="text-danger" v.if="errors.confirmPassword">{{
+            errors.confirmPassword
+          }}</small>
         </div>
       </div>
       <div class="form-row mt-3">
@@ -50,8 +60,6 @@
 <script>
 import { Form, Field } from "vee-validate";
 import * as yup from "yup";
-import axios from "axios";
-import { FIREBASE_API_KEY } from "../../config/firebase";
 
 export default {
   name: "RegisterAuth",
@@ -69,7 +77,11 @@ export default {
   },
   data() {
     const schema = yup.object().shape({
-      email: yup.string().required("E-Mail Adresse wird benötigt!").trim().email("Keine gültige E-Mail Adresse"),
+      email: yup
+        .string()
+        .required("E-Mail Adresse wird benötigt!")
+        .trim()
+        .email("Keine gültige E-Mail Adresse"),
       password: yup
         .string()
         .required("Ein Passwort wird benötigt")
@@ -96,22 +108,18 @@ export default {
     submitData(values) {
       this.isLoading = true;
       this.error = "";
-      const signupDO = {
-        email: values.email,
-        password: values.password,
-        returnSecureToken: true,
-      };
-
-      axios
-        .post(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_API_KEY}`, signupDO)
-        .then((response) => {
-          console.log(response);
+      this.$store
+        .dispatch("signUp", {
+          email: values.email,
+          password: values.password,
+        })
+        .then(() => {
           this.isLoading = false;
+          console.log(this.$store.state)
           this.changeComponent("log-in");
         })
         .catch((error) => {
-          //console.log({ error });
-          this.error = error.response.data.error.message;
+          this.error = error.message;
           this.isLoading = false;
         });
     },
