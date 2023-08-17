@@ -3,6 +3,7 @@ node_modules
 /dist
 
 vcs
+deploy.sh
 
 # local env files
 .env.local
