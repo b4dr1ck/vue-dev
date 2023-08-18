@@ -107,7 +107,7 @@ const app = Vue.createApp({
 });
 
 // Globale Component
-app.component("SubmissionListItem", {
+app.component("submissionlistitem", {
   // Optionen
   props: ["submission"],
   methods: {
