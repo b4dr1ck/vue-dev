@@ -2,7 +2,6 @@
   <div class="row">
     <NewTodo @click="newTodo" />
     <TodoEntry
-      draggable="true"
       @dragstart="startDrag($event, todo)"
       @edit-todo="editTodo($event)"
       @delete-todo="deleteTodo($event)"

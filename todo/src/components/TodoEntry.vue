@@ -1,5 +1,10 @@
 <template>
-  <div style="width: 19rem; min-height: 19rem" class="card m-1 border-2" :class="todoColor">
+  <div
+    :draggable="isDraggable"
+    style="width: 19rem; min-height: 19rem"
+    class="card m-1 border-2"
+    :class="todoColor"
+  >
     <TodoOptions @delete-todo="deleteTodo" @edit-todo="editTodo" @done-todo="doneTodo" />
     <template v-if="!edit">
       <div @drop="onDrop($event, id)" @dragover.prevent @dragenter.prevent class="card-body">
@@ -93,6 +98,12 @@ export default {
     };
   },
   computed: {
+    isDraggable() {
+      if (this.edit) {
+        return false;
+      }
+      return true;
+    },
     doneTextStyle() {
       if (this.done) {
         return ["text-decoration-line-through"];
