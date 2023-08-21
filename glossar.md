@@ -497,6 +497,52 @@ methods: {
 }
 ```
 
+## Vue-Router
+
+Kann verwendet werden um Routen innerhalb einer Singel-Page-Applikation festlegen zu können. 
+
+Erstelle ein neues Vue-Router Objekt:
+
+```js
+import { createRouter, createWebHistory } from "vue-router";
+
+import HomePage from "@/pages/HomePage.vue";
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    { path: "/", component: HomePage }, // Default-Route für Homepage
+  ],
+});
+
+export default router;
+```
+
+Dieser kann dann global eingebunden werden.
+
+```js
+// main.js, sofern man mit vue-cli arbeitet
+import router from "./router";
+
+const app = createApp(App);
+app.use(store); // packages einbinden
+
+```
+Um eine definierte Route zu verwenden, nutzt man  ```<router-view>```
+
+```html
+<template>
+  <router-view></router-view>
+</template>
+````
+Man kann auch Links (vergleichbar mit ```<a>```) erstellen, mittels ```<router-link>```.
+
+Das ```to="path"``` Attribut gibt den Zielpfad an
+
+```html
+<router-link to="/about">About</router-link>
+```
+
 ## Vue-App erstellen mittels VUE-CLI
 Installieren von VUE-CLI 
 ```
