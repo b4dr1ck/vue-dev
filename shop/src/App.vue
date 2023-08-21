@@ -1,15 +1,14 @@
 <template>
-  <HomePage/>
+  <router-view></router-view>
 </template>
 
 <script>
-import HomePage from "./components/pages/HomePage";
-
 export default {
   name: "App",
-  components: {
-    HomePage,
-  },
+  created() {
+    this.$store.dispatch("autoSignIn");
+    console.log(this.$store);
+  }
 };
 </script>
 
@@ -24,7 +23,7 @@ export default {
 }
 
 .bg-vue2 {
-  background-clip: rgb(65, 184, 131);
+  background-color: rgb(65, 184, 131);
   color: white;
 }
 

@@ -54,7 +54,7 @@ export default {
   },
   emits: {
     "change-component": (payload) => {
-      if (payload.componentName !== "register") {
+      if (payload.componentName !== "register-auth") {
         return false;
       }
       return true;
@@ -89,7 +89,12 @@ export default {
         .then(() => {
           this.isLoading = false;
           console.log("Login erfolgreich!");
-          // this.changeComponent("log-in");
+          // Weiterleitung zur shop-page (vue-router)
+          //  Kurzschreibweise
+          // this.$router.push("/shop");
+          
+          //  Lange Schreibweise
+          this.$router.push({ path: "/shop" });
         })
         .catch((error) => {
           this.error = error.message;
