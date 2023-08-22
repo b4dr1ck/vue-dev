@@ -43,7 +43,7 @@ export default {
       todos: todos,
     };
   },
-  mounted() {
+  created() {
     const storage = localStorage.getItem("todos");
     if (storage) {
       this.todos = JSON.parse(storage);
