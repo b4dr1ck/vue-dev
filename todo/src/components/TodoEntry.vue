@@ -13,7 +13,7 @@
         <p :class="doneTextStyle" class="card-text">{{ text }}</p>
       </div>
       <div v-if="deadline" class="row">
-        <i title="Deadline" :class="deadLineOverdue" class="mb-1 bi bi-alarm col">
+        <i title="Deadline" :class="deadLineStyle" class="mb-1 bi bi-alarm col">
           &nbsp; {{ deadline }}</i
         >
       </div>
@@ -95,7 +95,27 @@ export default {
       textInput: this.text,
       headerInput: this.header,
       daedLineInput: this.deadline,
+      deadLineOverdue: false,
     };
+  },
+  watch: {
+    deadline: {
+      handler() {
+        const _this = this;
+        function timeout() {
+          const currentDate = Date.now();
+          const deadLineDate = new Date(_this.deadline);
+          if (currentDate > deadLineDate) {
+            _this.deadLineOverdue = true;
+          } else {
+            _this.deadLineOverdue = false;
+          }
+          setTimeout(timeout, 1000);
+        }
+        timeout();
+      },
+      immediate: true,
+    },
   },
   computed: {
     isDraggable() {
@@ -113,10 +133,8 @@ export default {
     todoColor() {
       return ["text-bg-" + this.colors[this.color]];
     },
-    deadLineOverdue() {
-      const currentDate = Date.now();
-      const deadLineDate = new Date(this.deadline);
-      if (currentDate > deadLineDate) {
+    deadLineStyle() {
+      if (this.deadLineOverdue) {
         return ["text-danger", "bg-danger-subtle"];
       }
       return [];
