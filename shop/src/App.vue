@@ -7,7 +7,6 @@ export default {
   name: "App",
   created() {
     this.$store.dispatch("autoSignIn");
-    console.log(this.$store);
   }
 };
 </script>
