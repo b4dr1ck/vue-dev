@@ -561,7 +561,7 @@ In den Routes (```routes:```) kann man auch, mit den enstprechenden Navigation-G
   },
 },
 ```
-Diese Guards kann man auch global verwenden, direkt über das ```router```-Objekt
+Guards kann man auch global verwenden, direkt über das ```router```-Objekt
 
 ```js
 router.beforeEach((to, from, next) => {
@@ -571,6 +571,23 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+```
+Man kann auch auf Route direkt in einer Component (z.B per Event) navigieren.
+
+Mittels ```push```()
+
+```js
+  // per Klick auf Logout-Button, mache folgendes...
+  methods: {
+    async signout() {
+      try {
+        await this.$store.dispatch("signOut"); 
+        this.$router.push("/");
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+  },
 ```
 
 ## Vue-App erstellen mittels VUE-CLI
