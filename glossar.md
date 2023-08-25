@@ -543,10 +543,40 @@ Das ```to="path"``` Attribut gibt den Zielpfad an
 <router-link to="/about">About</router-link>
 ```
 
+## Dynamisch Routen (Navigation-Guards)
+
+In den Routes (```routes:```) kann man auch, mit den enstprechenden Navigation-Guards, dyamische Routen setzen
+
+```js
+// Hier als Beispiel beforeEnter() für eine bestimmte Route
+{
+  path: "/",
+  component: HomePage,
+  beforeEnter: (to, from, next) => {
+    if (store.getters.isAuthenticated) {
+      next("/shop");
+    } else {
+      next();
+    }
+  },
+},
+```
+Diese Guards kann man auch global verwenden, direkt über das ```router```-Objekt
+
+```js
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
+    next("/");
+  } else {
+    next();
+  }
+});
+```
+
 ## Vue-App erstellen mittels VUE-CLI
 Installieren von VUE-CLI 
 ```
-npm install -g @vue/cli // -g für globale Installation
+npm install -g @vue/cli 
 ```
 Erstellen einer App
 ```
@@ -567,7 +597,7 @@ npm run build
 vue build
 ```
 
-## Aufbau einer Vue-App
+## Aufbau einer Vue-Cli-App
 
 * node_modules/ (installierte Module - z.B bootstrap)
 * package.json (config der installierten Packages)
