@@ -46,7 +46,9 @@ const actions = {
         productItem
       )
       .then((response) => {
-        console.log(response);
+        if (response.status === 200) {
+          alert("Produkt gespeichert!")
+        }
       })
       .catch((error) => {
         throw new Error(error);

@@ -7,7 +7,7 @@
             Produktdetails
             <button class="btn btn-lg bg-vue float-end" @click="$router.go(-1)">Zurück</button>
           </h1>
-          <div class="card mt-4">
+          <div class="card mt-4" v-if="product">
             <div class="row no-gutters">
               <div class="col-md-4">
                 <img src="https://dummyimage.com/600x400/34495e/fff" alt="" class="card-img" />
@@ -36,9 +36,9 @@
           <div class="card mt-4">
             <div class="card-body">
               <h4>Das könnte Sie auch interessieren...</h4>
-              <router-link
-                :to="{ name: 'ReadProduct', params: { id: '-NcamJbY7pc4yf4o7hfz' } }"
-              >-NcamJbY7pc4yf4o7hfz</router-link>
+              <router-link :to="{ name: 'ReadProduct', params: { id: '-NcamJbY7pc4yf4o7hfz' } }"
+                >-NcamJbY7pc4yf4o7hfz</router-link
+              >
             </div>
           </div>
         </div>
@@ -55,24 +55,28 @@ export default {
   components: {
     TheShopLayout,
   },
-  data() {
+  props: {
+    id: String,
+  },
+  /*data() {
     return {
       id: null,
     };
-  },
+  },*/
   computed: {
     product() {
       return this.$store.getters.product(this.id);
     },
   },
-  created() {
+  
+  /*created() {
     this.id = this.$route.params.id;
   },
   // Damit beim Ändern der Route auch die ID richtig gesetzt wird.
   // Created()-Hook würde nur getriggert werden, wenn die Component neu erstellt werden würde
   beforeRouteUpdate(to) {
-    this.id = to.params.id; 
-  }
+    this.id = to.params.id;
+  },*/
 };
 </script>
 
