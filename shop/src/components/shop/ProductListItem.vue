@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <img src="https://picsum.photos/200" alt="" />
+    <img src="https://dummyimage.com/200x200/34495e/fff" alt="" />
     <div class="card-body">
       <h5 class="card-title">{{ product.title }}</h5>
       <p class="card-text">{{ shortendDescription }}</p>
