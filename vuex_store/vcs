@@ -1,0 +1,4 @@
+#!/bin/sh
+
+
+./node_modules/@vue//cli-service/bin/vue-cli-service.js ${1}
