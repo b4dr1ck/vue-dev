@@ -454,7 +454,7 @@ Es gibt auch die Möglichkeit `Named Slots` zu verwenden mittels des `name="slot
 ```html
 <!--MyComponet.vue-->
 <div>
-  <h5>Slot It Baby</h5>
+  <h5>Slot It Baby</h5
   <slot name="textOne">Fallback-Text 1</slot>
   <hr>
   <slot name="textTwo">Fallback-Text 2</slot>
@@ -466,9 +466,11 @@ Es gibt auch die Möglichkeit `Named Slots` zu verwenden mittels des `name="slot
 <MyComponet>
   <template #textOne>Text des ersten Slots</template>
   <template #textTwo>Text des zweiten Slots</template>
-></MyComponet>
+  ></MyComponet
+>
 ```
-Um Daten aus einem Slot in der Eltern-Component zu verwenden gibts es die Möglichkeit der ```Scoped Slots```
+
+Um Daten aus einem Slot in der Eltern-Component zu verwenden gibts es die Möglichkeit der `Scoped Slots`
 
 ```html
 <!--MyComponet.vue-->
@@ -477,11 +479,10 @@ Um Daten aus einem Slot in der Eltern-Component zu verwenden gibts es die Mögli
   <slot :text="message" :count="1">Fallback-Text</slot>
 </div>
 ```
+
 ```html
 <!--Eltern Component-->
-<MyComponet v-slot="slotProps">
-  {{slotProps.text}} -- {{ slotProps.count }}
-></MyComponet>
+<MyComponet v-slot="slotProps"> {{slotProps.text}} -- {{ slotProps.count }} ></MyComponet>
 ```
 
 ## Teleport
@@ -578,9 +579,68 @@ methods: {
 }
 ```
 
+## Vuex-Store
+
+Vuex installieren
+
+```
+npm install vuex
+```
+
+Store anlegen und global einbinden
+
+```js
+// main.js
+import store from "@/store"; // Pfad zum Store: src/store/index.js
+
+const app = createApp(App);
+app.use(store);
+app.mount("#app");
+```
+
+```js
+// store/index.js
+import { createStore } from "vuex";
+
+const store = createStore({
+  state() {
+    return {};
+  },
+  mutations: {}, // setter / mutations
+  actions: {},  //  async methods
+  getters: {},  //  getters
+});
+
+export default store;
+```
+
+Vuex-Store in der Component verwenden.
+
+```js
+export default {
+  name: "App",
+  computed: {
+    counter() {
+      // getter verwenden
+      return this.$store.getters.getCount;
+    },
+  },
+  methods: {
+    increaseCounter() {
+      // mutations verwenden
+      this.$store.commit("setCounter", 1);
+    },
+    fetchData() {
+      // action verwenden
+      this.$store.dispatch("fetchData");
+    },
+  },
+};
+```
+
 ## Vue-Router
 
-Kann verwendet werden um Routen innerhalb einer Singel-Page-Applikation festlegen zu können.
+Kann verwendet werden um Routen innerhalb einer Single-Page-Applikation festlegen zu können.
 
 Erstelle ein neues Vue-Router Objekt:
 
