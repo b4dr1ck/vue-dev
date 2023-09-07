@@ -20,7 +20,12 @@
                     </div>
                     <div class="col-3">
                       <div class="d-grid">
-                        <button class="btn bg-vue2">{{ product.price }} €</button>
+                        <button
+                          class="btn bg-vue2"
+                          @click="addItemToCart({ productId: product.id })"
+                        >
+                          {{ product.price }} €
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -49,6 +54,7 @@
 
 <script>
 import TheShopLayout from "@/layouts/TheShopLayout.vue";
+import { mapActions } from "vuex";
 
 export default {
   name: "ReadProductPage",
@@ -68,7 +74,18 @@ export default {
       return this.$store.getters.product(this.id);
     },
   },
-  
+  /*methods: {
+    addItemToCart() {
+      this.$store.dispatch("addItemToCart", {
+        productId: this.id,
+      });
+    },
+  },*/
+  // Alternative mit mapActions
+  methods: {
+    ...mapActions(["addItemToCart"])
+  },
+
   /*created() {
     this.id = this.$route.params.id;
   },
