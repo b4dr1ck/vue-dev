@@ -532,7 +532,8 @@ Ein Store dient zur zentralen Verwaltung der Daten und kann eigens in die App ei
 - state
 - getters
 - mutations
-  und wird in einem eigenen JS-File (`store.js`) direkt im src-Verzeichnis erstellt:
+
+Der Store wird in einem eigenen JS-File (`store.js`) direkt im src-Verzeichnis erstellt:
 
 ```js
 // src/store.js
