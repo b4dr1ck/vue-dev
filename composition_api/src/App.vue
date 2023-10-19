@@ -23,7 +23,7 @@ const clearCounter = () => {
 };
 const counterNotes = computed(() => {
     if (count.value > 10) {
-      return "Counter is gettinger bigger....";
+      return "Counter is gettin' bigger...";
     }
     return "Counter intialized...";
 });
@@ -33,7 +33,6 @@ const changeName = (name) => {
   person.value.name = name;
   person.value.modified = new Date();
 }
-
 
 
 </script>
