@@ -1,40 +1,48 @@
 <template>
   <div>
-    <h1>Hello World</h1>
-    <p>{{ count }}</p>
-    <p>{{ counterNotes }}</p>
-    <button @click="increaseCounter">Counter <b>+</b></button>
-    <button @click="clearCounter">Clear Counter</button>
+    <h1>{{ getGreeting }} -- {{ greetingRevers }}</h1>
+    <button @click="updateGreeting">Begrüßung ändern</button>
     <hr />
-    <p>{{ person }}</p>
-    <button @click="changeName('Badrick')">Change Name</button>
+    <h2>{{ greetingObj.message }} - {{ greetingObj.description }} -- {{ greetingObj.info }}</h2>
+    <h2>{{ message }} - {{ description }}</h2>
+    <button @click="updateGreetingObj">Begrüßung ändern</button>
   </div>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+// Composition API
+import { ref, reactive, toRefs, computed, onMounted } from "vue";
 
-const count = ref(0);
-const increaseCounter = () => {
-  count.value++;
+// ref() für primitve Datentypen (String, Number, ...)
+const getGreeting = ref("Hello World");
+const updateGreeting = () => {
+  return (getGreeting.value = "Herzlich Willkommen!");
 };
-const clearCounter = () => {
-  count.value = 0;
-};
-const counterNotes = computed(() => {
-    if (count.value > 10) {
-      return "Counter is gettin' bigger...";
-    }
-    return "Counter intialized...";
+// verwende computed-Properties mit computed()
+const greetingRevers = computed(() => {
+  return getGreeting.value.split("").reverse().join("");
 });
 
-const person = ref({name: "patrick", age: 34});
-const changeName = (name) => {
-  person.value.name = name;
-  person.value.modified = new Date();
-}
+// reactive() für nicht-primitve Datentypen (Objects, ...)
+const greetingObj = reactive({
+  message: "Salut",
+  description: "Willkommen zur App!",
+  info: "info",
+});
 
+/* Destructoring funktioniert nicht, da sonst die Reactivität verloren geht.
+Daher muss man toRefs verwenden um die Eigenschaften reaktiv zu machen*/
+const greetingObjRefs = toRefs(greetingObj);
+const { message, description } = greetingObjRefs;
+const updateGreetingObj = () => {
+  greetingObj.message = "Servus";
+  greetingObj.description = "Herzlich Willkommen zur App";
+};
 
+// Life-Cycle Hook
+onMounted(() => {
+  console.log("Component mounted...");
+});
 </script>
 
 <style></style>
