@@ -34,7 +34,7 @@ export default {
             .split("\n")[0]
             .split(this.delimiter)
             .map((element, index) => {
-              return `Col_${index}`;
+              return `Column ${index}`;
             });
         }
 
@@ -121,7 +121,7 @@ export default {
         block
         :disabled="btnDisabled"
         @click="convertTextToJson()"
-        >Create Table</v-btn
+        >Create Table <v-icon class="ms-2" icon="mdi-table-large-plus"></v-icon></v-btn
       >
     </v-col>
   </v-row>
