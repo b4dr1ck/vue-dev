@@ -5,6 +5,7 @@ export default {
   name: "App",
   data() {
     return {
+      search:"",
       fileContent: "",
       items: [],
       headers: [],
@@ -25,32 +26,35 @@ export default {
     convertTextToJson() {
       if (this.fileContent) {
         this.headers = [];
-        let headerTitles = [];
         this.items = [];
+        let headerLine = this.fileContent.split("\n")[0].split(this.delimiter);
+
+        if (!this.useHeader) {
+          headerLine = this.fileContent
+            .split("\n")[0]
+            .split(this.delimiter)
+            .map((element, index) => {
+              return `Col_${index}`;
+            });
+        }
+
+        const headerLength = headerLine.length;
+        for (let i = 0; i < headerLength; i++) {
+          this.headers.push({
+            title: headerLine[i],
+            value: headerLine[i],
+            key: headerLine[i],
+          });
+        }
 
         this.fileContent.split("\n").forEach((line, lineNr) => {
           if (this.useHeader) {
-            if (lineNr === 0) {
-              headerTitles = line.split(this.delimiter);
-              headerTitles.forEach((title) => {
-                this.headers.push({
-                  title: title.toUpperCase(),
-                  value: title,
-                  key: title,
-                });
-              });
-            } else {
-              this.items[lineNr - 1] = {};
-              headerTitles.forEach((title, index) => {
-                this.items[lineNr - 1][title] = line.split(this.delimiter)[
-                  index
-                ];
-              });
-            }
-          } else {
-            // table without header
-            this.items.push(line.split(this.delimiter));
+            lineNr--;
           }
+          this.items[lineNr] = {};
+          headerLine.forEach((title, index) => {
+            this.items[lineNr][title] = line.split(this.delimiter)[index];
+          });
         });
       }
     },
@@ -111,25 +115,33 @@ export default {
       <v-checkbox v-model="useHeader" label="Use Header"></v-checkbox>
     </v-col>
     <v-col class="me-5">
-      <v-btn class="mx-2" :height="55" block :disabled="btnDisabled" @click="convertTextToJson()"
+      <v-btn
+        class="mx-2"
+        :height="55"
+        block
+        :disabled="btnDisabled"
+        @click="convertTextToJson()"
         >Create Table</v-btn
       >
     </v-col>
   </v-row>
   <hr class="mb-5" />
+  <v-text-field
+  class="ma-2"
+    v-model="search"
+    label="Search"
+    prepend-inner-icon="mdi-magnify"
+    single-line
+    variant="outlined"
+    hide-details
+  ></v-text-field>
   <v-data-table
-    v-if="useHeader && items.length > 0"
+    v-if="items.length > 0"
     :headers="headers"
+    :search="search"
     :items="items"
     items-per-page="25"
   ></v-data-table>
-  <v-table v-else-if="items.length > 0">
-    <tbody>
-      <tr v-for="(row, key) in items" :key="key">
-        <td v-for="(cell, key2) in row" :key="cell + '_' + key2">{{ cell }}</td>
-      </tr>
-    </tbody>
-  </v-table>
 
   <v-alert closable v-if="errorMsg" :text="errorMsg" type="error"></v-alert>
 </template>
