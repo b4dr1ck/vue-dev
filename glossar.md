@@ -2,31 +2,33 @@
 
 # Vue.js Glossar
 
-## Root-Component
+## Root-Component (generischer Aufbau)
+### Options API
 
 ```js
 const app = Vue.createApp({
   // Optionen
-  data: function () {
+  data() {
     return {
+      //Object mit den Date die in der gesamten Component verwendet werden können
     };
   },
 
-  // - wird ausgeführt  wenn sich abhängige Daten ändern
-  // - verwendet man wenn Daten von anderen abhängen (z.B totalVotes)
+  // - wird ausgeführt wenn sich abhängige Daten ändern
+  // - verwendet man wenn Daten von anderen abhängig sind (z.B totalVotes)
   computed: {
       functionName() {
       },
   },
 
-  // - wird ausgeführt wenn sich "sichtabre" Daten ändern (wenn das Template neu gerendert werden muss)
+  // - wird ausgeführt wenn sich "sichtbare" Daten ändern (wenn das Template neu gerendert werden muss)
   // - verwendet man für Daten die sich permanent ändern (z.B Event-Listener (click))
   methods: {
       functionName() {
       },
   },
 
-  // wird ausgeführt wenn sich die beobatchteten Daten ändern
+  // wird ausgeführt wenn sich die Daten ändern auf die der Watcher registriert ist
   // verwendet man für z.B localStorage, HTTP-Requests etc (was sich nicht direkt auf das Template auswirkt)
   watch: {
       functionName: {
@@ -41,15 +43,20 @@ const app = Vue.createApp({
 // Components:
 // Globale Component
 app.component("NameDerComponent", {
+  data() {
+    return {}
+  },
   // Optionen
-  props: [""], // props die vom Eltern-Component geerbt werden sollen
-  emits: [""] // Daten die vom Kind-Component an das Eltern-Component übergeben
-  werden sollen
+  props: [""],  // props die vom Eltern-Component geerbt werden sollen
+  emits: [""]   // Daten die vom Kind-Component an das Eltern-Component übergeben werden sollen
   methods: {
   },
-  template: '<html></html>'
+  computed: {
+  },
+  template: '<p>This is a Component</p><button>OK</button>'
 });
-// wird dann im HTML-Template so angegeben
+
+// wird dann im HTML-Template so verwendet
 <name-der-component></name-der-component>
 // oder einfach so
 <NameDerComponent/>
@@ -436,17 +443,18 @@ inject: ["maxNumberOfChars"],
 
 Slots können innerhalb einer Component verwendet werden und können dann außerhalb über die Eltern-Component mit Inhalt gefüllt werden.
 
-```js
-// MyComponet.vue
+```html
+<!--MyComponet.vue-->
 <div>
   <h5>Slot It Baby</h5>
-  <slot>Fallback-Text</slot>
+  <slot>Fallback-Text</slot> <!-- slot outlet -->
 </div>
 ```
 
 ```html
-<!--MyComponet.vue-->
-<MyComponet #default>Text der im Slot steht!</MyComponet>
+<MyComponet #default>
+  Text der im Slot steht!<!-- slot content -->
+</MyComponet>
 ```
 
 Es gibt auch die Möglichkeit `Named Slots` zu verwenden mittels des `name="slotname"`-Attributs
@@ -454,7 +462,7 @@ Es gibt auch die Möglichkeit `Named Slots` zu verwenden mittels des `name="slot
 ```html
 <!--MyComponet.vue-->
 <div>
-  <h5>Slot It Baby</h5
+  <h5>Slot It Baby</h5>
   <slot name="textOne">Fallback-Text 1</slot>
   <hr>
   <slot name="textTwo">Fallback-Text 2</slot>
@@ -503,17 +511,17 @@ Dazu muss es natürlich ein entsprechendes Element geben.
 
 ## Dynamische Components
 
-Components können mit `<component>` auch dynamisch erstellt werden. Man muss dazu da `is` Attribut binden und den Component-Name als Wert angeben.
+Components können mit `<component>` auch dynamisch erstellt werden. Man kann dazu das `is` Attribut binden und den Component-Name als String angeben.
 
-`<keep-alive>` sorgt dafür das die Component nicht gelöscht wird wenn sie nicht mehr angezeigt wird. Somit können z.B in Inputfeldern bereits eingetragener Text erhalten bleiben.
+`<keep-alive>` sorgt dafür, dass die Component nicht gelöscht wird wenn sie nicht mehr angezeigt wird. Somit kann z.B in Inputfeldern bereits eingetragener Text erhalten bleiben.
 
 ```html
 <keep-alive>
-  <component :is="componentName" />
+  <component :is="'componentName'"></component>
 </keep-alive>
 ```
 
-`defineAsyncComponent` kann dazu verwendet werden um Components asynchronen zu erstellen. Die Component wird erst dann erstellt wenn sie tatsächlich benötigt wird.
+`defineAsyncComponent` kann dazu verwendet werden um Components asynchron zu erstellen. Die Component wird erst dann erstellt wenn sie tatsächlich benötigt wird.
 
 ```js
 import { defineAsyncComponent } from "vue";

@@ -1,5 +1,4 @@
 <script>
-import { toHandlers } from "vue";
 
 export default {
   name: "App",
@@ -92,6 +91,7 @@ export default {
 <template>
   <h1 class="text-h3 ma-2">CSV Viewer</h1>
   <hr />
+  
   <v-row class="ms-1 mt-1" justify="start">
     <v-col cols="4">
       <v-file-input
