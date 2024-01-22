@@ -1,10 +1,9 @@
 <script>
-
 export default {
   name: "App",
   data() {
     return {
-      search:"",
+      search: "",
       fileContent: "",
       items: [],
       headers: [],
@@ -75,11 +74,16 @@ export default {
       });
 
       if (file) {
-        if (file.type.indexOf("text") >= 0) {
-          fileReader.readAsText(file);
-          this.errorMsg = "";
+        if (file.name.indexOf(".csv") >= 0) {
+          if (file.type.indexOf("text") >= 0) {
+            fileReader.readAsText(file);
+            this.errorMsg = "";
+          } else {
+            this.errorMsg = `File is not a text-file!`;
+            this.fileContent = "";
+          }
         } else {
-          this.errorMsg = `File is not a text-file!`;
+          this.errorMsg = `File is not a csv-file!`;
           this.fileContent = "";
         }
       }
@@ -91,7 +95,7 @@ export default {
 <template>
   <h1 class="text-h3 ma-2">CSV Viewer</h1>
   <hr />
-  
+
   <v-row class="ms-1 mt-1" justify="start">
     <v-col cols="4">
       <v-file-input
@@ -121,13 +125,14 @@ export default {
         block
         :disabled="btnDisabled"
         @click="convertTextToJson()"
-        >Create Table <v-icon class="ms-2" icon="mdi-table-large-plus"></v-icon></v-btn
-      >
+        >Create Table <v-icon class="ms-2" icon="mdi-table-large-plus"></v-icon
+      ></v-btn>
     </v-col>
   </v-row>
+  <v-alert closable v-if="errorMsg" :text="errorMsg" type="error"></v-alert>
   <hr class="mb-5" />
   <v-text-field
-  class="ma-2"
+    class="ma-2"
     v-model="search"
     label="Search"
     prepend-inner-icon="mdi-magnify"
@@ -143,7 +148,6 @@ export default {
     items-per-page="25"
   ></v-data-table>
 
-  <v-alert closable v-if="errorMsg" :text="errorMsg" type="error"></v-alert>
 </template>
 
 <style>
