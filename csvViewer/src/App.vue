@@ -69,7 +69,6 @@ export default {
       );
 
       fileReader.addEventListener("error", (event) => {
-        console.error(`Error occurred reading file: ${file.name}`);
         this.errorMsg = `Error occurred reading file: ${file.name}`;
       });
 
