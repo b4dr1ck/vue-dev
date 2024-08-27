@@ -11,7 +11,7 @@ export default {
     };
   },
   created() {
-    this.carouselHeight = window.innerHeight - 145;
+    this.carouselHeight = window.innerHeight - 96;
   },
   methods: {
     openImageInNewTab(src) {
@@ -23,7 +23,7 @@ export default {
 
 <template>
   <div>
-    <h1 class="text-center">badricks-world.at</h1>
+    <h1 class="text-center text-h1">badricks-world.at</h1>
     <div style="display: flex" class="carousel-wrapper">
       <div class="responsive-carousel">
         <v-carousel
@@ -42,21 +42,27 @@ export default {
       </div>
       <div
         class="pa-5 responsive-carousel text-center"
-        style="background-color: rgba(255, 255, 255, 0.7)"
+        style="background-color: rgba(255, 255, 255, 0.6)"
       >
-        <h2 class="test-h2 my-3 text-black">Welcome To Barick's World</h2>
-        <p class="text-body-1 text-black">
-          <b>Lorem Ipsum</b> is simply dummy text of the printing and
-          typesetting industry. Lorem Ipsum has been the industry's standard
-          dummy text ever since the 1500s, when an unknown printer took a galley
-          of type and scrambled it to make a type specimen book. It has survived
-          lease of Letraset sheets containing Lorem Ipsum passages, and more
-          recently with desktop publishing software like Aldus PageMaker
-          including versions of Lorem Ipsum <br /><br />
-          typesetting industry. Lorem Ipsum has been the industry's standard
-          dummy text ever since the 1500s, when an unknown printer took a galley
-          of type and scrambled it to make a type specimen book. It has survived
-        </p>
+
+        <div style="margin:auto; display:flex; justify-content: center; flex-direction: column; height: 100%;">
+          <h2 class="text-h3 my-2 text-black">Welcome To Badrick's World</h2>
+          <p class="text-body-1 text-black px-5">
+            You've entered the homepage of badricks-world.at - and I am <b>Bad Rick</b>.
+            <br>Just let me tell a few words...
+            <br>
+            My name is Patrick (aka Bad Rick) and this is my little online gallery. 
+            I am a hobby artist and like to express myself by painting pictures. 
+            My preferred media to paint is the digital painting nowadays.
+            <br>
+            The subjects of my images ranges from fantasy, horror, surrealism to everything obscure.
+            I don't give much information about my pictures - so just let it work.
+            <br>
+            Hope you like it!
+          </p>
+          <p class="mt-5"><a class="mt-3 text-indigo" href="mailto:contact@badricks-world.at">Contact Me!</a></p>
+      </div>
+
       </div>
     </div>
     <v-spacer class="ma-5"></v-spacer>
@@ -92,18 +98,12 @@ export default {
   src: url("./src/assets/fonts/rd.ttf") format("truetype");
 }
 
-@font-face {
-  font-family: "Decaydence";
-  src: url("./src/assets/fonts/Decaydence.otf") format("truetype");
-}
-
 #gallery_wrapper .v-img__img:hover {
   border: 2px solid white !important;
   filter: brightness(50%);
 }
 
 h1 {
-  font-family: "RocksDead", sans-serif !important;
   font-size: 90px !important;
   font-weight: normal !important;
 }
@@ -117,12 +117,11 @@ h1 {
   flex-direction: column;
 }
 
-p,
-h2 {
-  line-height: 2.5 !important;
+p {
+  line-height: 3 !important;
 }
 
-@media only screen and (min-width: 900px) {
+@media only screen and (min-width: 1000px) {
   .responsive-carousel {
     width: 50%;
   }
