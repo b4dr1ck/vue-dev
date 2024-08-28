@@ -1,5 +1,5 @@
 <script>
-import { images,carousel } from "./seed";
+import { images, carousel } from "./seed";
 
 export default {
   name: "App",
@@ -33,36 +33,46 @@ export default {
           :height="carouselHeight"
         >
           <v-carousel-item
-            v-for="(item,id) in carouselItems"
+            v-for="(item, id) in carouselItems"
             :key="id"
             :src="item"
             cover
           ></v-carousel-item>
         </v-carousel>
       </div>
-      <div
-        class="pa-5 responsive-carousel text-center"
-        style="background-color: rgba(255, 255, 255, 0.6)"
-      >
-
-        <div style="margin:auto; display:flex; justify-content: center; flex-direction: column; height: 100%;">
-          <h2 class="text-h3 my-2 text-black">Welcome To Badrick's World</h2>
-          <p class="text-body-1 text-black px-5">
-            You've entered the homepage of badricks-world.at - and I am <b>Bad Rick</b>.
-            <br>Just let me tell a few words...
-            <br>
-            My name is Patrick (aka Bad Rick) and this is my little online gallery. 
-            I am a hobby artist and like to express myself by painting pictures. 
-            My preferred media to paint is the digital painting nowadays.
-            <br>
-            The subjects of my images ranges from fantasy, horror, surrealism to everything obscure.
-            I don't give much information about my pictures - so just let it work.
-            <br>
+      <div class="pa-5 responsive-carousel text-center bg-black">
+        <div
+          style="
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            height: 100%;
+          "
+        >
+          <h2 class="text-h3 my-5">Welcome To Badrick's World</h2>
+          <p class="text-body-1 px-5">
+            You've entered the homepage of badricks-world.at - and I am
+            <b>Bad Rick</b>. <br />Just let me tell a few words...
+            <br />
+            My name is Patrick (aka Bad Rick) and this is my little online
+            gallery. I am a hobby artist and like to express myself by painting
+            pictures. Nowadays my preferred media to paint is the digital
+            painting
+            <br />
+            The subjects of my images ranges from fantasy, horror, surrealism to
+            everything obscure. I don't give much information about my pictures
+            - so just let it work.
+            <br />
+            <br />
             Hope you like it!
           </p>
-          <p class="mt-5"><a class="mt-3 text-indigo" href="mailto:contact@badricks-world.at">Contact Me!</a></p>
-      </div>
-
+          <p class="mt-5"><v-icon class="mx-2" icon="mdi-mail"></v-icon>
+            <a class="mt-3 text-blue" href="mailto:contact@badricks-world.at"
+              >Contact Me!</a
+            >
+          </p>
+        </div>
       </div>
     </div>
     <v-spacer class="ma-5"></v-spacer>
@@ -94,8 +104,8 @@ export default {
 
 <style>
 @font-face {
-  font-family: "RocksDead";
-  src: url("./src/assets/fonts/rd.ttf") format("truetype");
+  font-family: "headerFont";
+  src: url("./src/assets/fonts/belligerent.ttf") format("truetype");
 }
 
 #gallery_wrapper .v-img__img:hover {
@@ -104,8 +114,13 @@ export default {
 }
 
 h1 {
+  font-family: "headerFont" !important;
   font-size: 90px !important;
   font-weight: normal !important;
+}
+
+h2 {
+  font-family: "headerFont" !important;
 }
 
 .responsive-carousel {

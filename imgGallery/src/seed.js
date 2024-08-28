@@ -8,20 +8,12 @@ export const carousel = [
 
 export const images = [
   {
-    src: "./src/assets/images/Contract.jpg",
-    lazySrc: "./src/assets/images_small/Contract.jpg",
-  },
-  {
     src: "./src/assets/images/Mage.jpg",
     lazySrc: "./src/assets/images_small/Mage.jpg",
   },
   {
     src: "./src/assets/images/Mimic.jpg",
     lazySrc: "./src/assets/images_small/Mimic.jpg",
-  },
-  {
-    src: "./src/assets/images/Spoteye.jpg",
-    lazySrc: "./src/assets/images_small/Spoteye.jpg",
   },
   {
     src: "./src/assets/images/Stairs.jpg",
@@ -92,6 +84,10 @@ export const images = [
     lazySrc: "./src/assets/images_small/creep.jpg",
   },
   {
+    src: "./src/assets/images/Contract.jpg",
+    lazySrc: "./src/assets/images_small/Contract.jpg",
+  },
+  {
     src: "./src/assets/images/cyborgReaper.jpg",
     lazySrc: "./src/assets/images_small/cyborgReaper.jpg",
   },
@@ -142,6 +138,10 @@ export const images = [
   {
     src: "./src/assets/images/giveMeUrHand.jpg",
     lazySrc: "./src/assets/images_small/giveMeUrHand.jpg",
+  },
+  {
+    src: "./src/assets/images/Spoteye.jpg",
+    lazySrc: "./src/assets/images_small/Spoteye.jpg",
   },
   {
     src: "./src/assets/images/goForAWalk.jpg",
