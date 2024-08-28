@@ -23,7 +23,7 @@ export default {
 
 <template>
   <div>
-    <h1 class="text-center text-h1">badricks-world.at</h1>
+    <h1 class="text-center text-h1"><span><img class="logo" src="./assets/br.png"/></span><span>badricks-world.at</span></h1>
     <div style="display: flex" class="carousel-wrapper">
       <div class="responsive-carousel">
         <v-carousel
@@ -63,13 +63,11 @@ export default {
             The subjects of my images ranges from fantasy, horror, surrealism to
             everything obscure. I don't give much information about my pictures
             - so just let it work.
-            <br />
-            <br />
-            Hope you like it!
           </p>
-          <p class="mt-5"><v-icon class="mx-2" icon="mdi-mail"></v-icon>
+          <p class="mt-5">
+            <v-icon class="mx-2" icon="mdi-mail"></v-icon>...and feel free to
             <a class="mt-3 text-blue" href="mailto:contact@badricks-world.at"
-              >Contact Me!</a
+              >contact me!</a
             >
           </p>
         </div>
@@ -134,6 +132,13 @@ h2 {
 
 p {
   line-height: 3 !important;
+}
+
+.logo {
+  position: absolute;
+  height: 95px;
+  left: 0px;
+  filter:invert(1);
 }
 
 @media only screen and (min-width: 1000px) {

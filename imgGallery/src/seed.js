@@ -1,19 +1,19 @@
 export const carousel = [
+  "./src/assets/images/girlAndMonstersX.jpg",
   "./src/assets/images/afterHours.jpg",
   "./src/assets/images/conjured.jpg",
   "./src/assets/images/food_chain.jpg",
   "./src/assets/images/crackedFaces.jpg",
-  "./src/assets/images/girlAndMonstersX.jpg",
 ];
 
 export const images = [
   {
-    src: "./src/assets/images/Mage.jpg",
-    lazySrc: "./src/assets/images_small/Mage.jpg",
-  },
-  {
     src: "./src/assets/images/Mimic.jpg",
     lazySrc: "./src/assets/images_small/Mimic.jpg",
+  },
+  {
+    src: "./src/assets/images/time.jpg",
+    lazySrc: "./src/assets/images_small/time.jpg",
   },
   {
     src: "./src/assets/images/Stairs.jpg",
@@ -66,6 +66,10 @@ export const images = [
   {
     src: "./src/assets/images/concrete_melting.jpg",
     lazySrc: "./src/assets/images_small/concrete_melting.jpg",
+  },
+  {
+    src: "./src/assets/images/Mage.jpg",
+    lazySrc: "./src/assets/images_small/Mage.jpg",
   },
   {
     src: "./src/assets/images/conjured.jpg",
@@ -282,10 +286,6 @@ export const images = [
   {
     src: "./src/assets/images/teeth.jpg",
     lazySrc: "./src/assets/images_small/teeth.jpg",
-  },
-  {
-    src: "./src/assets/images/time.jpg",
-    lazySrc: "./src/assets/images_small/time.jpg",
   },
   {
     src: "./src/assets/images/toothFairy.jpg",
