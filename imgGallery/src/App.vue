@@ -11,11 +11,19 @@ export default {
     };
   },
   created() {
-    this.carouselHeight = window.innerHeight - 96;
+    this.carouselHeight = window.innerHeight;
+  },
+  mounted() {
+    this.carouselHeight -= this.getH1Height();
   },
   methods: {
     openImageInNewTab(src) {
       window.open(src, "_blank");
+    },
+    getH1Height() {
+      const h1Element = this.$refs.header;
+      const h1Height = h1Element.offsetHeight;
+      return h1Height;
     },
   },
 };
@@ -23,7 +31,10 @@ export default {
 
 <template>
   <div>
-    <h1 class="text-center text-h1"><span><img class="logo" src="./assets/br.png"/></span><span>badricks-world.at</span></h1>
+    <h1 ref="header" class="text-center text-h1">
+      <span><img class="logo" src="./assets/br.png" /></span
+      ><span>badricks-world.at</span>
+    </h1>
     <div style="display: flex" class="carousel-wrapper">
       <div class="responsive-carousel">
         <v-carousel
@@ -138,7 +149,7 @@ p {
   position: absolute;
   height: 95px;
   left: 0px;
-  filter:invert(1);
+  filter: invert(1);
 }
 
 @media only screen and (min-width: 1000px) {
@@ -150,4 +161,11 @@ p {
     flex-direction: row;
   }
 }
+
+@media only screen and (max-width: 640px) {
+  .logo {
+    opacity: 0;
+  }
+}
+
 </style>
