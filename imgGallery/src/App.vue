@@ -9,6 +9,7 @@ export default {
       carouselHeight: 0,
       carouselItems: carousel,
       showHome: false,
+      snackbar: false,
     };
   },
   created() {
@@ -98,7 +99,21 @@ export default {
         class="mx-5"
         >Gallery</v-btn
       >
-      <v-btn variant="outlined" class="mx-5">Nothing</v-btn>
+      <v-btn variant="outlined" class="mx-5" @click="snackbar = true"
+        >Nothing</v-btn
+      >
+
+      <v-snackbar v-model="snackbar" location="center" vertical multi-line timeout="5000" color="rgba(255,255,255,0.9)">
+        <h3>Just Nothing</h3>
+        <br>
+        Told ya, there is nothing here...<br>
+        But don't be too depressed, life will go on anyway!
+        <template v-slot:actions>
+          <v-btn color="black" variant="text" @click="snackbar = false">
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
     </div>
 
     <div class="carousel-wrapper d-flex">
@@ -120,15 +135,10 @@ export default {
 
       <div class="pa-5 responsive-carousel text-center">
         <div
-          style="
-            margin: auto;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            height: 100%;
-          "
+          class="d-flex flex-column ma-auto justify-center"
+          style="height: 100%"
         >
-          <h2 class="text-h3 my-5">Welcome To Badrick's World</h2>
+          <h2 class="text-h3 my-10">Welcome To Badrick's World</h2>
           <p class="text-body-1 px-5">
             You've entered the homepage of badricks-world.at - and I am
             <b>Bad Rick</b>. <br />Just let me tell a few words...
@@ -136,7 +146,7 @@ export default {
             My name is Patrick (aka Bad Rick) and this is my little online
             gallery. I am a hobby artist and like to express myself by painting
             pictures. Nowadays my preferred media to paint is the digital
-            painting
+            painting.
             <br />
             The subjects of my images ranges from fantasy, horror, surrealism to
             everything obscure. I don't give much information about my pictures
@@ -324,7 +334,8 @@ p {
   filter: invert(1);
 }
 
-#about,#newsWrapper  {
+#about,
+#newsWrapper {
   flex-direction: column;
 }
 
@@ -332,7 +343,8 @@ p {
   .responsive-carousel {
     width: 50%;
   }
-  #about,#newsWrapper {
+  #about,
+  #newsWrapper {
     flex-direction: row;
   }
   .carousel-wrapper {
