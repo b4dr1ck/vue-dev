@@ -8,6 +8,7 @@ export default {
       images: images,
       carouselHeight: 0,
       carouselItems: carousel,
+      showHome: false,
     };
   },
   created() {
@@ -15,27 +16,92 @@ export default {
   },
   mounted() {
     this.carouselHeight -= this.getH1Height();
+    this.checkScrollHeight();
+    window.addEventListener("resize", this.checkScrollHeight);
+    window.addEventListener("scroll", this.checkScrollHeight);
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.checkScrollHeight);
+    window.removeEventListener("scroll", this.checkScrollHeight);
   },
   methods: {
+    checkScrollHeight() {
+      if (window.scrollY > 0) {
+        this.showHome = true;
+      } else {
+        this.showHome = false;
+      }
+    },
     openImageInNewTab(src) {
       window.open(src, "_blank");
     },
+    scrollToArea(destination) {
+      const scrollTo = this.$refs[destination];
+
+      if (scrollTo) {
+        scrollTo.scrollIntoView({ behavior: "smooth" });
+      }
+      this.showHome = true;
+    },
     getH1Height() {
       const h1Element = this.$refs.header;
+      const divElement = this.$refs.nav;
+
       const h1Height = h1Element.offsetHeight;
-      return h1Height;
+      const divHeight = divElement.offsetHeight;
+
+      return h1Height + divHeight;
     },
   },
 };
 </script>
 
 <template>
-  <div>
-    <h1 ref="header" class="text-center text-h1">
-      <span><img class="logo" src="./assets/br.png" /></span
+  <div ref="home">
+    <v-btn
+      @click="scrollToArea('home')"
+      v-if="showHome"
+      z-index="10"
+      size="large"
+      style="z-index: 100"
+      class="text-h5 ma-5 position-fixed"
+      prepend-icon="mdi-home"
+      >Home
+    </v-btn>
+
+    <h1 ref="header" class="text-center bg-black">
+      <span><img class="logo ma-5" src="./assets/br.png" /></span
       ><span>badricks-world.at</span>
     </h1>
-    <div style="display: flex" class="carousel-wrapper">
+
+    <div
+      ref="nav"
+      id="navBar"
+      class="d-flex justify-center py-5 bg-grey-darken-4"
+      style="z-index: 100"
+    >
+      <v-btn
+        variant="outlined"
+        @click="scrollToArea('aboutWrapper')"
+        class="mx-5"
+        >About</v-btn
+      >
+      <v-btn
+        variant="outlined"
+        @click="scrollToArea('newsWrapper')"
+        class="mx-5"
+        >News</v-btn
+      >
+      <v-btn
+        variant="outlined"
+        @click="scrollToArea('galleryWrapper')"
+        class="mx-5"
+        >Gallery</v-btn
+      >
+      <v-btn variant="outlined" class="mx-5">Nothing</v-btn>
+    </div>
+
+    <div class="carousel-wrapper d-flex">
       <div class="responsive-carousel">
         <v-carousel
           color="white"
@@ -51,7 +117,8 @@ export default {
           ></v-carousel-item>
         </v-carousel>
       </div>
-      <div class="pa-5 responsive-carousel text-center bg-black">
+
+      <div class="pa-5 responsive-carousel text-center">
         <div
           style="
             margin: auto;
@@ -84,8 +151,113 @@ export default {
         </div>
       </div>
     </div>
+
     <v-spacer class="ma-5"></v-spacer>
-    <div id="gallery_wrapper" class="d-flex flex-wrap justify-center">
+
+    <div
+      ref="aboutWrapper"
+      class="mt-5"
+      style="
+        background: url('./demonWall_small.png'), black;
+        background-size: cover;
+        background-repeat: no-repeat;
+      "
+    >
+      <h1 class="text-center bg-black">About Me</h1>
+      <div id="about" class="d-flex justify-center">
+        <div
+          style="
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+          "
+          class="text-center responsive-carousel pa-5"
+        >
+          <h2 class="mb-5">Let me tell you a story</h2>
+          <p class="text-center pa-5">
+            Once there was a litte boy, who was born in the late 80s. He soon
+            got a new toy, and started to like this.
+            <br />
+            The new toy was a pen, and the life changed soon. He started to
+            draw, and the world was in tune.
+            <br />
+            The years passed by, and he went to the school. He imposed teachers
+            and friends, with his skills and the new tool.
+            <br />
+            To get attention was not too hard. Because he had a weird, crazy
+            style of art.
+            <br />
+            Later in his life, he changed his old pen. So he painted in a
+            digital way since then.
+            <br />
+            His paper now was a big screen. It was like realising a dream.
+            <br />
+            This way of painting is now his passion. And I'm here now to share
+            with you my creation.
+            <br />
+            <br />
+            <span class="text-red">
+              All work and no painting makes Badrick a dull boy...
+            </span>
+          </p>
+        </div>
+        <div class="d-flex ma-auto">
+          <v-img
+            class="ma-auto"
+            aspect-ratio="1/1"
+            :width="500"
+            :height="500"
+            cover
+            style="filter: grayscale(100%)"
+            src="https://placehold.co/600x400"
+          ></v-img>
+        </div>
+      </div>
+    </div>
+
+    <h1 ref="newsWrapper" class="text-center bg-black">News</h1>
+    <div
+      id="newsWrapper"
+      class="d-flex"
+      style="
+        background: url('./demonWall_small.png'), black;
+        background-size: cover;
+        background-repeat: no-repeat;
+      "
+    >
+      <v-img
+        id="newsImage"
+        class="cursor-pointer ma-2"
+        height="500"
+        aspect-ratio="1/1"
+        :src="images[0].src"
+        :lazy-src="images[0].lazySrc"
+        @click="openImageInNewTab(images[0].src)"
+      ></v-img>
+      <div
+        class="text-center responsive-carousel pa-5 d-flex ma-auto flex-column"
+      >
+        <h2 class="mb-5 text-center">What's going on...</h2>
+        <p class="text-subtitle-1 text-deep-purple-lighten-2">
+          <b>2024.09.09</b>
+        </p>
+        <p class="text-body-1">
+          Just released my new homepage made with Vue.js and Vuetify.
+        </p>
+        <p class="text-subtitle-1 text-deep-purple-lighten-2">
+          <b>2024.08.25</b>
+        </p>
+        <p class="text-body-1">Published a new painting...</p>
+        <p class="text-subtitle-1 text-deep-purple-lighten-2">
+          <b>2024.08.01</b>
+        </p>
+        <p class="text-body-1">jizzed in my pants</p>
+      </div>
+    </div>
+
+    <h1 ref="galleryWrapper" class="text-center bg-black">Gallery</h1>
+    <div id="gallery_wrapper" class="d-flex flex-wrap justify-center bg-black">
       <div v-for="image in images" :key="image.id" class="ma-1">
         <v-img
           class="cursor-pointer"
@@ -114,7 +286,7 @@ export default {
 <style>
 @font-face {
   font-family: "headerFont";
-  src: url("./src/assets/fonts/belligerent.ttf") format("truetype");
+  src: url("../fonts/belligerent.ttf") format("truetype");
 }
 
 #gallery_wrapper .v-img__img:hover {
@@ -152,9 +324,16 @@ p {
   filter: invert(1);
 }
 
+#about,#newsWrapper  {
+  flex-direction: column;
+}
+
 @media only screen and (min-width: 1000px) {
   .responsive-carousel {
     width: 50%;
+  }
+  #about,#newsWrapper {
+    flex-direction: row;
   }
   .carousel-wrapper {
     display: flex;
@@ -162,10 +341,13 @@ p {
   }
 }
 
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: 850px) {
   .logo {
     opacity: 0;
   }
-}
 
+  #navBar {
+    flex-direction: column;
+  }
+}
 </style>
