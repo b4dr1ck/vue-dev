@@ -1,11 +1,12 @@
 <script>
-import { images, carousel } from "./seed";
+import { images, carousel, news } from "./seed";
 
 export default {
   name: "App",
   data() {
     return {
       images: images,
+      news: news,
       carouselHeight: 0,
       carouselItems: carousel,
       showHome: false,
@@ -103,10 +104,17 @@ export default {
         >Nothing</v-btn
       >
 
-      <v-snackbar v-model="snackbar" location="center" vertical multi-line timeout="5000" color="rgba(255,255,255,0.9)">
+      <v-snackbar
+        v-model="snackbar"
+        location="center"
+        vertical
+        multi-line
+        timeout="5000"
+        color="rgba(255,255,255,0.9)"
+      >
         <h3>Just Nothing</h3>
-        <br>
-        Told ya, there is nothing here...<br>
+        <br />
+        Told ya, there is nothing here...<br />
         But don't be too depressed, life will go on anyway!
         <template v-slot:actions>
           <v-btn color="black" variant="text" @click="snackbar = false">
@@ -117,7 +125,7 @@ export default {
     </div>
 
     <div class="carousel-wrapper d-flex">
-      <div class="responsive-carousel">
+      <div class="responsive-width">
         <v-carousel
           color="white"
           cycle
@@ -133,7 +141,7 @@ export default {
         </v-carousel>
       </div>
 
-      <div class="pa-5 responsive-carousel text-center">
+      <div class="pa-5 responsive-width text-center">
         <div
           class="d-flex flex-column ma-auto justify-center"
           style="height: 100%"
@@ -182,7 +190,7 @@ export default {
             justify-content: center;
             flex-direction: column;
           "
-          class="text-center responsive-carousel pa-5"
+          class="text-center responsive-width pa-5"
         >
           <h2 class="mb-5">Let me tell you a story</h2>
           <p class="text-center pa-5">
@@ -245,24 +253,16 @@ export default {
         :lazy-src="images[0].lazySrc"
         @click="openImageInNewTab(images[0].src)"
       ></v-img>
-      <div
-        class="text-center responsive-carousel pa-5 d-flex ma-auto flex-column"
-      >
+      <div class="text-center responsive-width pa-5 d-flex ma-auto flex-column">
         <h2 class="mb-5 text-center">What's going on...</h2>
-        <p class="text-subtitle-1 text-deep-purple-lighten-2">
-          <b>2024.09.09</b>
-        </p>
-        <p class="text-body-1">
-          Just released my new homepage made with Vue.js and Vuetify.
-        </p>
-        <p class="text-subtitle-1 text-deep-purple-lighten-2">
-          <b>2024.08.25</b>
-        </p>
-        <p class="text-body-1">Published a new painting...</p>
-        <p class="text-subtitle-1 text-deep-purple-lighten-2">
-          <b>2024.08.01</b>
-        </p>
-        <p class="text-body-1">jizzed in my pants</p>
+        <div :key="index" v-for="(text, index) in news">
+          <p class="text-subtitle-1 text-deep-purple-lighten-2">
+            <b>{{ text[0] }}</b>
+          </p>
+          <p class="text-body-1">
+            {{ text[1] }}
+          </p>
+        </div>
       </div>
     </div>
 
@@ -314,7 +314,7 @@ h2 {
   font-family: "headerFont" !important;
 }
 
-.responsive-carousel {
+.responsive-width {
   width: 100%;
 }
 
@@ -340,7 +340,7 @@ p {
 }
 
 @media only screen and (min-width: 1000px) {
-  .responsive-carousel {
+  .responsive-width {
     width: 50%;
   }
   #about,

@@ -1,3 +1,7 @@
+export const news = [
+  ["2024.09.11","Just released my new homepage made with Vue.js and Vuetify." ],
+]
+
 export const carousel = [
   "./images/girlAndMonstersX.jpg",
   "./images/afterHours.jpg",
