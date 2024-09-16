@@ -28,16 +28,19 @@ export default {
     window.removeEventListener("scroll", this.checkScrollHeight);
   },
   methods: {
+    openLink(link) {
+      window.open(link, "_blank");
+    },
     getJoke() {
       this.snackbar = true;
 
-      fetch('https://v2.jokeapi.dev/joke/Any?type=single', {
+      fetch("https://v2.jokeapi.dev/joke/Any?type=single", {
         headers: {
-          'Accept': 'application/json'
-        }
+          Accept: "application/json",
+        },
       })
-      .then(response => response.json())
-      .then(data => this.joke = data.joke)
+        .then((response) => response.json())
+        .then((data) => (this.joke = data.joke));
     },
     checkScrollHeight() {
       if (window.scrollY > 0) {
@@ -112,10 +115,13 @@ export default {
         class="mx-5"
         >Gallery</v-btn
       >
-      <v-btn variant="outlined" class="mx-5" @click="getJoke()"
-        >Nothing</v-btn
+      <v-btn
+        variant="outlined"
+        class="mx-5"
+        @click="openLink('https://badricks-world.at/gallery/')"
+        >Slideshow</v-btn
       >
-
+      <v-btn variant="outlined" class="mx-5" @click="getJoke()">Nothing</v-btn>
       <v-snackbar
         v-model="snackbar"
         location="center"
@@ -130,7 +136,7 @@ export default {
         But don't be too depressed, here's a joke for you:
         <br />
         <br />
-        <b style="color: red;">{{ joke }}</b>
+        <b style="color: red">{{ joke }}</b>
         <br />
         <br />
         <small>from https://v2.jokeapi.dev - thank you :)</small>
