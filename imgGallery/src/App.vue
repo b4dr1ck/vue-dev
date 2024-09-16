@@ -84,14 +84,14 @@ export default {
     </v-btn>
 
     <h1 ref="header" class="text-center bg-black">
-      <span><img class="logo ma-5" src="./assets/br.png" /></span
+      <span><img class="logo ma-1" src="./assets/br.png" /></span
       ><span>badricks-world.at</span>
     </h1>
 
     <div
       ref="nav"
       id="navBar"
-      class="d-flex justify-center py-5 bg-grey-darken-4"
+      class="d-flex justify-center py-3 bg-grey-darken-4"
       style="z-index: 100"
     >
       <v-btn
@@ -289,8 +289,8 @@ export default {
       <div v-for="image in images" :key="image.id" class="ma-1">
         <v-img
           class="cursor-pointer"
-          :width="250"
-          :height="250"
+          :width="200"
+          :height="200"
           aspect-ratio="1/1"
           cover
           :src="image.src"
@@ -324,7 +324,7 @@ export default {
 
 h1 {
   font-family: "headerFont" !important;
-  font-size: 90px !important;
+  font-size: 70px !important;
   font-weight: normal !important;
 }
 
@@ -371,7 +371,7 @@ p {
   }
 }
 
-@media only screen and (max-width: 850px) {
+@media only screen and (max-width: 600px) {
   .logo {
     opacity: 0;
   }
