@@ -11,6 +11,7 @@ export default {
       carouselItems: carousel,
       showHome: false,
       snackbar: false,
+      joke: "",
     };
   },
   created() {
@@ -27,6 +28,17 @@ export default {
     window.removeEventListener("scroll", this.checkScrollHeight);
   },
   methods: {
+    getJoke() {
+      this.snackbar = true;
+
+      fetch('https://v2.jokeapi.dev/joke/Any?type=single', {
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => this.joke = data.joke)
+    },
     checkScrollHeight() {
       if (window.scrollY > 0) {
         this.showHome = true;
@@ -100,7 +112,7 @@ export default {
         class="mx-5"
         >Gallery</v-btn
       >
-      <v-btn variant="outlined" class="mx-5" @click="snackbar = true"
+      <v-btn variant="outlined" class="mx-5" @click="getJoke()"
         >Nothing</v-btn
       >
 
@@ -115,7 +127,13 @@ export default {
         <h3>Just Nothing</h3>
         <br />
         Told ya, there is nothing here...<br />
-        But don't be too depressed, life will go on anyway!
+        But don't be too depressed, here's a joke for you:
+        <br />
+        <br />
+        <b style="color: red;">{{ joke }}</b>
+        <br />
+        <br />
+        <small>from https://v2.jokeapi.dev - thank you :)</small>
         <template v-slot:actions>
           <v-btn color="black" variant="text" @click="snackbar = false">
             Close
