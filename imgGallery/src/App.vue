@@ -127,7 +127,7 @@ export default {
         location="center"
         vertical
         multi-line
-        timeout="5000"
+        timeout="10000"
         color="rgba(255,255,255,0.9)"
       >
         <h3>Just Nothing</h3>
@@ -173,16 +173,16 @@ export default {
           <h2 class="text-h3 my-10">Welcome To Badrick's World</h2>
           <p class="text-body-1 px-5">
             You've entered the homepage of badricks-world.at - and I am
-            <b>Bad Rick</b>. <br />Just let me tell a few words...
+            <b>Bad Rick</b> (no shit). <br />Just let me tell a few words...
             <br />
-            My name is Patrick (aka Bad Rick) and this is my little online
+            My real name is Patrick (who would've thought?) and this is my little online
             gallery. I am a hobby artist and like to express myself by painting
             pictures. Nowadays my preferred media to paint is the digital
-            painting.
+            painting by using a graphic tablet.
             <br />
             The subjects of my images ranges from fantasy, horror, surrealism to
             everything obscure. I don't give much information about my pictures
-            - so just let it work.
+            - so, just whatch and let it work.
           </p>
           <p class="mt-5">
             <v-icon class="mx-2" icon="mdi-mail"></v-icon>...and feel free to
@@ -363,6 +363,10 @@ p {
   flex-direction: column;
 }
 
+#navBar button {
+  width: 120px;
+}
+
 @media only screen and (min-width: 1000px) {
   .responsive-width {
     width: 50%;
@@ -383,7 +387,12 @@ p {
   }
 
   #navBar {
-    flex-direction: column;
+    flex-direction:row;
+    flex-wrap: wrap;
+  }
+
+  #navBar button{
+    margin: 5px;
   }
 }
 </style>
