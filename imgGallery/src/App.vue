@@ -248,7 +248,7 @@ export default {
           <v-img
             class="ma-auto"
             aspect-ratio="1/1"
-            :width="500"
+            :width="300"
             :height="500"
             cover
             style="filter: grayscale(100%)"
