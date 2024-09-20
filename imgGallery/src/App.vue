@@ -252,6 +252,7 @@ export default {
             :height="500"
             cover
             style="filter: grayscale(100%)"
+            lazy-src="./me_small.jpg"
             src="./me.jpg"
           ></v-img>
         </div>
