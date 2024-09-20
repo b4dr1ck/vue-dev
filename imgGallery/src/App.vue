@@ -160,6 +160,7 @@ export default {
             v-for="(item, id) in carouselItems"
             :key="id"
             :src="item"
+            :lazy-src="item.replace('images','images_small')"
             cover
           ></v-carousel-item>
         </v-carousel>
