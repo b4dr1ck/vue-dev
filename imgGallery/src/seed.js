@@ -1,4 +1,5 @@
 export const news = [
+  ["2024.09.20","My first picture after releasing my new homepage. Yes, I'm back..." ],
   ["2024.09.11","Just released my new homepage made with Vue.js and Vuetify." ],
 ]
 
@@ -11,6 +12,10 @@ export const carousel = [
 ];
 
 export const images = [
+  {
+    src: "./images/back.png",
+    lazySrc: "./images_small/back.png",
+  },
   {
     src: "./images/hood.jpg",
     lazySrc: "./images_small/hood.jpg",
