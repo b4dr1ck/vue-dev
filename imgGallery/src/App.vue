@@ -252,7 +252,7 @@ export default {
             :height="500"
             cover
             style="filter: grayscale(100%)"
-            src="https://placehold.co/600x400"
+            src="./me.jpg"
           ></v-img>
         </div>
       </div>

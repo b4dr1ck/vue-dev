@@ -1,5 +1,5 @@
 export const news = [
-  ["2024.09.20","My first picture after releasing my new homepage. Yes, I'm back..." ],
+  ["2024.09.20","Uploaded my first picture after releasing my new homepage. Yes, guess who's back..." ],
   ["2024.09.11","Just released my new homepage made with Vue.js and Vuetify." ],
 ]
 
