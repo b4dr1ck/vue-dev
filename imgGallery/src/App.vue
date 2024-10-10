@@ -297,8 +297,8 @@ export default {
       <div v-for="image in images" :key="image.id" class="ma-1">
         <v-img
           class="cursor-pointer"
-          :width="200"
-          :height="200"
+          :width="250"
+          :height="250"
           aspect-ratio="1/1"
           cover
           :src="image.src"
