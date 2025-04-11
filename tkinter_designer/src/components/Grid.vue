@@ -12,6 +12,12 @@ export default {
     return {
       title: "",
       geometry: "",
+      icons: {
+        Label: 'mdi-label-outline',
+        Button: 'mdi-button-pointer',
+        Entry: 'mdi-form-textbox',
+        Text: 'mdi-text-box-outline',
+      }
     };
   },
   methods: {
@@ -77,7 +83,7 @@ export default {
             class="hover-button"
             style="height: 20px; width:100%; background-color: #4A148C;"></div>
           <p style="text-align: center">
-            {{ `${widget.name} (${widget.type})` }}
+            {{ `${widget.name} (${widget.type})` }} <v-icon :icon="icons[widget.type]"></v-icon>
             <br />
             <!-- Button edit/delete-->
             <v-btn @click.left="editWidget(row_n, widget_n)" class="mx-2" icon="mdi-pencil"></v-btn>
