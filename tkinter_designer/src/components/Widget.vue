@@ -4,6 +4,9 @@ export default {
   props: ["currentData", "pos"],
   data() {
     return {
+      rules: {
+        variable: value => !value.match('^[0-9].*')|| 'Darf nicht mit Zahl beginnen',
+      },
       widgets: ["Label", "Button", "Entry", "Text"],
       reliefOptions: ["","flat", "raised", "sunken", "groove", "ridge"],
       widgetLayout: {
@@ -72,13 +75,13 @@ export default {
 </script>
 
 <template>
-  <v-card prepend-icon="mdi-pencil" class="ma-2" :title="currentData.type + ` - ${pos[0]} / ${pos[1]}`">
+  <v-card prepend-icon="mdi-pencil" class="ma-2" :title="`${currentData.name} (${currentData.type}) - ${pos[0]} / ${pos[1]}`">
     <v-radio-group v-model="currentData.type" inline label="Widget Type">
       <v-radio v-for="type in widgets" :label="type" :value="type"></v-radio>
     </v-radio-group>
 
     <!--NAME-->
-    <v-text-field v-model="currentData.name" class="mx-2" label="varialbe name"></v-text-field>
+    <v-text-field :rules="[rules.variable]" v-model="currentData.name" class="mx-2" label="variable name"></v-text-field>
 
     <!--Options-->
     <p class="mx-4 mb-5 text-grey-lighten-1">Options</p>
