@@ -63,7 +63,7 @@ export default {
     <div class="d-flex flex-1-1-100" v-for="(row, row_n) in data">
       <div
         :class="widget.edit ? 'ma-2 widgetContainer active' : 'ma-2 widgetContainer'"
-        style="border: 2px solid white; width: 100%; height: 200px; display: flex; justify-content: space-between"
+        style="border: 2px solid white; width: 100%; height: 120px; display: flex; justify-content: space-between"
         v-for="(widget, widget_n) in row">
         <!-- Button LEFT-->
         <div
@@ -112,7 +112,7 @@ export default {
   cursor: pointer;
 }
 .hover-button {
-  opacity: 0;
+  opacity: 0.25;
 }
 .hover-button:hover {
   opacity: 1;

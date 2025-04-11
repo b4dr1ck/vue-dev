@@ -165,7 +165,7 @@ export default {
   <div class="ma-2">
     <h1 class="text-h3 text-center mb-5">Tkinter Desinger</h1>
     <hr />
-    <div style="display: flex; justify-content: space-around; margin-bottom: 10px">
+    <div class="mt-5" style="display: flex; justify-content: space-around; margin-bottom: 10px">
       <div style="width: 100%">
         <p class="text-h4 text-center">Grid Layout</p>
         <grid
