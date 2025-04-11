@@ -5,9 +5,10 @@ export default {
   data() {
     return {
       widgets: ["Label", "Button", "Entry", "Text"],
+      reliefOptions: ["","flat", "raised", "sunken", "groove", "ridge"],
       widgetLayout: {
-        padx: 0,
-        pady: 0,
+        padx: "2",
+        pady: "2",
         sticky: "nsew",
       },
       widgetOptions: {
@@ -17,6 +18,8 @@ export default {
           bg: "",
           font: "",
           anchor: "",
+          borderwidth: "",
+          relief: "",
         },
         Button: {
           text: "",
@@ -44,9 +47,8 @@ export default {
   },
   watch: {
     currentData: {
-      immediate: true,
       handler(newValue) {
-        // Update widgetOptions with the currentData values
+        // Update widgetOptions and widgetLayout with the currentData values
         if (newValue && this.widgetOptions[newValue.type]) {
           Object.keys(this.widgetOptions[newValue.type]).forEach((key) => {
             this.widgetOptions[newValue.type][key] = newValue[key] || "";
@@ -74,17 +76,24 @@ export default {
       <v-radio v-for="type in widgets" :label="type" :value="type"></v-radio>
     </v-radio-group>
 
+    <!--NAME-->
     <v-text-field v-model="currentData.name" class="mx-2" label="varialbe name"></v-text-field>
 
+    <!--Options-->
     <p class="mx-4 mb-5 text-grey-lighten-1">Options</p>
     <div class="d-flex flex-wrap">
-      <v-text-field
-        v-for="(value, key) in widgetOptions[currentData.type]"
-        v-model="widgetOptions[currentData.type][key]"
-        class="mx-2"
-        :label="key"></v-text-field>
+      <div v-for="(value, key) in widgetOptions[currentData.type]">
+        <v-text-field
+          v-if="key !== 'relief'"
+          min-width="150"
+          v-model="widgetOptions[currentData.type][key]"
+          class="mx-2"
+          :label="key"></v-text-field>
+        <v-select min-width="150" :label="key" v-else v-model="widgetOptions[currentData.type][key]" :items="reliefOptions"></v-select>
+      </div>
     </div>
 
+    <!--Layout-->
     <p class="mx-4 mb-5 text-grey-lighten-1">Layout</p>
     <div class="d-flex flex-wrap">
       <v-text-field

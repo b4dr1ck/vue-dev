@@ -8,9 +8,20 @@ export default {
     Widget,
     Grid,
   },
-  emits: ["click-up", "click-left", "click-right", "click-down", "delete-widget", "edit-widget", "apply-update"],
+  emits: [
+    "click-up",
+    "click-left",
+    "click-right",
+    "click-down",
+    "delete-widget",
+    "edit-widget",
+    "apply-update",
+    "update-metadata",
+  ],
   data() {
     return {
+      title: "",
+      geometry: "",
       editWidgetRow: 0,
       editWidgetCol: 0,
       grid: [[{ name: "Label1", type: "Label", edit: true, layout: { padx: "0", pady: "0", sticky: "ew" } }]],
@@ -18,9 +29,16 @@ export default {
   },
   computed: {
     code() {
+      const maxCols = Math.max(...this.grid.map((row) => row.length));
       let codeString = "#!/usr/bin/python3\n\n" + "import tkinter as tk\n\n" + "root = tk.Tk()\n\n";
 
-      const maxCols = Math.max(...this.grid.map((row) => row.length));
+      if (this.title) {
+        codeString += `root.title("${this.title}")\n`;
+      }
+
+      if (this.title) {
+        codeString += `root.geometry("${this.geometry}")\n\n`;
+      }
 
       for (let n = 0; n < maxCols; n++) {
         codeString += `root.grid_columnconfigure(${n}, weight=1)\n`;
@@ -60,7 +78,7 @@ export default {
         name: "New Element",
         type: "Label",
         edit: false,
-        layout: { padx: "0", pady: "0", sticky: "nsew" },
+        layout: { padx: "0", pady: "0", sticky: "ew" },
       };
     },
     copyCodeContent() {
@@ -122,10 +140,10 @@ export default {
       this.grid[rowIndex].splice(colIndex + 1, 0, this.createNewElement());
     },
     applyUpdate(payload) {
-      const widgetDat = this.grid[payload[0][0]][payload[0][1]];
-      const name = widgetDat.name;
-      const type = widgetDat.type;
-      const edit = widgetDat.edit;
+      const widgetData = this.grid[payload[0][0]][payload[0][1]];
+      const name = widgetData.name;
+      const type = widgetData.type;
+      const edit = widgetData.edit;
 
       this.grid[payload[0][0]][payload[0][1]] = {
         name: name,
@@ -134,6 +152,10 @@ export default {
         ...payload[1],
         layout: { ...payload[2] },
       };
+    },
+    updateMetaData(payload) {
+      this.title = payload[0];
+      this.geometry = payload[1];
     },
   },
 };
@@ -153,6 +175,7 @@ export default {
           @click-down="clickDown($event)"
           @click-left="clickLeft($event)"
           @click-right="clickRight($event)"
+          @update-metadata="updateMetaData($event)"
           :data="grid"></grid>
       </div>
       <div style="width: 100%">
