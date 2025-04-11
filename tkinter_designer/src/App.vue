@@ -9,10 +9,10 @@ export default {
     Grid,
   },
   emits: [
-    "click-up",
-    "click-left",
-    "click-right",
-    "click-down",
+    "add-row-up",
+    "add-col-left",
+    "add-col-right",
+    "add-row-down",
     "delete-widget",
     "edit-widget",
     "apply-update",
@@ -103,10 +103,6 @@ export default {
       this.editWidgetRow = 0;
       this.editWidgetCol = 0;
 
-      // do not delete if the widget is in edit mode
-      if (this.grid[rowIndex][colIndex].edit) {
-        return;
-      }
       // Remove the widget from the row
       this.grid[rowIndex].splice(colIndex, 1);
 
@@ -115,7 +111,7 @@ export default {
         this.grid.splice(rowIndex, 1);
       }
     },
-    clickUp(payload) {
+    addRowUp(payload) {
       const [rowIndex, colIndex] = payload;
       if (rowIndex > 0) {
         this.grid[rowIndex - 1].splice(colIndex, 0, this.createNewElement());
@@ -123,7 +119,7 @@ export default {
         this.grid.unshift([this.createNewElement()]);
       }
     },
-    clickDown(payload) {
+    addRowDown(payload) {
       const [rowIndex, colIndex] = payload;
       if (rowIndex < this.grid.length - 1) {
         this.grid[rowIndex + 1].splice(colIndex, 0, this.createNewElement());
@@ -131,11 +127,11 @@ export default {
         this.grid.push([this.createNewElement()]);
       }
     },
-    clickLeft(payload) {
+    addColLeft(payload) {
       const [rowIndex, colIndex] = payload;
       this.grid[rowIndex].splice(colIndex, 0, this.createNewElement());
     },
-    clickRight(payload) {
+    addColRight(payload) {
       const [rowIndex, colIndex] = payload;
       this.grid[rowIndex].splice(colIndex + 1, 0, this.createNewElement());
     },
@@ -171,10 +167,10 @@ export default {
         <grid
           @edit-widget="editWidget($event)"
           @delete-widget="deleteWidget($event)"
-          @click-up="clickUp($event)"
-          @click-down="clickDown($event)"
-          @click-left="clickLeft($event)"
-          @click-right="clickRight($event)"
+          @add-row-up="addRowUp($event)"
+          @add-row-down="addRowDown($event)"
+          @add-col-left="addColLeft($event)"
+          @add-col-right="addColRight($event)"
           @update-metadata="updateMetaData($event)"
           :data="grid"></grid>
       </div>

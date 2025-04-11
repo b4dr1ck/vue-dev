@@ -17,6 +17,7 @@ export default {
         Button: 'mdi-button-pointer',
         Entry: 'mdi-form-textbox',
         Text: 'mdi-text-box-outline',
+        Checkbutton: 'mdi-checkbox-marked-outline',
       }
     };
   },
@@ -27,17 +28,17 @@ export default {
     deleteWidget(row_n, widget_n) {
       this.$emit("delete-widget", [row_n, widget_n]);
     },
-    clickUp(row_n, widget_n) {
-      this.$emit("click-up", [row_n, widget_n]);
+    addRowUp(row_n, widget_n) {
+      this.$emit("add-row-up", [row_n, widget_n]);
     },
-    clickLeft(row_n, widget_n) {
-      this.$emit("click-left", [row_n, widget_n]);
+    addColLeft(row_n, widget_n) {
+      this.$emit("add-col-left", [row_n, widget_n]);
     },
-    clickRight(row_n, widget_n) {
-      this.$emit("click-right", [row_n, widget_n]);
+    addColRight(row_n, widget_n) {
+      this.$emit("add-col-right", [row_n, widget_n]);
     },
-    clickDown(row_n, widget_n) {
-      this.$emit("click-down", [row_n, widget_n]);
+    addRowDown(row_n, widget_n) {
+      this.$emit("add-row-down", [row_n, widget_n]);
     },
     emitMetaData() {
       this.$nextTick(() => {
@@ -73,13 +74,13 @@ export default {
         v-for="(widget, widget_n) in row">
         <!-- Button LEFT-->
         <div
-          @click.left="clickLeft(row_n, widget_n)"
+          @click.left="addColLeft(row_n, widget_n)"
           class="hover-button"
           style="height: 100%; width:20px; background-color: #4A148C;"></div>
         <div style="width: 100%; display: flex; flex-direction: column; justify-content: space-between">
           <!-- Button UP-->
           <div
-            @click.left="clickUp(row_n, widget_n)"
+            @click.left="addRowUp(row_n, widget_n)"
             class="hover-button"
             style="height: 20px; width:100%; background-color: #4A148C;"></div>
           <p style="text-align: center">
@@ -95,13 +96,13 @@ export default {
           </p>
           <!-- Button DOWN-->
           <div
-            @click.left="clickDown(row_n, widget_n)"
+            @click.left="addRowDown(row_n, widget_n)"
             class="hover-button"
             style="height: 20px; width:100%; background-color: #4A148C;"></div>
         </div>
         <!-- Button RIGHT-->
         <div
-          @click.left="clickRight(row_n, widget_n)"
+          @click.left="addColRight(row_n, widget_n)"
           class="hover-button"
           style="height: 100%; width:20px; background-color: #4A148C;"></div>
       </div>
@@ -115,10 +116,10 @@ export default {
 }
 .widgetContainer:hover {
   border: 2px solid #1976d2 !important;
-  cursor: pointer;
 }
 .hover-button {
   opacity: 0.25;
+  cursor: pointer;
 }
 .hover-button:hover {
   opacity: 1;

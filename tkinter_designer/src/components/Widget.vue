@@ -7,7 +7,7 @@ export default {
       rules: {
         variable: value => !value.match('^[0-9].*')|| 'Darf nicht mit Zahl beginnen',
       },
-      widgets: ["Label", "Button", "Entry", "Text"],
+      widgets: ["Label", "Button", "Entry", "Text","Checkbutton"],
       reliefOptions: ["","flat", "raised", "sunken", "groove", "ridge"],
       widgetLayout: {
         padx: "",
@@ -42,8 +42,16 @@ export default {
         Text: {
           fg: "",
           bg: "",
+          font: "",
           height: "",
           width: "",
+        },
+        Checkbutton: {
+          text: "",
+          command: "",
+          fg: "",
+          bg: "",
+          font: "",
         },
       },
     };
