@@ -66,21 +66,18 @@ export default {
         style="border: 2px solid white; width: 100%; height: 200px; display: flex; justify-content: space-between"
         v-for="(widget, widget_n) in row">
         <!-- Button LEFT-->
-        <v-btn
-          density="compact"
+        <div
           @click.left="clickLeft(row_n, widget_n)"
           class="hover-button"
-          prepend-icon="mdi-table-column-plus-before"
-          style="height: 100%; font-size: larger"></v-btn>
+          style="height: 100%; width:20px; background-color: #4A148C;"></div>
         <div style="width: 100%; display: flex; flex-direction: column; justify-content: space-between">
           <!-- Button UP-->
-          <v-btn
+          <div
             @click.left="clickUp(row_n, widget_n)"
             class="hover-button"
-            prepend-icon="mdi-table-row-plus-before"
-            style="width: 100%; font-size: larger"></v-btn>
+            style="height: 20px; width:100%; background-color: #4A148C;"></div>
           <p style="text-align: center">
-            {{ `${widget.name}` }}
+            {{ `${widget.name} (${widget.type})` }}
             <br />
             <!-- Button edit/delete-->
             <v-btn @click.left="editWidget(row_n, widget_n)" class="mx-2" icon="mdi-pencil"></v-btn>
@@ -91,19 +88,16 @@ export default {
               icon="mdi-delete"></v-btn>
           </p>
           <!-- Button DOWN-->
-          <v-btn
+          <div
             @click.left="clickDown(row_n, widget_n)"
             class="hover-button"
-            prepend-icon="mdi-table-row-plus-after"
-            style="width: 100%; font-size: larger"></v-btn>
+            style="height: 20px; width:100%; background-color: #4A148C;"></div>
         </div>
         <!-- Button RIGHT-->
-        <v-btn
-          density="compact"
+        <div
           @click.left="clickRight(row_n, widget_n)"
           class="hover-button"
-          prepend-icon="mdi-table-column-plus-after"
-          style="height: 100%; font-size: larger"></v-btn>
+          style="height: 100%; width:20px; background-color: #4A148C;"></div>
       </div>
     </div>
   </div>

@@ -24,7 +24,7 @@ export default {
       geometry: "",
       editWidgetRow: 0,
       editWidgetCol: 0,
-      grid: [[{ name: "Label1", type: "Label", edit: true, layout: { padx: "0", pady: "0", sticky: "ew" } }]],
+      grid: [[{ name: "New Element", type: "Label", edit: true, layout: { padx: "5", pady: "5", sticky: "ew" } }]],
     };
   },
   computed: {
@@ -78,7 +78,7 @@ export default {
         name: "New Element",
         type: "Label",
         edit: false,
-        layout: { padx: "0", pady: "0", sticky: "ew" },
+        layout: { padx: "5", pady: "5", sticky: "ew" },
       };
     },
     copyCodeContent() {
@@ -181,6 +181,7 @@ export default {
       <div style="width: 100%">
         <p class="text-h4 text-center">Widget Editor</p>
         <widget
+          style="position:sticky; top: 0"
           @apply-update="applyUpdate($event)"
           :currentData="grid[editWidgetRow][editWidgetCol]"
           :pos="[editWidgetRow, editWidgetCol]"></widget>
