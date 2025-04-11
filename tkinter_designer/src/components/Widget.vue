@@ -7,9 +7,9 @@ export default {
       widgets: ["Label", "Button", "Entry", "Text"],
       reliefOptions: ["","flat", "raised", "sunken", "groove", "ridge"],
       widgetLayout: {
-        padx: "2",
-        pady: "2",
-        sticky: "nsew",
+        padx: "",
+        pady: "",
+        sticky: "",
       },
       widgetOptions: {
         Label: {
@@ -47,6 +47,7 @@ export default {
   },
   watch: {
     currentData: {
+      immediate: true,
       handler(newValue) {
         // Update widgetOptions and widgetLayout with the currentData values
         if (newValue && this.widgetOptions[newValue.type]) {
