@@ -13,25 +13,40 @@ export default {
     return {
       editWidgetRow: 0,
       editWidgetCol: 0,
-      grid: [[{ name: "Label1", type: "Label", edit: true }]],
+      grid: [[{ name: "Label1", type: "Label", edit: true, layout: { padx: "0", pady: "0", sticky: "ew" } }]],
     };
   },
   computed: {
     code() {
       let codeString = "#!/usr/bin/python3\n\n" + "import tkinter as tk\n\n" + "root = tk.Tk()\n\n";
 
+      const maxCols = Math.max(...this.grid.map((row) => row.length));
+
+      for (let n = 0; n < maxCols; n++) {
+        codeString += `root.grid_columnconfigure(${n}, weight=1)\n`;
+      }
+
+      codeString += "\n";
       this.grid.map((row, row_n) => {
         row.map((widget, widget_n) => {
           const widgetName = widget.name.replace(/\s+/g, "_");
           let options = Object.entries(widget)
-            .filter(([key]) => key !== "name" && key !== "type" && key !== "edit" && widget[key] !== "")
+            .filter(
+              ([key]) => key !== "name" && key !== "type" && key !== "edit" && key !== "layout" && widget[key] !== ""
+            )
             .map(([key, value]) => `${key}="${value}"`)
             .join(", ");
 
           codeString += `${widgetName} = tk.${widget.type}(root, ${options})\n`;
-          codeString = codeString.replace("(root, )","(root)");
-          codeString += `${widgetName}.grid(row=${row_n}, column=${widget_n})\n`;
+          codeString = codeString.replace("(root, )", "(root)");
 
+          let layout = Object.entries(widget.layout)
+            .map(([key, value]) => `${key}="${value}"`)
+            .join(", ");
+
+          codeString += `${widgetName}.grid(row=${row_n}, column=${widget_n}, columnspan=${Math.floor(
+            maxCols / row.length
+          )}, ${layout})\n`;
         });
       });
       codeString += `\nroot.mainloop()\n`;
@@ -40,6 +55,14 @@ export default {
     },
   },
   methods: {
+    createNewElement() {
+      return {
+        name: "New Element",
+        type: "Label",
+        edit: false,
+        layout: { padx: "0", pady: "0", sticky: "nsew" },
+      };
+    },
     copyCodeContent() {
       const codeContent = this.code;
       navigator.clipboard.writeText(codeContent);
@@ -77,26 +100,26 @@ export default {
     clickUp(payload) {
       const [rowIndex, colIndex] = payload;
       if (rowIndex > 0) {
-        this.grid[rowIndex - 1].splice(colIndex, 0, { name: "New Element", type: "Label", edit: false });
+        this.grid[rowIndex - 1].splice(colIndex, 0, this.createNewElement());
       } else {
-        this.grid.unshift([{ name: "New Element", type: "Label", edit: false }]);
+        this.grid.unshift([this.createNewElement()]);
       }
     },
     clickDown(payload) {
       const [rowIndex, colIndex] = payload;
       if (rowIndex < this.grid.length - 1) {
-        this.grid[rowIndex + 1].splice(colIndex, 0, { name: "New Element", type: "Label", edit: false });
+        this.grid[rowIndex + 1].splice(colIndex, 0, this.createNewElement());
       } else {
-        this.grid.push([{ name: "New Element", type: "Label", edit: false }]);
+        this.grid.push([this.createNewElement()]);
       }
     },
     clickLeft(payload) {
       const [rowIndex, colIndex] = payload;
-      this.grid[rowIndex].splice(colIndex, 0, { name: "New Element", type: "Label", edit: false });
+      this.grid[rowIndex].splice(colIndex, 0, this.createNewElement());
     },
     clickRight(payload) {
       const [rowIndex, colIndex] = payload;
-      this.grid[rowIndex].splice(colIndex + 1, 0, { name: "New Element", type: "Label", edit: false });
+      this.grid[rowIndex].splice(colIndex + 1, 0, this.createNewElement());
     },
     applyUpdate(payload) {
       const widgetDat = this.grid[payload[0][0]][payload[0][1]];
@@ -104,7 +127,13 @@ export default {
       const type = widgetDat.type;
       const edit = widgetDat.edit;
 
-      this.grid[payload[0][0]][payload[0][1]] = { name: name, type: type, edit: edit, ...payload[1] };
+      this.grid[payload[0][0]][payload[0][1]] = {
+        name: name,
+        type: type,
+        edit: edit,
+        ...payload[1],
+        layout: { ...payload[2] },
+      };
     },
   },
 };
@@ -114,7 +143,7 @@ export default {
   <div class="ma-2">
     <h1 class="text-h3 text-center mb-5">Tkinter Desinger</h1>
     <hr />
-    <div style="display: flex; justify-content: space-around;margin-bottom: 10px;">
+    <div style="display: flex; justify-content: space-around; margin-bottom: 10px">
       <div style="width: 100%">
         <p class="text-h4 text-center">Grid Layout</p>
         <grid

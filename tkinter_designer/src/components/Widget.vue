@@ -5,6 +5,11 @@ export default {
   data() {
     return {
       widgets: ["Label", "Button", "Entry", "Text"],
+      widgetLayout: {
+        padx: 0,
+        pady: 0,
+        sticky: "nsew",
+      },
       widgetOptions: {
         Label: {
           text: "",
@@ -37,9 +42,27 @@ export default {
       },
     };
   },
+  watch: {
+    currentData: {
+      immediate: true,
+      handler(newValue) {
+        // Update widgetOptions with the currentData values
+        if (newValue && this.widgetOptions[newValue.type]) {
+          Object.keys(this.widgetOptions[newValue.type]).forEach((key) => {
+            this.widgetOptions[newValue.type][key] = newValue[key] || "";
+          });
+        }
+        if (newValue.layout && this.widgetLayout) {
+          Object.keys(this.widgetLayout).forEach((key) => {
+            this.widgetLayout[key] = newValue.layout[key] || "";
+          });
+        }
+      },
+    },
+  },
   methods: {
     applyUpdate() {
-      this.$emit("apply-update", [this.pos, this.widgetOptions[this.currentData.type]]);
+      this.$emit("apply-update", [this.pos, this.widgetOptions[this.currentData.type], this.widgetLayout]);
     },
   },
 };
@@ -58,6 +81,15 @@ export default {
       <v-text-field
         v-for="(value, key) in widgetOptions[currentData.type]"
         v-model="widgetOptions[currentData.type][key]"
+        class="mx-2"
+        :label="key"></v-text-field>
+    </div>
+
+    <p class="mx-4 mb-5 text-grey-lighten-1">Layout</p>
+    <div class="d-flex flex-wrap">
+      <v-text-field
+        v-for="(value, key) in widgetLayout"
+        v-model="widgetLayout[key]"
         class="mx-2"
         :label="key"></v-text-field>
     </div>
