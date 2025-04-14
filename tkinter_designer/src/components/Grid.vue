@@ -18,6 +18,8 @@ export default {
         Entry: 'mdi-form-textbox',
         Text: 'mdi-text-box-outline',
         Checkbutton: 'mdi-checkbox-marked-outline',
+        Radiobutton: 'mdi-radiobox-marked',
+        Listbox: 'mdi-format-list-bulleted',
       }
     };
   },

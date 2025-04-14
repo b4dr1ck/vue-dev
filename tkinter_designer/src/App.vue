@@ -32,18 +32,22 @@ export default {
       const maxCols = Math.max(...this.grid.map((row) => row.length));
       let codeString = "#!/usr/bin/python3\n\n" + "import tkinter as tk\n\n" + "root = tk.Tk()\n\n";
 
+      // Set the title
       if (this.title) {
         codeString += `root.title("${this.title}")\n`;
       }
 
-      if (this.title) {
+      // Set the geometry
+      if (this.geometry) {
         codeString += `root.geometry("${this.geometry}")\n\n`;
       }
 
+      // Configure the grid
       for (let n = 0; n < maxCols; n++) {
         codeString += `root.grid_columnconfigure(${n}, weight=1)\n`;
       }
 
+      // Set the options and layout for each widget
       codeString += "\n";
       this.grid.map((row, row_n) => {
         row.map((widget, widget_n) => {
@@ -52,14 +56,20 @@ export default {
             .filter(
               ([key]) => key !== "name" && key !== "type" && key !== "edit" && key !== "layout" && widget[key] !== ""
             )
-            .map(([key, value]) => `${key}="${value}"`)
+            .map(([key, value]) => {
+              if (key === "font") {
+                return `${key}=(${value})`;
+              }
+            })
             .join(", ");
 
           codeString += `${widgetName} = tk.${widget.type}(root, ${options})\n`;
           codeString = codeString.replace("(root, )", "(root)");
 
           let layout = Object.entries(widget.layout)
-            .map(([key, value]) => `${key}="${value}"`)
+            .map(([key, value]) => {
+              return `${key}="${value}"`;
+            })
             .join(", ");
 
           codeString += `${widgetName}.grid(row=${row_n}, column=${widget_n}, columnspan=${Math.floor(
@@ -177,7 +187,7 @@ export default {
       <div style="width: 100%">
         <p class="text-h4 text-center">Widget Editor</p>
         <widget
-          style="position:sticky; top: 0"
+          style="position: sticky; top: 0"
           @apply-update="applyUpdate($event)"
           :currentData="grid[editWidgetRow][editWidgetCol]"
           :pos="[editWidgetRow, editWidgetCol]"></widget>

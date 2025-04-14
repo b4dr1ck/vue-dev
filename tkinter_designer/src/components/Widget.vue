@@ -5,10 +5,11 @@ export default {
   data() {
     return {
       rules: {
-        variable: value => !value.match('^[0-9].*')|| 'Darf nicht mit Zahl beginnen',
+        variable: (value) => !value.match("^[0-9].*") || "Darf nicht mit Zahl beginnen",
       },
-      widgets: ["Label", "Button", "Entry", "Text","Checkbutton"],
-      reliefOptions: ["","flat", "raised", "sunken", "groove", "ridge"],
+      widgets: ["Label", "Button", "Entry", "Text", "Checkbutton", "Radiobutton", "Listbox"],
+      reliefOptions: ["", "flat", "raised", "sunken", "groove", "ridge"],
+      placeholders: { font: "('name', size, ...)" },
       widgetLayout: {
         padx: "",
         pady: "",
@@ -53,6 +54,20 @@ export default {
           bg: "",
           font: "",
         },
+        Radiobutton: {
+          text: "",
+          fg: "",
+          bg: "",
+          font: "",
+        },
+        Listbox: {
+          text: "",
+          fg: "",
+          bg: "",
+          font: "",
+          height: "",
+          width: "",
+        },
       },
     };
   },
@@ -83,13 +98,20 @@ export default {
 </script>
 
 <template>
-  <v-card prepend-icon="mdi-pencil" class="ma-2" :title="`${currentData.name} (${currentData.type}) - ${pos[0]} / ${pos[1]}`">
+  <v-card
+    prepend-icon="mdi-pencil"
+    class="ma-2"
+    :title="`${currentData.name} (${currentData.type}) - ${pos[0]} / ${pos[1]}`">
     <v-radio-group v-model="currentData.type" inline label="Widget Type">
       <v-radio v-for="type in widgets" :label="type" :value="type"></v-radio>
     </v-radio-group>
 
     <!--NAME-->
-    <v-text-field :rules="[rules.variable]" v-model="currentData.name" class="mx-2" label="variable name"></v-text-field>
+    <v-text-field
+      :rules="[rules.variable]"
+      v-model="currentData.name"
+      class="mx-2"
+      label="variable name"></v-text-field>
 
     <!--Options-->
     <p class="mx-4 mb-5 text-grey-lighten-1">Options</p>
@@ -98,10 +120,16 @@ export default {
         <v-text-field
           v-if="key !== 'relief'"
           min-width="150"
+          :placeholder="placeholders[key]"
           v-model="widgetOptions[currentData.type][key]"
           class="mx-2"
           :label="key"></v-text-field>
-        <v-select min-width="150" :label="key" v-else v-model="widgetOptions[currentData.type][key]" :items="reliefOptions"></v-select>
+        <v-select
+          min-width="150"
+          :label="key"
+          v-else
+          v-model="widgetOptions[currentData.type][key]"
+          :items="reliefOptions"></v-select>
       </div>
     </div>
 
