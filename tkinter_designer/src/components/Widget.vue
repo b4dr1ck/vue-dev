@@ -9,7 +9,7 @@ export default {
       },
       widgets: ["Label", "Button", "Entry", "Text", "Checkbutton", "Radiobutton", "Listbox"],
       reliefOptions: ["", "flat", "raised", "sunken", "groove", "ridge"],
-      placeholders: { font: "('name', size, ...)" },
+      placeholders: { font: "('Arial',14)" },
       widgetLayout: {
         padx: "",
         pady: "",
