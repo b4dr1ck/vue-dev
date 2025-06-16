@@ -4,7 +4,7 @@ import { tasks } from "./seed.js";
 
 export default {
   name: "App",
-  emits: ["update-title", "update-text", "update-color", "update-lock","delete-task"],
+  emits: ["update-title", "update-text", "update-color", "update-lock", "delete-task", "update-deadline"],
   data() {
     return {
       tasks: tasks,
@@ -71,6 +71,15 @@ export default {
         this.saveToLocalStorage();
       }
     },
+    updateDeadline(payload) {
+      const value = payload.deadline;
+      const id = payload.id;
+      const task = this.tasks.find((task) => task.id === id);
+      if (task) {
+        task.deadline = value;
+      }
+      this.saveToLocalStorage();
+    },
     createNewTask() {
       console.log("new");
       const newTask = {
@@ -78,6 +87,7 @@ export default {
         title: "",
         text: "",
         color: "grey-darken-4",
+        deadline: "",
       };
       this.tasks.push(newTask);
       this.saveToLocalStorage();
@@ -92,10 +102,11 @@ export default {
     <div
       id="newTask"
       @click="createNewTask($event)"
-      style="min-height: 200px;min-width: 300px;"
-      class=" d-flex cursor-pointer ma-1">
-      <v-icon class="create-task-icon pa-1" icon="mdi-plus-circle-outline"></v-icon>
-      <p class="create-task-text ma-auto">Create New Task</p>
+      style="min-height: 200px; min-width: 300px"
+      class="d-flex cursor-pointer ma-1 border-dashed">
+      <div class="d-flex ma-auto">
+        <v-icon class="pa-1" style="font-size: 64px" icon="mdi-plus-circle-outline"></v-icon>
+      </div>
     </div>
     <task
       class="ma-1 flex-grow-1"
@@ -104,12 +115,14 @@ export default {
       @update-text="updateText($event)"
       @update-color="updateColor($event)"
       @update-lock="updateLock($event)"
+      @update-deadline="updateDeadline($event)"
       style="max-width: 400px; min-height: 200px"
       :id="task.id"
       :title="task.title"
       :text="task.text"
       :color="task.color"
       :lock="task.lock"
+      :deadline="task.deadline"
       v-for="task in tasks"></task>
   </div>
 </template>

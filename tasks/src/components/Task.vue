@@ -6,7 +6,14 @@ export default {
   components: {
     Color,
   },
-  props: ["title", "text", "id", "color", "lock"],
+  props: {
+    id: Number,
+    title: String,
+    text: String,
+    color: String,
+    lock: Boolean,
+    deadline: String,
+  },
   data() {
     return {
       availableColors: [
@@ -24,6 +31,12 @@ export default {
   computed: {
     lockActive() {
       return this.lock ? "#ccc" : "rgba(0,0,0,0.7)";
+    },
+    isOverdue() {
+      if (!this.deadline) return false;
+      const deadlineDate = new Date(this.deadline);
+      const today = new Date();
+      return deadlineDate < today;
     },
   },
   methods: {
@@ -45,13 +58,16 @@ export default {
       }
       this.$emit("delete-task", { id: this.id });
     },
+    updateDeadline(value) {
+      this.$emit("update-deadline", { deadline: value, id: this.id });
+    },
   },
 };
 </script>
 
 <template>
   <div :class="`bg-${color} pa-2`">
-    <div class="d-flex">
+    <div class="d-flex mb-2">
       <color
         @click="updateColor(availableColor)"
         v-for="availableColor in availableColors"
@@ -62,7 +78,7 @@ export default {
       :readonly="lock"
       :bg-color="color"
       @update:modelValue="updateTitle($event)"
-      label="TaskTitel"
+      label="Task Titel"
       density="compact"
       :model-value="title"
       variant="solo-filled"></v-text-field>
@@ -76,6 +92,17 @@ export default {
       :model-value="text"
       variant="solo-filled">
     </v-textarea>
+    <v-text-field
+      :prepend-icon="isOverdue ? 'mdi-alert text-red' : 'mdi-calendar'"
+      :readonly="lock"
+      :bg-color="color"
+      placeholder="YYYY-MM-DD HH:MM"
+      @update:modelValue="updateDeadline($event)"
+      label="Deadline"
+      density="compact"
+      :model-value="deadline"
+      variant="solo-filled"></v-text-field>
+
     <v-icon title="Task sperren" @click="updateLock(id)" :style="`color:${lockActive};`" icon="mdi-lock"></v-icon>
     <v-icon title="Task löschen" @click="deleteTask(id)" style="color:#ccc;" icon="mdi-trash-can"></v-icon>
 

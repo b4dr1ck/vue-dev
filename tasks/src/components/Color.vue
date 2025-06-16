@@ -8,7 +8,7 @@ export default {
   computed: {
     isActive() {
       if (this.availableColor === this.activeColor) {
-        return "border: 1px solid white";
+        return "border: 1px solid white;";
       }
       return "";
     },

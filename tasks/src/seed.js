@@ -5,6 +5,7 @@ export const tasks = [
     text: "",
     lock: false,
     color: "grey-darken-4",
+    deadline:"",
   },
   {
     id: 1,
@@ -12,6 +13,7 @@ export const tasks = [
     text: "",
     lock: false,
     color: "grey-darken-4",
+    deadline:"",
   },
   {
     id: 2,
@@ -19,6 +21,7 @@ export const tasks = [
     text: "",
     lock: false,
     color: "grey-darken-4",
+    deadline:"",
   },
   {
     id: 3,
@@ -26,6 +29,7 @@ export const tasks = [
     text: "",
     lock: false,
     color: "grey-darken-4",
+    deadline:"",
   },
   {
     id: 4,
@@ -33,5 +37,6 @@ export const tasks = [
     text: "",
     lock: false,
     color: "grey-darken-4",
+    deadline:"",
   },
 ];
