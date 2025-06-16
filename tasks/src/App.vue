@@ -1,10 +1,10 @@
 <script>
-import Task from "./components/task.vue";
+import Task from "./components/Task.vue";
 import { tasks } from "./seed.js";
 
 export default {
   name: "App",
-  emits: ["update-title", "update-text", "update-color", "update-lock"],
+  emits: ["update-title", "update-text", "update-color", "update-lock","delete-task"],
   data() {
     return {
       tasks: tasks,
@@ -63,7 +63,8 @@ export default {
       }
       this.saveToLocalStorage();
     },
-    deleteTask(id) {
+    deleteTask(payload) {
+      const id = payload.id;
       const index = this.tasks.findIndex((task) => task.id === id);
       if (index !== -1) {
         this.tasks.splice(index, 1);
@@ -74,7 +75,7 @@ export default {
       console.log("new");
       const newTask = {
         id: Date.now(),
-        title: "New Task",
+        title: "",
         text: "",
         color: "grey-darken-4",
       };
@@ -87,9 +88,18 @@ export default {
 
 <template>
   <div class="d-flex flex-wrap">
+    <!--New Task-->
+    <div
+      id="newTask"
+      @click="createNewTask($event)"
+      style="min-height: 200px;min-width: 300px;"
+      class=" d-flex cursor-pointer ma-1">
+      <v-icon class="create-task-icon pa-1" icon="mdi-plus-circle-outline"></v-icon>
+      <p class="create-task-text ma-auto">Create New Task</p>
+    </div>
     <task
       class="ma-1 flex-grow-1"
-      @click.right.prevent="deleteTask(task.id)"
+      @delete-task="deleteTask($event)"
       @update-title="updateTitle($event)"
       @update-text="updateText($event)"
       @update-color="updateColor($event)"
@@ -101,15 +111,17 @@ export default {
       :color="task.color"
       :lock="task.lock"
       v-for="task in tasks"></task>
-
-    <!--New Task-->
-    <div
-      @click="createNewTask($event)"
-      style="width: 400px; min-height: 200px"
-      class="border-dashed d-flex cursor-pointer">
-      <p class="ma-auto"><v-icon icon="mdi-plus"></v-icon>New Task</p>
-    </div>
   </div>
 </template>
 
-<style></style>
+<style>
+#newTask {
+  color: #aaa;
+  border-color: #aaa;
+}
+
+#newTask:hover {
+  color: white;
+  border-color: white;
+}
+</style>
