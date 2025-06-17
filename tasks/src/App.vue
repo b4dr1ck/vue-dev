@@ -102,8 +102,8 @@ export default {
     <div
       id="newTask"
       @click="createNewTask($event)"
-      style="min-height: 200px; min-width: 300px"
-      class="d-flex cursor-pointer ma-1 border-dashed">
+      style="height: 100%; width: 100%"
+      class="d-flex cursor-pointer ma-1 border-dashed pa-1">
       <div class="d-flex ma-auto">
         <v-icon class="pa-1" style="font-size: 64px" icon="mdi-plus-circle-outline"></v-icon>
       </div>

@@ -98,7 +98,7 @@ export default {
       :bg-color="color"
       placeholder="YYYY-MM-DD HH:MM"
       @update:modelValue="updateDeadline($event)"
-      label="Deadline"
+      label="Task Deadline"
       density="compact"
       :model-value="deadline"
       variant="solo-filled"></v-text-field>
