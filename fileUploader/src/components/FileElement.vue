@@ -5,7 +5,6 @@ export default {
   data() {
     return {
       maxContent: 500,
-      showFullContent: false,
       imageDataUrl: null,
       typeIcons: {
         "text/": "mdi-file-document",
@@ -18,13 +17,6 @@ export default {
     };
   },
   computed: {
-    displayedContent() {
-      return this.showFullContent
-        ? this.file.content // Show full content
-        : this.file.content.length > this.maxContent
-        ? this.file.content.substring(0, this.maxContent) + "\n..."
-        : this.file.content; // Show truncated content
-    },
     isImage() {
       return this.file.type.startsWith("image/"); // Check if the file type is an image
     },
@@ -44,9 +36,6 @@ export default {
     },
   },
   methods: {
-    toggleContent() {
-      this.showFullContent = !this.showFullContent; // Toggle the flag
-    },
     convertToDataUrl() {
       if (this.isImage && this.file.content instanceof Blob) {
         const reader = new FileReader();
@@ -70,14 +59,13 @@ export default {
     </h3>
     <!-- Render image if file type is an image -->
     <div v-if="isImage">
-      <img :src="imageDataUrl" alt="Uploaded Image" style="max-width: 500px;" />
+      <img :src="imageDataUrl" alt="Uploaded Image" style="max-width: 500px" />
     </div>
     <!-- Render text content for non-image files -->
     <div v-else>
-      <v-btn v-if="file.content.length > maxContent" @click="toggleContent" class="ma-1">
-        {{ showFullContent ? "Show Less" : "Show More" }}
-      </v-btn>
-      <pre :class="`border pa-1 overflow-y-scroll text-${textColor}`">{{ displayedContent }}</pre>
+      <pre style="max-height: 500px;" :class="`border pa-1 overflow-y-scroll overflow-x-scroll text-${textColor}`">{{
+        file.content
+      }}</pre>
     </div>
   </div>
 </template>
