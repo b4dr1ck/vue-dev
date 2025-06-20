@@ -47,7 +47,7 @@ export default {
             if (this.isTextBasedContent(fileContent) || this.checkAllowedType(file.type)) {
               this.filesArray.push({ name: file.name, content: fileContent, type: file.type });
             } else {
-              this.filesArray.push({ name: file.name, content: "<BINARY>", type: file.type });
+              this.filesArray.push({ name: file.name, content: "can not read content", type: file.type, color: "red" });
             }
           };
           reader.onerror = (e) => {

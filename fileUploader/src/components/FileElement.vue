@@ -28,6 +28,11 @@ export default {
     isImage() {
       return this.file.type.startsWith("image/"); // Check if the file type is an image
     },
+    textColor() {
+      if (this.file.color) {
+        return this.file.color; // Use the color from the file object if provided
+      }
+    },
     showIcon() {
       // Determine the icon to show based on the file type
       for (const type in this.typeIcons) {
@@ -65,14 +70,14 @@ export default {
     </h3>
     <!-- Render image if file type is an image -->
     <div v-if="isImage">
-      <img :src="imageDataUrl" alt="Uploaded Image" class="w-25" />
+      <img :src="imageDataUrl" alt="Uploaded Image" style="max-width: 500px;" />
     </div>
     <!-- Render text content for non-image files -->
     <div v-else>
       <v-btn v-if="file.content.length > maxContent" @click="toggleContent" class="ma-1">
         {{ showFullContent ? "Show Less" : "Show More" }}
       </v-btn>
-      <pre class="border pa-1 overflow-y-scroll">{{ displayedContent }}</pre>
+      <pre :class="`border pa-1 overflow-y-scroll text-${textColor}`">{{ displayedContent }}</pre>
     </div>
   </div>
 </template>
