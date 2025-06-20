@@ -76,7 +76,7 @@ export default {
       const id = payload.id;
       const task = this.tasks.find((task) => task.id === id);
       if (task) {
-        task.deadline = value;
+        task.deadline = value.toString();
       }
       this.saveToLocalStorage();
     },

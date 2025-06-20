@@ -1,10 +1,12 @@
 <script>
 import Color from "./Color.vue";
+import { VDateInput } from "vuetify/labs/VDateInput";
 
 export default {
   name: "Task",
   components: {
     Color,
+    VDateInput,
   },
   props: {
     id: Number,
@@ -92,20 +94,15 @@ export default {
       :model-value="text"
       variant="solo-filled">
     </v-textarea>
-    <v-text-field
-      :prepend-icon="isOverdue ? 'mdi-alert text-red' : 'mdi-calendar'"
-      :readonly="lock"
-      :bg-color="color"
-      placeholder="YYYY-MM-DD HH:MM"
-      @update:modelValue="updateDeadline($event)"
-      label="Task Deadline"
-      density="compact"
+    <v-date-input
+      :class="isOverdue ? 'text-red' : 'text-white'"
       :model-value="deadline"
-      variant="solo-filled"></v-text-field>
-
+      :readonly="lock"
+      input-format="YYYY-MM-DD HH:mm"
+      @update:modelValue="updateDeadline($event)"
+      label="Task Deadline"></v-date-input>
     <v-icon title="Task sperren" @click="updateLock(id)" :style="`color:${lockActive};`" icon="mdi-lock"></v-icon>
-    <v-icon title="Task löschen" @click="deleteTask(id)" style="color:#ccc;" icon="mdi-trash-can"></v-icon>
-
+    <v-icon title="Task löschen" @click="deleteTask(id)" style="color: #ccc" icon="mdi-trash-can"></v-icon>
   </div>
 </template>
 
