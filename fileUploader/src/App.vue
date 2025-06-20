@@ -63,9 +63,15 @@ export default {
 
 <template>
   <div class="ma-2">
-    <v-file-upload @update:modelValue="filesUpload($event)" multiple show-size density="compact" variant="compact">
-    </v-file-upload>
-    <file-element v-for="(file, index) in filesArray" :key="index" :file="file" class="mt-2"></file-element>
+    <v-row>
+      <v-col>
+        <v-file-upload @update:modelValue="filesUpload($event)" multiple show-size density="compact" variant="compact">
+        </v-file-upload>
+      </v-col>
+      <v-col v-if="filesArray.length > 0">
+        <file-element v-for="(file, index) in filesArray" :key="index" :file="file" class="mt-2"></file-element>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
