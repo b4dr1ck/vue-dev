@@ -156,7 +156,7 @@ export default {
 <template>
   <div class="ma-1">
     <div>
-      <p @paste="pasteJson($event)" class="paste text-h5 text-center">Paste Json (Ctrl + V)</p>
+      <p @paste="pasteJson($event)" class="paste text-h5 text-center"><v-icon icon="mdi-content-paste"></v-icon> Paste Json (Ctrl + V)</p>
       <p class="font-weight-thin text-center">OR</p>
       <v-file-upload
         @update:model-value="fileUpload($event)"
