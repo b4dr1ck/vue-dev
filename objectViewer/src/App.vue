@@ -70,6 +70,7 @@ export default {
         reader.readAsText(file); // Read the file as text
       } else {
         alert("Please upload a valid JSON file.");
+        this.loading = false;
       }
     },
     pasteJson(event) {
@@ -177,7 +178,8 @@ export default {
       <pre class="overflow-x-auto" v-html="filteredData"></pre>
     </div>
     
-    <div class="mt-5 overflow-x-auto">
+    <div class="border pa-1 mt-5 overflow-x-auto">
+      root
       <object-element :value="value" :_key="key" v-for="(value, key) in data" />
     </div>
   </div>
