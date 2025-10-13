@@ -8,6 +8,7 @@ export default {
   data() {
     return {
       tasks: tasks,
+      draggedTask: null, // To store the task being dragged
     };
   },
   components: {
@@ -92,6 +93,28 @@ export default {
       this.tasks.push(newTask);
       this.saveToLocalStorage();
     },
+    onDragStart(task) {
+      if (task.lock) return; // Prevent dragging if the task is locked
+      this.draggedTask = task; // Store the dragged task
+    },
+    onDragOver(event) {
+      event.preventDefault(); // Allow dropping
+    },
+    onDrop(targetTask) {
+      // Swap the dragged task with the target task
+      const draggedIndex = this.tasks.findIndex((t) => t.id === this.draggedTask.id);
+      const targetIndex = this.tasks.findIndex((t) => t.id === targetTask.id);
+
+      // Swap the tasks in the array
+      if (draggedIndex !== -1 && targetIndex !== -1) {
+        const temp = this.tasks[draggedIndex];
+        this.tasks[draggedIndex] = this.tasks[targetIndex];
+        this.tasks[targetIndex] = temp;
+      }
+
+      // Save the updated task order
+      this.saveToLocalStorage();
+    },
   },
 };
 </script>
@@ -123,7 +146,13 @@ export default {
       :color="task.color"
       :lock="task.lock"
       :deadline="task.deadline"
-      v-for="task in tasks"></task>
+      v-for="task in tasks"
+      :key="task.id"
+      draggable="true" 
+      @dragstart="onDragStart(task)"
+      @dragover="onDragOver($event)"
+      @drop="onDrop(task)" 
+    ></task>
   </div>
 </template>
 
@@ -136,5 +165,15 @@ export default {
 #newTask:hover {
   color: white;
   border-color: white;
+}
+
+/* Optional: Add some visual feedback for dragging */
+[draggable="true"] {
+  cursor: grab;
+}
+
+[draggable="true"]:active {
+  cursor: grabbing;
+  opacity: 0.7;
 }
 </style>
