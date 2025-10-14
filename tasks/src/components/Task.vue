@@ -95,6 +95,7 @@ export default {
       variant="solo-filled">
     </v-textarea>
     <v-date-input
+      :clearable="true"
       :class="isOverdue ? 'text-red' : 'text-white'"
       :model-value="deadline"
       :readonly="lock"

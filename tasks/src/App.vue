@@ -73,7 +73,9 @@ export default {
       }
     },
     updateDeadline(payload) {
-      const value = payload.deadline;
+      let value = payload.deadline;
+      if (!value) value = "";
+
       const id = payload.id;
       const task = this.tasks.find((task) => task.id === id);
       if (task) {
@@ -93,7 +95,7 @@ export default {
       this.tasks.push(newTask);
       this.saveToLocalStorage();
     },
-    onDragStart(task) {
+    onDragStart(task, event) {
       if (task.lock) return; // Prevent dragging if the task is locked
       this.draggedTask = task; // Store the dragged task
     },
@@ -139,7 +141,7 @@ export default {
       @update-color="updateColor($event)"
       @update-lock="updateLock($event)"
       @update-deadline="updateDeadline($event)"
-      style="min-width: 400px; min-height: 200px; max-width: 600px;"
+      style="min-width: 400px; min-height: 200px; max-width: 600px"
       :id="task.id"
       :title="task.title"
       :text="task.text"
@@ -148,11 +150,10 @@ export default {
       :deadline="task.deadline"
       v-for="task in tasks"
       :key="task.id"
-      draggable="true" 
-      @dragstart="onDragStart(task)"
+      draggable="true"
+      @dragstart="onDragStart(task, $event)"
       @dragover="onDragOver($event)"
-      @drop="onDrop(task)" 
-    ></task>
+      @drop="onDrop(task)"></task>
   </div>
 </template>
 
