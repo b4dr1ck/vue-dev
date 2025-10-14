@@ -139,7 +139,7 @@ export default {
       @update-color="updateColor($event)"
       @update-lock="updateLock($event)"
       @update-deadline="updateDeadline($event)"
-      style="max-width: 400px; min-height: 200px"
+      style="min-width: 400px; min-height: 200px; max-width: 600px;"
       :id="task.id"
       :title="task.title"
       :text="task.text"
