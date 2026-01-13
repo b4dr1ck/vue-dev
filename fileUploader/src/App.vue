@@ -11,7 +11,6 @@ export default {
       log: [],
       filesStored: [],
       filesArray: [],
-      allowedTypes: ["text/", "image/", "application/json", "application/pdf"],
     };
   },
   mounted() {
@@ -29,21 +28,6 @@ export default {
       });
   },
   methods: {
-    checkAllowedType(type) {
-      let check = false;
-      this.allowedTypes.forEach((allowedType) => {
-        if (type.startsWith(allowedType)) {
-          check = true;
-        }
-      });
-      return check;
-    },
-
-    checkFileSize(size) {
-      const maxSize = 10 * 1024 * 1024; // 5 MB
-      return size <= maxSize;
-    },
-
     deleteFile(filename) {
       fetch("http://127.0.0.1/cgi-bin/upload.py", {
         method: "POST",
@@ -75,10 +59,16 @@ export default {
         body: JSON.stringify({
           filename: fileData.name,
           content: fileData.content,
+          size: fileData.size,
+          type: fileData.type,
         }),
       })
         .then((response) => response.json())
         .then((data) => {
+          if (data.status !== "success") {
+            this.log.push({ msg: data.message, color: "red" });
+            return;
+          }
           console.log(`File ${fileData.name} uploaded successfully:`, data);
           this.log.push({ msg: `File ${fileData.name} uploaded successfully`, color: "green" });
           this.filesStored = data.files;
@@ -97,18 +87,7 @@ export default {
           const reader = new FileReader();
           reader.onload = (e) => {
             const fileContent = e.target.result; // Base64-encoded content
-            if (!this.checkAllowedType(file.type)) {
-              console.error(`File type not allowed: ${file.type}`);
-              this.log.push({ msg: `File type not allowed: ${file.type}\n`, color: "red" });
-              return;
-            }
-            if (!this.checkFileSize(file.size)) {
-              console.error(`File size too large: ${file.size} bytes`);
-              this.log.push({ msg: `File size too large: ${file.size} bytes\n`, color: "red" });
-              return;
-            }
-
-            const fileData = { name: file.name, content: fileContent, type: file.type };
+            const fileData = { name: file.name, content: fileContent, type: file.type, size: file.size };
             this.filesArray.push(fileData);
             // Send the file to the server
             this.uploadFileToServer(fileData);
@@ -131,29 +110,39 @@ export default {
     <v-row>
       <v-col>
         <v-file-upload @update:modelValue="filesUpload($event)" multiple show-size density="compact" variant="compact">
-          <template v-slot:item="{ props }">
-            <v-file-upload-item> </v-file-upload-item>
-          </template>
         </v-file-upload>
       </v-col>
     </v-row>
-    <pre class="d-flex flex-column"><span :class="'text-' + msg.color" v-for="msg in log"> {{ msg.msg }}</span></pre>
-    <v-list density="compact" v-if="filesStored.length > 0">
-      <v-list-subheader>Uploaded Files</v-list-subheader>
-      <v-list-item v-for="file in filesStored" :key="file.filename" :value="file.filename" color="primary">
-        <template v-slot:prepend>
-          <v-icon icon="mdi-file-image"></v-icon>
-        </template>
+    <div class="d-flex">
+      <v-list width="100%" density="compact" v-if="filesStored.length > 0">
+        <v-list-subheader>Uploaded Files</v-list-subheader>
+        <v-list-item v-for="file in filesStored" :key="file.filename" :value="file.filename" color="primary">
+          <template v-slot:prepend>
+            <v-icon icon="mdi-file-image"></v-icon>
+          </template>
 
-        <v-list-item-title v-text="file.filename + ' (' + file.size + ' kB)'"></v-list-item-title>
-        <template v-slot:append>
-          <v-btn icon @click.stop="deleteFile(file.filename)">
-            <v-icon icon="mdi-delete"></v-icon>
-          </v-btn>
-        </template>
-      </v-list-item>
-    </v-list>
+          <v-list-item-title v-text="file.filename + ' (' + file.size + ' kB)'"></v-list-item-title>
+          <template v-slot:append>
+            <v-btn icon @click.stop="deleteFile(file.filename)">
+              <v-icon icon="mdi-delete"></v-icon>
+            </v-btn>
+          </template>
+        </v-list-item>
+      </v-list>
+      <pre
+        v-if="log.length > 0"
+        class="d-flex flex-column bg-black pa-2"><span :class="'text-' + msg.color" v-for="msg in log"> {{ msg.msg }}</span></pre>
+      <pre v-else class="d-flex flex-column bg-black text-green pa-2">Log</pre>
+    </div>
   </div>
 </template>
 
-<style></style>
+<style>
+.v-file-upload-items {
+  display: none !important;
+}
+
+pre {
+  width: 100%;
+}
+</style>

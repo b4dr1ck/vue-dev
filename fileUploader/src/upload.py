@@ -16,8 +16,19 @@ def print_headers():
     print()
 
 
+def list_files():
+    files = os.listdir(UPLOAD_DIR)
+    files_info = [
+        {"filename": f, "size": os.path.getsize(os.path.join(UPLOAD_DIR, f))}
+        for f in files
+    ]
+    return files_info
+
+
 # Directory to save uploaded files
 UPLOAD_DIR = "/usr/lib/cgi-bin/uploads"
+MAX_SIZE = 10 * 1024 * 1024  # 10 MB
+ALLOWED_FILETYPE = ["image/png", "image/jpeg", "application/pdf", "text/plain"]
 
 # Ensure the upload directory exists
 if not os.path.exists(UPLOAD_DIR):
@@ -25,22 +36,18 @@ if not os.path.exists(UPLOAD_DIR):
 
 # Read the JSON payload from stdin
 content_length = int(os.environ.get("CONTENT_LENGTH", 0))
+raw_payload = sys.stdin.read(content_length)
+
+# No payload provided, list all files in UPLOAD_DIR
 if content_length == 0:
-    # No payload provided, list all files in UPLOAD_DIR
     print_headers()
     try:
-        files = os.listdir(UPLOAD_DIR)
-        files_info = [
-            {"filename": f, "size": os.path.getsize(os.path.join(UPLOAD_DIR, f))}
-            for f in files
-        ]
-        print(json.dumps({"status": "success", "files": files_info}))
+        print(json.dumps({"status": "success", "files": list_files()}))
     except Exception as e:
         print(json.dumps({"status": "error", "message": str(e)}))
     sys.exit(0)
 
-raw_payload = sys.stdin.read(content_length)
-
+# Parse the JSON payload
 try:
     payload = json.loads(raw_payload)
 except json.JSONDecodeError as e:
@@ -54,28 +61,51 @@ filename = payload.get(
 )
 file_content = payload.get("content", "")
 delete = payload.get("delete", False)
+file_size = payload.get("size", None)
+file_type = payload.get("type", None)
 
-# delete a file is requested
+# delete a file if requested
 if delete:
     os.remove(os.path.join(UPLOAD_DIR, delete))
-    files = os.listdir(UPLOAD_DIR)
-    files_info = [
-        {"filename": f, "size": os.path.getsize(os.path.join(UPLOAD_DIR, f))}
-        for f in files
-    ]
-
     print_headers()
     print(
         json.dumps(
             {
                 "status": "success",
                 "message": f"File {filename} deleted.",
-                "files": files_info,
+                "files": list_files(),
             }
         )
     )
     sys.exit(0)
 
+# check file-type
+if file_type and file_type not in ALLOWED_FILETYPE:
+    print_headers()
+    print(
+        json.dumps(
+            {
+                "status": "error",
+                "message": f"Unsupported file type: {file_type}",
+                "files": list_files(),
+            }
+        )
+    )
+    sys.exit(1)
+
+# check file-size
+if file_size and file_size > MAX_SIZE:  # 10 MB limit
+    print_headers()
+    print(
+        json.dumps(
+            {
+                "status": "error",
+                "message": f"File size exceeds the 10 {MAX_SIZE} limit.",
+                "files": list_files(),
+            }
+        )
+    )
+    sys.exit(1)
 
 # Decode the content if it's base64-encoded
 if file_content.startswith("data:"):
@@ -88,19 +118,14 @@ file_path = os.path.join(UPLOAD_DIR, filename)
 with open(file_path, "wb") as file:
     file.write(file_content)
 
-
 # Respond with success
 print_headers()
-files = os.listdir(UPLOAD_DIR)
-files_info = [
-    {"filename": f, "size": os.path.getsize(os.path.join(UPLOAD_DIR, f))} for f in files
-]
 print(
     json.dumps(
         {
             "status": "success",
             "message": f"File saved as {filename}",
-            "files": files_info,
+            "files": list_files(),
         }
     )
 )
