@@ -44,6 +44,28 @@ export default {
       return size <= maxSize;
     },
 
+    deleteFile(filename) {
+      fetch("http://127.0.0.1/cgi-bin/upload.py", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          delete: filename,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(`File ${filename} deleted successfully:`, data);
+          this.log.push({ msg: `File ${filename} deleted successfully`, color: "green" });
+          this.filesStored = data.files;
+        })
+        .catch((error) => {
+          console.error(`Error deleting file ${filename}:`, error);
+          this.log.push({ msg: `Error deleting file ${filename}: ${error}\n`, color: "red" });
+        });
+    },
+
     uploadFileToServer(fileData) {
       fetch("http://127.0.0.1/cgi-bin/upload.py", {
         method: "POST",
@@ -115,12 +137,21 @@ export default {
     <pre class="d-flex flex-column"><span :class="'text-' + msg.color" v-for="msg in log"> {{ msg.msg }}</span></pre>
     <v-list density="compact" v-if="filesStored.length > 0">
       <v-list-subheader>Uploaded Files</v-list-subheader>
-      <v-list-item v-for="file in filesStored" :key="file.filename" :value="file.filename" color="primary">
+      <v-list-item
+        v-for="file in filesStored"
+        :key="file.filename"
+        :value="file.filename"
+        color="primary">
         <template v-slot:prepend>
           <v-icon icon="mdi-file-image"></v-icon>
         </template>
 
         <v-list-item-title v-text="file.filename + ' (' + file.size + ' kB)'"></v-list-item-title>
+        <template v-slot:append>
+          <v-btn icon @click.stop="deleteFile(file.filename)">
+            <v-icon icon="mdi-delete"></v-icon>
+          </v-btn>
+        </template>
       </v-list-item>
     </v-list>
   </div>
