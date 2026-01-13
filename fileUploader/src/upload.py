@@ -15,7 +15,7 @@ def print_headers():
     print()
 
 # Directory to save uploaded files
-UPLOAD_DIR = "/home/itsv.org.sv-services.at/patrick.reiter@itsv.at/uploads"
+UPLOAD_DIR = "/usr/lib/cgi-bin/uploads"
 
 # Ensure the upload directory exists
 if not os.path.exists(UPLOAD_DIR):
