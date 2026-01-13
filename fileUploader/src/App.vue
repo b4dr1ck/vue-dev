@@ -131,17 +131,16 @@ export default {
     <v-row>
       <v-col>
         <v-file-upload @update:modelValue="filesUpload($event)" multiple show-size density="compact" variant="compact">
+          <template v-slot:item="{ props }">
+            <v-file-upload-item> </v-file-upload-item>
+          </template>
         </v-file-upload>
       </v-col>
     </v-row>
     <pre class="d-flex flex-column"><span :class="'text-' + msg.color" v-for="msg in log"> {{ msg.msg }}</span></pre>
     <v-list density="compact" v-if="filesStored.length > 0">
       <v-list-subheader>Uploaded Files</v-list-subheader>
-      <v-list-item
-        v-for="file in filesStored"
-        :key="file.filename"
-        :value="file.filename"
-        color="primary">
+      <v-list-item v-for="file in filesStored" :key="file.filename" :value="file.filename" color="primary">
         <template v-slot:prepend>
           <v-icon icon="mdi-file-image"></v-icon>
         </template>
