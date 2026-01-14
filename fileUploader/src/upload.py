@@ -25,10 +25,20 @@ def list_files():
     return files_info
 
 
+def get_total_directory_size(directory):
+    """Calculate the total size of all files in the directory."""
+    total_size = 0
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            total_size += os.path.getsize(os.path.join(root, file))
+    return total_size
+
+
 # Directory to save uploaded files
 UPLOAD_DIR = "/usr/lib/cgi-bin/uploads"
 MAX_SIZE = 10 * 1024 * 1024  # 10 MB
 ALLOWED_FILETYPE = ["image/png", "image/jpeg", "application/pdf", "text/plain"]
+TOTAL_SIZE_LIMIT = 100 * 1024 * 1024  # 100 MB total size limit for all files
 
 # Ensure the upload directory exists
 if not os.path.exists(UPLOAD_DIR):
@@ -102,6 +112,20 @@ if file_size and file_size > MAX_SIZE:  # 10 MB limit
                 "status": "error",
                 "message": f"File size exceeds the 10 {MAX_SIZE} limit.",
                 "files": list_files(),
+            }
+        )
+    )
+    sys.exit(1)
+
+# Check the total size of files in the directory
+current_total_size = get_total_directory_size(UPLOAD_DIR)
+if current_total_size + len(file_content) > TOTAL_SIZE_LIMIT:
+    print_headers()
+    print(
+        json.dumps(
+            {
+                "status": "error",
+                "message": f"Total size of files in the upload directory exceeds the limit of {TOTAL_SIZE_LIMIT / (1024 * 1024)} MB",
             }
         )
     )

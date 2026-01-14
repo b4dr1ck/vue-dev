@@ -8,6 +8,7 @@ export default {
   },
   data() {
     return {
+      logEnabled: false,
       log: [],
       filesStored: [],
       filesArray: [],
@@ -26,6 +27,11 @@ export default {
         console.error("Error contacting server on mount:", error);
         this.log.push({ msg: `Error contacting server on mount: ${error}`, color: "red" });
       });
+  },
+  computed: {
+    arrowDir() {
+      return this.logEnabled ? "right" : "left";
+    },
   },
   methods: {
     deleteFile(filename) {
@@ -101,6 +107,10 @@ export default {
         });
       }
     },
+
+    toggleLog() {
+      this.logEnabled = !this.logEnabled;
+    }
   },
 };
 </script>
@@ -129,10 +139,11 @@ export default {
           </template>
         </v-list-item>
       </v-list>
+      <div v-if="log.length > 0 || filesStored.length > 0" title="Toggle Log-Output" @click="toggleLog()" id="separator"><v-btn width="20px" height="100%"><v-icon :icon="'mdi-arrow-' + arrowDir "></v-icon></v-btn></div>
       <pre
-        v-if="log.length > 0"
+        v-if="log.length > 0 && logEnabled"
         class="d-flex flex-column bg-black pa-2"><span :class="'text-' + msg.color" v-for="msg in log"> {{ msg.msg }}</span></pre>
-      <pre v-else class="d-flex flex-column bg-black text-green pa-2">Log</pre>
+      <pre v-else-if="logEnabled" class="d-flex flex-column bg-black text-green pa-2"> </pre>
     </div>
   </div>
 </template>
