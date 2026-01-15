@@ -12,14 +12,14 @@ export default {
       log: [],
       filesStored: [],
       filesArray: [],
-      url:"",
+      url: "",
     };
   },
   mounted() {
-    this.url= window.location.href + "upload.py"; // production-url
-    
+    this.url = window.location.href + "upload.py"; // production-url
+
     if (import.meta.env.DEV) {
-      this.url = "http://127.0.0.1/fileUploader/upload.py"
+      this.url = "http://127.0.0.1/fileUploader/upload.py";
     }
 
     this.filesStored = [];
@@ -64,18 +64,29 @@ export default {
     },
 
     downLoadFile(filename) {
-      const file = this.filesStored.find((f) => f.filename === filename);
-      if (file) {
-        const link = document.createElement("a");
-        link.href = file.url;
-        link.download = file.filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        this.log.push({ msg: `File ${filename} download initiated`, color: "green" });
-      } else {
-        this.log.push({ msg: `File ${filename} not found for download`, color: "red" });
-      }
+      fetch(this.url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          download: filename,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status !== "success") {
+            this.log.push({ msg: data.message, color: "red" });
+            return;
+          }
+          const link = document.createElement("a");
+          link.href = data.content; // Base64-encoded content
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          this.log.push({ msg: `File ${filename} downloaded successfully`, color: "green" });
+        });
     },
 
     uploadFileToServer(fileData) {

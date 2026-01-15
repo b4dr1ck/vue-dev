@@ -71,8 +71,41 @@ filename = payload.get(
 )
 file_content = payload.get("content", "")
 delete = payload.get("delete", False)
+download = payload.get("download", False)
 file_size = payload.get("size", None)
 file_type = payload.get("type", None)
+
+if download:
+    file_path = os.path.join(UPLOAD_DIR, download)
+    if not os.path.exists(file_path):
+        print_headers()
+        print(
+            json.dumps(
+                {
+                    "status": "error",
+                    "message": f"File {download} does not exist.",
+                    "files": list_files(),
+                }
+            )
+        )
+        sys.exit(1)
+
+    with open(file_path, "rb") as file:
+        file_data = file.read()
+        encoded_content = base64.b64encode(file_data).decode("utf-8")
+
+    print_headers()
+    print(
+        json.dumps(
+            {
+                "status": "success",
+                "filename": download,
+                "content": f"data:;base64,{encoded_content}",
+                "files": list_files(),
+            }
+        )
+    )
+    sys.exit(0)
 
 # delete a file if requested
 if delete:
