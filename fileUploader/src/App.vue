@@ -19,7 +19,7 @@ export default {
     this.url= window.location.href + "upload.py"; // production-url
     
     if (import.meta.env.DEV) {
-      this.url = "http://127.0.0.1/cgi-bin/upload.py"
+      this.url = "http://127.0.0.1/fileUploader/upload.py"
     }
 
     this.filesStored = [];
@@ -72,6 +72,7 @@ export default {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        this.log.push({ msg: `File ${filename} download initiated`, color: "green" });
       } else {
         this.log.push({ msg: `File ${filename} not found for download`, color: "red" });
       }
