@@ -8,6 +8,7 @@ export default {
   },
   data() {
     return {
+      loading:false,
       logEnabled: true,
       log: [],
       filesStored: [],
@@ -17,6 +18,7 @@ export default {
   },
   mounted() {
     this.url = window.location.href + "upload.py"; // production-url
+    this.loading = true;
 
     if (import.meta.env.DEV) {
       this.url = "http://127.0.0.1/fileUploader/upload.py";
@@ -26,11 +28,13 @@ export default {
     fetch(this.url)
       .then((response) => response.json())
       .then((data) => {
+        this.loading = false;
         data.files.forEach((file) => {
           this.filesStored.push(file);
         });
       })
       .catch((error) => {
+        this.loading = false;
         console.error("Error contacting server on mount:", error);
         this.log.push({ msg: `Error contacting server on mount: ${error}`, color: "red" });
       });
@@ -42,6 +46,8 @@ export default {
   },
   methods: {
     deleteFile(filename) {
+      this.loading = true;
+
       fetch(this.url, {
         method: "POST",
         headers: {
@@ -53,17 +59,20 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
+          this.loading = false;
           console.log(`File ${filename} deleted successfully:`, data);
           this.log.push({ msg: `File ${filename} deleted successfully`, color: "green" });
           this.filesStored = data.files;
         })
         .catch((error) => {
+          this.loading = false;
           console.error(`Error deleting file ${filename}:`, error);
           this.log.push({ msg: `Error deleting file ${filename}: ${error}\n`, color: "red" });
         });
     },
 
     downLoadFile(filename) {
+      this.loading = true;
       fetch(this.url, {
         method: "POST",
         headers: {
@@ -75,6 +84,7 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
+          this.loading = false;
           if (data.status !== "success") {
             this.log.push({ msg: data.message, color: "red" });
             return;
@@ -88,8 +98,10 @@ export default {
           this.log.push({ msg: `File ${filename} downloaded successfully`, color: "green" });
         });
     },
-
+  
     uploadFileToServer(fileData) {
+      this.loading = true;
+
       fetch(this.url, {
         method: "POST",
         headers: {
@@ -104,6 +116,7 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
+          this.loading = false;
           if (data.status !== "success") {
             this.log.push({ msg: data.message, color: "red" });
             return;
@@ -113,6 +126,7 @@ export default {
           this.filesStored = data.files;
         })
         .catch((error) => {
+          this.loading = false;
           console.error(`Error uploading file ${fileData.name}:`, error);
           this.log.push({ msg: `Error uploading file ${fileData.name}: ${error}\n`, color: "red" });
         });
@@ -156,6 +170,7 @@ export default {
         </v-file-upload>
       </v-col>
     </v-row>
+    <v-progress-linear v-if="loading"indeterminate :height="8"></v-progress-linear>
     <div class="d-flex">
       <v-list width="100%" density="compact" v-if="filesStored.length > 0">
         <v-list-subheader>Uploaded Files</v-list-subheader>
