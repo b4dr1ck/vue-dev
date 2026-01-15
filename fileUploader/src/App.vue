@@ -12,11 +12,18 @@ export default {
       log: [],
       filesStored: [],
       filesArray: [],
+      url:"",
     };
   },
   mounted() {
+    this.url= window.location.href + "upload.py"; // production-url
+    
+    if (import.meta.env.DEV) {
+      this.url = "http://127.0.0.1/cgi-bin/upload.py"
+    }
+
     this.filesStored = [];
-    fetch("http://127.0.0.1/cgi-bin/upload.py")
+    fetch(this.url)
       .then((response) => response.json())
       .then((data) => {
         data.files.forEach((file) => {
@@ -35,7 +42,7 @@ export default {
   },
   methods: {
     deleteFile(filename) {
-      fetch("http://127.0.0.1/cgi-bin/upload.py", {
+      fetch(this.url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,8 +63,22 @@ export default {
         });
     },
 
+    downLoadFile(filename) {
+      const file = this.filesStored.find((f) => f.filename === filename);
+      if (file) {
+        const link = document.createElement("a");
+        link.href = file.url;
+        link.download = file.filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        this.log.push({ msg: `File ${filename} not found for download`, color: "red" });
+      }
+    },
+
     uploadFileToServer(fileData) {
-      fetch("http://127.0.0.1/cgi-bin/upload.py", {
+      fetch(this.url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -133,6 +154,9 @@ export default {
 
           <v-list-item-title v-text="file.filename + ' (' + file.size + ' kB)'"></v-list-item-title>
           <template v-slot:append>
+            <v-btn icon @click.stop="downLoadFile(file.filename)">
+              <v-icon icon="mdi-download"></v-icon>
+            </v-btn>
             <v-btn icon @click.stop="deleteFile(file.filename)">
               <v-icon icon="mdi-delete"></v-icon>
             </v-btn>
